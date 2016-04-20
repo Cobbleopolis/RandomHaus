@@ -1,0 +1,19 @@
+@import com.google.api.services.youtube.model.PlaylistItem
+@import com.google.api.services.youtube.model.PlaylistSnippet
+@(message: String, playlist: PlaylistSnippet, playlistItems: Seq[PlaylistItem])
+
+@main("RandomHaus") {
+
+    <p>@message</p>
+
+    <p>@playlist.getTitle</p>
+
+    <p>@playlist.getDescription</p>
+
+    <ul>
+    @for(video <- playlistItems) {
+        <li>@video.getSnippet.getTitle</li>
+    }
+    </ul>
+
+}
