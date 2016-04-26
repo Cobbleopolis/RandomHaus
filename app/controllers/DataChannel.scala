@@ -13,7 +13,7 @@ class DataChannel @Inject()(implicit db: Database) extends Controller {
         Ok(Json.toJson(DBUtil.getAllChannels.map(_.toJSON)))
     }
 
-    def channel(channelID: String) = Action{ request => {
+    def channel(channelID: String) = Action { request => {
         val channel: Option[Channel] = DBUtil.getChannel(channelID)
         if (channel.isDefined)
             Ok(channel.get.toJSON)

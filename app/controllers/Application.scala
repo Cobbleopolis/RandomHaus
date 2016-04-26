@@ -7,7 +7,6 @@ import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.youtube.YouTube
 import com.google.api.services.youtube.model._
-import com.google.inject.Inject
 import play.api.mvc._
 
 import scala.collection.JavaConverters._
@@ -83,7 +82,7 @@ class Application extends Controller {
             playlistListRequest.setPageToken(nextToken)
             val res: PlaylistListResponse = playlistListRequest.execute()
 
-            playlists = playlists ++ res.getItems.asScala.map( playlist => {
+            playlists = playlists ++ res.getItems.asScala.map(playlist => {
                 totalCount += playlist.getContentDetails.getItemCount.toInt
                 (playlist.getSnippet.getTitle, playlist.getContentDetails.getItemCount.toInt)
             })

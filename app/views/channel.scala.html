@@ -1,13 +1,13 @@
-@import com.google.api.services.youtube.model.Playlist
+
 @(channelName: String, playlists: Array[(String, Int)], totalCount: Int)
 
-@main(channelName) {
+    @main(channelName) {
 
-    <p>Channel: @channelName</p>
-    <p>Total Videos: @totalCount</p>
-    <ul>
+        <p>Channel: @channelName</p>
+        <p>Total Videos: @totalCount</p>
+        <ul>
         @for(playlist <- playlists) {
-            <li>@playlist._1 <span style="color: darkgrey">@playlist._2</span></li>
+            <li>@playlist._1 <span style="color : darkgrey">@playlist._2</span></li>
         }
-    </ul>
-}
+        </ul>
+    }

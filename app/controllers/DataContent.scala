@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{Channel, ChannelContent}
+import models.ChannelContent
 import play.api.db.Database
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
@@ -13,7 +13,7 @@ class DataContent @Inject()(implicit db: Database) extends Controller {
         Ok(Json.toJson(DBUtil.getAllContent.map(_.toJSON)))
     }
 
-    def content(contentID: String) = Action{ request => {
+    def content(contentID: String) = Action { request => {
         val content: Option[ChannelContent] = DBUtil.getContent(contentID)
         if (content.isDefined)
             Ok(content.get.toJSON)

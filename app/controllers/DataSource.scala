@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{ChannelContent, ChannelSource}
+import models.ChannelSource
 import play.api.db.Database
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
@@ -13,7 +13,7 @@ class DataSource @Inject()(implicit db: Database) extends Controller {
         Ok(Json.toJson(DBUtil.getAllSources.map(_.toJSON)))
     }
 
-    def sources(sourceID: String) = Action{ request => {
+    def sources(sourceID: String) = Action { request => {
         val source: Option[ChannelSource] = DBUtil.getSource(sourceID)
         if (source.isDefined)
             Ok(source.get.toJSON)

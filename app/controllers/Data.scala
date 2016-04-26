@@ -2,11 +2,11 @@ package controllers
 
 import com.google.inject.Inject
 import models.ChannelContent
-import play.api.mvc.{Action, Controller}
 import play.api.db.Database
+import play.api.mvc.{Action, Controller}
 import util.{DBUtil, YTUtil}
 
-class Data @Inject() (implicit db: Database) extends Controller {
+class Data @Inject()(implicit db: Database) extends Controller {
 
     def updateAllChannelContent = Action {
         DBUtil.getAllChannels.foreach(channel => {
