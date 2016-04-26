@@ -9,11 +9,10 @@ import com.google.api.services.youtube.YouTube
 import com.google.api.services.youtube.model._
 import com.google.inject.Inject
 import play.api.mvc._
-import services.ServiceYouTubeData
 
 import scala.collection.JavaConverters._
 
-class Application @Inject() (youTube: ServiceYouTubeData) extends Controller {
+class Application extends Controller {
 
     val net: NetHttpTransport = new NetHttpTransport()
 

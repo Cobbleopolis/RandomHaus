@@ -1,50 +1,69 @@
 package util
 
 import anorm.BatchSql
-import com.google.inject.Inject
 import models.{Channel, ChannelContent, ChannelSource}
 import play.api.db.Database
 import reference.DBReferences
 
 object DBUtil {
 
-	val util = new DBUtil.DBUtil()//TODO fix everything
+    def getChannel(channelID: String)(implicit db: Database): Option[Channel] = {
+        db.withConnection(implicit conn => {
+            DBReferences.getChannel.on('channelID -> channelID).as(DBReferences.getChannelParser.singleOpt)
+        })
 
-	private class DBUtil @Inject() (db: Database = null) {
-		def getChannel(channelID: String): Option[Channel] = {
-			db.withConnection(conn => {
-				DBReferences.getChannel.on('channelID -> channelID).as(DBReferences.getChannelParser.singleOpt)
-			})
+    }
 
-		}
+    def getAllChannels(implicit db: Database): List[Channel] = {
+        db.withConnection(implicit conn => {
+            DBReferences.getAllChannels.as(DBReferences.getChannelParser.*)
+        })
 
-		def getAllChannels: List[Channel] = {
-			db.withConnection(conn => {
-				DBReferences.getAllChannels.as(DBReferences.getChannelParser.*)
-			})
+    }
 
-		}
+    def getContent(contentID: String)(implicit db: Database): Option[ChannelContent] = {
+        db.withConnection(implicit conn => {
+            DBReferences.getContent.on('contentID -> contentID).as(DBReferences.channelContentParser.singleOpt)
+        })
+    }
 
-		def getChannelSources(channelID: String): List[ChannelSource] = {
-			db.withConnection(conn => {
-				DBReferences.getChannelSources.as(DBReferences.channelSourceParser.*)
-			})
+    def getAllContent(implicit db: Database): List[ChannelContent] = {
+        db.withConnection(implicit conn => {
+            DBReferences.getAllContent.as(DBReferences.channelContentParser.*)
+        })
+    }
 
-		}
+    def getSource(sourceID: String)(implicit db: Database): Option[ChannelSource] = {
+        db.withConnection(implicit conn => {
+            DBReferences.getSource.on('sourceID -> sourceID).as(DBReferences.channelSourceParser.singleOpt)
+        })
+    }
 
-		def insertChannelContent(channelContent: ChannelContent): Unit = {
-			db.withConnection(conn => {
-				DBReferences.insertChannelContent.on(channelContent.namedParameters: _*).executeInsert()
-			})
+    def getAllSources(implicit db: Database): List[ChannelSource] = {
+        db.withConnection(implicit conn => {
+            DBReferences.getAllSources.as(DBReferences.channelSourceParser.*)
+        })
+    }
 
-		}
+    def getChannelSources(channelID: String)(implicit db: Database): List[ChannelSource] = {
+        db.withConnection(implicit conn => {
+            DBReferences.getChannelSources.on('channelID -> channelID).as(DBReferences.channelSourceParser.*)
+        })
 
-		def insertChannelContentBatch(channelContent: Seq[ChannelContent]): Unit = {
-			db.withConnection(conn => {
-				BatchSql(DBReferences.insertChannelContent.toString, channelContent.head.namedParameters, channelContent.tail.map(_.namedParameters): _*)
-			})
+    }
 
-		}
-	}
+    def insertChannelContent(channelContent: ChannelContent)(implicit db: Database): Unit = {
+        db.withConnection(implicit conn => {
+            DBReferences.insertChannelContent.on(channelContent.namedParameters: _*).executeInsert()
+        })
+
+    }
+
+    def insertChannelContentBatch(channelContent: Seq[ChannelContent])(implicit db: Database): Unit = {
+        db.withConnection(implicit conn => {
+            BatchSql(DBReferences.insertChannelContent.toString, channelContent.head.namedParameters, channelContent.tail.map(_.namedParameters): _*)
+        })
+
+    }
 
 }
