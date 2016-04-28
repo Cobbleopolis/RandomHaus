@@ -18,7 +18,7 @@ class DataSource @Inject()(implicit db: Database) extends Controller {
         if (source.isDefined)
             Ok(source.get.toJSON)
         else
-            BadRequest(Json.toJson(Map("status" -> "KO", "message" -> "ID does not exist")))
+            BadRequest(Json.toJson(Map("status" -> "KO", "details" -> "ID does not exist")))
     }
     }
 

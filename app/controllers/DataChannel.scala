@@ -18,7 +18,7 @@ class DataChannel @Inject()(implicit db: Database) extends Controller {
         if (channel.isDefined)
             Ok(channel.get.toJSON)
         else
-            BadRequest(Json.toJson(Map("status" -> "KO", "message" -> "ID does not exist")))
+            BadRequest(Json.toJson(Map("status" -> "KO", "details" -> "ID does not exist")))
     }
     }
     

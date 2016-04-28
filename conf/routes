@@ -3,24 +3,23 @@
 # ~~~~
 
 # Home page
-GET        /                                   controllers.Application.index
+GET        /                                  controllers.Application.index
 
-GET        /list/:playlistID                   controllers.Application.list(playlistID)
+GET        /data/channels                     controllers.DataChannel.allChannels
+GET        /data/channels/:channelID          controllers.DataChannel.channel(channelID)
 
-GET        /channel/:channelID                 controllers.Application.channel(channelID)
+GET        /data/content                      controllers.DataContent.allContent
+GET        /data/content/:contentID           controllers.DataContent.content(contentID)
 
-GET        /data/channels                      controllers.DataChannel.allChannels
-GET        /data/channels/:channelID           controllers.DataChannel.channel(channelID)
+GET        /data/sources                      controllers.DataSource.allSources
+GET        /data/sources/:sourceID            controllers.DataSource.sources(sourceID)
 
-GET        /data/content                       controllers.DataContent.allContent
-GET        /data/content/:contentID            controllers.DataContent.content(contentID)
+GET        /jobs/content/updateAll            controllers.JobsContent.updateAllChannelContent
+GET        /jobs/channel/getAllSources        controllers.JobsContent.updateAllChannelContent
 
-GET        /data/content/jobs/updateAll        controllers.Data.updateAllChannelContent
-
-GET        /data/sources                       controllers.DataSource.allSources
-GET        /data/sources/:sourceID             controllers.DataSource.sources(sourceID)
+GET        /api/getRandomVideo                controllers.Api.getRandomVideo
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                       controllers.Assets.at(path="/public", file)
+GET        /assets/*file                      controllers.Assets.at(path="/public", file)
 
     

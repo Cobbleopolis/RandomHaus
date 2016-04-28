@@ -18,7 +18,7 @@ class DataContent @Inject()(implicit db: Database) extends Controller {
         if (content.isDefined)
             Ok(content.get.toJSON)
         else
-            BadRequest(Json.toJson(Map("status" -> "KO", "message" -> "ID does not exist")))
+            BadRequest(Json.toJson(Map("status" -> "KO", "details" -> "ID does not exist")))
     }
     }
 
