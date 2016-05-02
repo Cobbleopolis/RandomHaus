@@ -66,4 +66,17 @@ object DBUtil {
 
     }
 
+	def insertChannelSource(channelSource: ChannelSource)(implicit db: Database): Unit = {
+		db.withConnection(implicit conn => {
+			DBReferences.insertChannelSource.on(channelSource.namedParameters: _*).executeInsert()
+		})
+
+	}
+
+	def insertChannelSourceBatch(channelSource: Seq[ChannelSource])(implicit db: Database): Unit = {
+		db.withConnection(implicit conn => {
+			BatchSql(DBReferences.insertChannelSource.toString, channelSource.head.namedParameters, channelSource.tail.map(_.namedParameters): _*)
+		})
+
+	}
 }

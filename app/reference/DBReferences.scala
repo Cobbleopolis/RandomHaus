@@ -17,7 +17,7 @@ object DBReferences {
     val getAllSources = SQL("SELECT * FROM channelSources;")
     val getSource = SQL("CALL getSource({sourceID});")
     val getChannelSources = SQL("CALL getChannelSources({channelID});")
-    val insertChannelSource = SQL("CALL insertChannelSources({id}, {channelID}, {isPlaylist});")
+    val insertChannelSource = SQL("CALL insertChannelSource({id}, {channelID}, {isPlaylist});")
 
     val channelSourceParser = for {
         id <- str("id")

@@ -8,6 +8,7 @@ window.onYouTubeIframeAPIReady = () ->
             videoId: videoId
             events:
                 'onReady': onPlayerReady
+        $('#vidID').text(videoId)
     )
 
 
@@ -16,10 +17,10 @@ getRandomVideo = (callback) ->
         type: "GET"
         dataType: "text"
         error: (jqXHR, textStatus, errorThrown) ->
-            alert(textStatus)
+            alert(errorThrown)
             callback('')
         success: (data, textStatus, jqXHR) ->
             callback(data)
             
 onPlayerReady = (event) ->
-    event.target.playVideo()
+#    event.target.playVideo()

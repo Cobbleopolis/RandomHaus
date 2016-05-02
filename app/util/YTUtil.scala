@@ -6,7 +6,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.youtube.YouTube
-import com.google.api.services.youtube.model.{PlaylistItem, PlaylistItemListResponse}
+import com.google.api.services.youtube.model.{Playlist, PlaylistItem, PlaylistItemListResponse, PlaylistListResponse}
 import reference.Reference
 
 import scala.collection.JavaConverters._
@@ -43,5 +43,22 @@ object YTUtil {
         } while (nextToken != null)
         playlistItems
     }
+
+	def getAllPlaylistsFromUser(channelId: String): List[Playlist] = {
+		var playlists: List[Playlist] = List[Playlist]()
+		val playlistRequest: YouTube#Playlists#List = youtube.playlists.list("id")
+			.setChannelId(channelId)
+		var nextToken: String = ""
+
+		do {
+			playlistRequest.setPageToken(nextToken)
+			val playlistResponse: PlaylistListResponse = playlistRequest.execute()
+
+			playlists = playlists ++ playlistResponse.getItems.asScala
+
+			nextToken = playlistResponse.getNextPageToken
+		} while (nextToken != null)
+		playlists
+	}
 
 }
