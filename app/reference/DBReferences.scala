@@ -2,7 +2,7 @@ package reference
 
 import anorm.SqlParser._
 import anorm._
-import models.{Channel, ChannelContent, ChannelSource}
+import models.{Channel, ChannelContent, ChannelSeries}
 
 object DBReferences {
 
@@ -14,18 +14,18 @@ object DBReferences {
 
     val getAllChannels = SQL("SELECT * FROM channels;")
 
-    val getAllSources = SQL("SELECT * FROM channelSources;")
-    val getSource = SQL("CALL getSource({sourceID});")
-    val getChannelSources = SQL("CALL getChannelSources({channelID});")
-    val insertChannelSource = SQL("CALL insertChannelSource({id}, {channelID}, {isPlaylist});")
+    val getAllSeriess = SQL("SELECT * FROM channelSeriess;")
+    val getSeries = SQL("CALL getSeries({SeriesID});")
+    val getChannelSeriess = SQL("CALL getChannelSeries({channelID});")
+    val insertChannelSeries = SQL("CALL insertChannelSeries({id}, {channelID}, {name});")
 
-    val channelSourceParser = for {
+    val channelSeriesParser = for {
         id <- str("id")
         channelID <- str("channelID")
-        isPlaylist <- bool("isPlaylist")
-    } yield new ChannelSource(id, channelID, isPlaylist)
+        name <- str("name")
+    } yield new ChannelSeries(id, channelID, name)
 
-    val insertChannelContent = SQL("CALL insertChannelContent({id}, {channelID}, {isPlaylist});")
+    val insertChannelContent = SQL("CALL insertChannelContent({id}, {channelID}, {isPlaylist}, {seriesID});")
 
     val getAllContent = SQL("SELECT * FROM channelContent;")
     val getContent = SQL("CALL getContent({contentID});")
@@ -33,5 +33,6 @@ object DBReferences {
         id <- str("id")
         channelID <- str("channelID")
         isPlaylist <- bool("isPlaylist")
-    } yield new ChannelContent(id, channelID, isPlaylist)
+        seriesID <- str("seriesID")
+    } yield new ChannelContent(id, channelID, isPlaylist, seriesID)
 }

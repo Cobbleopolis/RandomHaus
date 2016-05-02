@@ -6,8 +6,6 @@ window.onYouTubeIframeAPIReady = () ->
             height: 390
             width: 640
             videoId: videoId
-            events:
-                'onReady': onPlayerReady
         $('#vidID').text(videoId)
     )
 
@@ -22,5 +20,17 @@ getRandomVideo = (callback) ->
         success: (data, textStatus, jqXHR) ->
             callback(data)
             
+window.loadRandomVideo = () ->
+    player.destroy()
+    getRandomVideo((videoId) ->
+        player = new YT.Player 'player',
+            height: 390
+            width: 640
+            videoId: videoId
+            events:
+                'onReady': onPlayerReady
+        $('#vidID').text(videoId)
+    )
+    
 onPlayerReady = (event) ->
 #    event.target.playVideo()

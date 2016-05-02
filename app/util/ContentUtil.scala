@@ -1,6 +1,6 @@
 package util
 
-import models.ChannelContent
+import models.{ChannelContent, ChannelContentTag}
 import play.api.db.Database
 
 import scala.concurrent.Future
@@ -10,15 +10,17 @@ object ContentUtil {
 
     def updateAll(implicit db: Database): Future[Unit] = Future {
         DBUtil.getAllChannels.foreach(channel => {
-            DBUtil.getChannelSources(channel.channelID).foreach(source => {
-                if (source.isPlaylist) {
-	                val playlistItems = YTUtil.getPlaylistItems(source.id)
-	                playlistItems.foreach(playlistItem => {
-		                DBUtil.insertChannelContent(new ChannelContent(playlistItem.getContentDetails.getVideoId, channel.channelID, false))
-	                })
-                }
-                DBUtil.insertChannelContent(new ChannelContent(source.id, channel.channelID, source.isPlaylist))
+            updateChannelContent(channel.channelID)
+        })
+    }
+
+    def updateChannelContent(channelId: String)(implicit db: Database): Future[Unit] = Future {
+        DBUtil.getChannelSeries(channelId).foreach(series => {
+            val playlistItems = YTUtil.getPlaylistItems(series.id)
+            playlistItems.foreach(playlistItem => {
+                DBUtil.insertChannelContent(new ChannelContent(playlistItem.getContentDetails.getVideoId, channelId, false, series.id))
             })
+
         })
     }
     

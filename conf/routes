@@ -11,8 +11,8 @@ GET        /data/channels/:channelID                        controllers.DataChan
 GET        /data/content                                    controllers.DataContent.allContent
 GET        /data/content/:contentID                         controllers.DataContent.content(contentID)
 
-GET        /data/sources                                    controllers.DataSource.allSources
-GET        /data/sources/:sourceID                          controllers.DataSource.sources(sourceID)
+GET        /data/series                                     controllers.DataSeries.allSources
+GET        /data/series/:sourceID                           controllers.DataSeries.sources(sourceID)
 
 GET        /jobs/content/updateAll                          controllers.JobsContent.updateAllChannelContent
 GET        /jobs/channel/:channelID/updateAllSources        controllers.JobsChannel.updateSourcesFromPlaylists(channelID)

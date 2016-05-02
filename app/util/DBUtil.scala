@@ -1,7 +1,7 @@
 package util
 
 import anorm.BatchSql
-import models.{Channel, ChannelContent, ChannelSource}
+import models.{Channel, ChannelContent, ChannelSeries}
 import play.api.db.Database
 import reference.DBReferences
 
@@ -33,21 +33,21 @@ object DBUtil {
         })
     }
 
-    def getSource(sourceID: String)(implicit db: Database): Option[ChannelSource] = {
+    def getSeries(SeriesID: String)(implicit db: Database): Option[ChannelSeries] = {
         db.withConnection(implicit conn => {
-            DBReferences.getSource.on('sourceID -> sourceID).as(DBReferences.channelSourceParser.singleOpt)
+            DBReferences.getSeries.on('SeriesID -> SeriesID).as(DBReferences.channelSeriesParser.singleOpt)
         })
     }
 
-    def getAllSources(implicit db: Database): List[ChannelSource] = {
+    def getAllSeries(implicit db: Database): List[ChannelSeries] = {
         db.withConnection(implicit conn => {
-            DBReferences.getAllSources.as(DBReferences.channelSourceParser.*)
+            DBReferences.getAllSeriess.as(DBReferences.channelSeriesParser.*)
         })
     }
 
-    def getChannelSources(channelID: String)(implicit db: Database): List[ChannelSource] = {
+    def getChannelSeries(channelID: String)(implicit db: Database): List[ChannelSeries] = {
         db.withConnection(implicit conn => {
-            DBReferences.getChannelSources.on('channelID -> channelID).as(DBReferences.channelSourceParser.*)
+            DBReferences.getChannelSeriess.on('channelID -> channelID).as(DBReferences.channelSeriesParser.*)
         })
 
     }
@@ -66,16 +66,16 @@ object DBUtil {
 
     }
 
-	def insertChannelSource(channelSource: ChannelSource)(implicit db: Database): Unit = {
+	def insertChannelSeries(channelSeries: ChannelSeries)(implicit db: Database): Unit = {
 		db.withConnection(implicit conn => {
-			DBReferences.insertChannelSource.on(channelSource.namedParameters: _*).executeInsert()
+			DBReferences.insertChannelSeries.on(channelSeries.namedParameters: _*).executeInsert()
 		})
 
 	}
 
-	def insertChannelSourceBatch(channelSource: Seq[ChannelSource])(implicit db: Database): Unit = {
+	def insertChannelSeriesBatch(channelSeries: Seq[ChannelSeries])(implicit db: Database): Unit = {
 		db.withConnection(implicit conn => {
-			BatchSql(DBReferences.insertChannelSource.toString, channelSource.head.namedParameters, channelSource.tail.map(_.namedParameters): _*)
+			BatchSql(DBReferences.insertChannelSeries.toString, channelSeries.head.namedParameters, channelSeries.tail.map(_.namedParameters): _*)
 		})
 
 	}

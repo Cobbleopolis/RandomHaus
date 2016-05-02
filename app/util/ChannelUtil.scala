@@ -1,6 +1,6 @@
 package util
 
-import models.ChannelSource
+import models.ChannelSeries
 import play.api.db.Database
 
 import scala.concurrent.Future
@@ -8,12 +8,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 object ChannelUtil {
 
-	def updateSourcesFromPlaylists(channelID: String)(implicit db: Database): Future[Unit] = Future {
-		DBUtil.insertChannelSourceBatch(
-			YTUtil.getAllPlaylistsFromUser(channelID).map(playlist =>
-				new ChannelSource(playlist.getId, channelID, true)
-			)
-		)
+	def updateSeriesFromPlaylists(channelID: String)(implicit db: Database): Future[Unit] = Future {
+        YTUtil.getAllPlaylistsFromUser(channelID).map(playlist =>
+            new ChannelSeries(playlist.getId, channelID, playlist.getSnippet.getTitle)
+        ).foreach(series => DBUtil.insertChannelSeries(series))
 	}
+
+    def getChannelSeries(channelID: String)(implicit db: Database): Future[Unit] = Future {
+
+    }
     
 }

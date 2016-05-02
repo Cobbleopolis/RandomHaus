@@ -46,7 +46,7 @@ object YTUtil {
 
 	def getAllPlaylistsFromUser(channelId: String): List[Playlist] = {
 		var playlists: List[Playlist] = List[Playlist]()
-		val playlistRequest: YouTube#Playlists#List = youtube.playlists.list("id")
+		val playlistRequest: YouTube#Playlists#List = youtube.playlists.list("id,snippet")
 			.setChannelId(channelId)
 		var nextToken: String = ""
 
