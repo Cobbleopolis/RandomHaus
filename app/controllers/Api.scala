@@ -11,9 +11,10 @@ class Api @Inject() (implicit db: Database) extends Controller {
 
     val rand: Random = new Random(System.nanoTime())
 
-    def getRandomVideo = Action {
-        val content = DBUtil.getAllContent.filter(content => !content.isPlaylist)
-        Ok(content(rand.nextInt(content.length)).id).as("text")
+    def getRandomVideo(channelID: String) = Action {
+        val content = DBUtil.getAllContent
+	    val c = content(rand.nextInt(content.length))
+        Ok(if (c != null) c.id else "").as("text")
     }
     
 }

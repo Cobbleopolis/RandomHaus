@@ -18,7 +18,7 @@ object ContentUtil {
         DBUtil.getChannelSeries(channelId).foreach(series => {
             val playlistItems = YTUtil.getPlaylistItems(series.id)
             playlistItems.foreach(playlistItem => {
-                DBUtil.insertChannelContent(new ChannelContent(playlistItem.getContentDetails.getVideoId, channelId, false, series.id))
+                DBUtil.insertChannelContent(new ChannelContent(playlistItem.getContentDetails.getVideoId, channelId, series.id, playlistItem.getSnippet.getTitle))
             })
 
         })

@@ -14,9 +14,9 @@ object DBReferences {
 
     val getAllChannels = SQL("SELECT * FROM channels;")
 
-    val getAllSeriess = SQL("SELECT * FROM channelSeriess;")
+    val getAllSeries = SQL("SELECT * FROM channelSeriess;")
     val getSeries = SQL("CALL getSeries({SeriesID});")
-    val getChannelSeriess = SQL("CALL getChannelSeries({channelID});")
+    val getChannelSeries = SQL("CALL getChannelSeries({channelID});")
     val insertChannelSeries = SQL("CALL insertChannelSeries({id}, {channelID}, {name});")
 
     val channelSeriesParser = for {
@@ -25,14 +25,14 @@ object DBReferences {
         name <- str("name")
     } yield new ChannelSeries(id, channelID, name)
 
-    val insertChannelContent = SQL("CALL insertChannelContent({id}, {channelID}, {isPlaylist}, {seriesID});")
+    val insertChannelContent = SQL("CALL insertChannelContent({id}, {channelID}, {seriesID}, {name});")
 
     val getAllContent = SQL("SELECT * FROM channelContent;")
     val getContent = SQL("CALL getContent({contentID});")
     val channelContentParser = for {
         id <- str("id")
         channelID <- str("channelID")
-        isPlaylist <- bool("isPlaylist")
         seriesID <- str("seriesID")
-    } yield new ChannelContent(id, channelID, isPlaylist, seriesID)
+	    name <- str("name")
+    } yield new ChannelContent(id, channelID, seriesID, name)
 }

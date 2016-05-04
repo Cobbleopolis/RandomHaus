@@ -41,13 +41,13 @@ object DBUtil {
 
     def getAllSeries(implicit db: Database): List[ChannelSeries] = {
         db.withConnection(implicit conn => {
-            DBReferences.getAllSeriess.as(DBReferences.channelSeriesParser.*)
+            DBReferences.getAllSeries.as(DBReferences.channelSeriesParser.*)
         })
     }
 
     def getChannelSeries(channelID: String)(implicit db: Database): List[ChannelSeries] = {
         db.withConnection(implicit conn => {
-            DBReferences.getChannelSeriess.on('channelID -> channelID).as(DBReferences.channelSeriesParser.*)
+            DBReferences.getChannelSeries.on('channelID -> channelID).as(DBReferences.channelSeriesParser.*)
         })
 
     }

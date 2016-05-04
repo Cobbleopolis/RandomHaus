@@ -11,7 +11,7 @@ window.onYouTubeIframeAPIReady = () ->
 
 
 getRandomVideo = (callback) ->
-    $.ajax "/api/getRandomVideo",
+    $.ajax "/api/getRandomVideo/UCboMX_UNgaPBsUOIgasn3-Q",
         type: "GET"
         dataType: "text"
         error: (jqXHR, textStatus, errorThrown) ->

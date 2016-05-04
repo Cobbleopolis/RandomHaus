@@ -17,7 +17,7 @@ GET        /data/series/:sourceID                           controllers.DataSeri
 GET        /jobs/content/updateAll                          controllers.JobsContent.updateAllChannelContent
 GET        /jobs/channel/:channelID/updateAllSources        controllers.JobsChannel.updateSourcesFromPlaylists(channelID)
 
-GET        /api/getRandomVideo                              controllers.Api.getRandomVideo
+GET        /api/getRandomVideo/:channelID                   controllers.Api.getRandomVideo(channelID)
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file                                    controllers.Assets.at(path="/public", file)
