@@ -8,7 +8,7 @@ case class ChannelSeries(id: String, channelID: String, name: String) extends Mo
 
     def toJSON: JsValue = Json.obj(
         "id" -> id,
-        "channelID" -> channelID,
+        "channelId" -> channelID,
         "name" -> name
     )
 }

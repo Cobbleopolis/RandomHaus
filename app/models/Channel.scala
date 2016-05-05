@@ -8,7 +8,7 @@ case class Channel(channelID: String, name: String) extends Model {
     val namedParameters: Seq[NamedParameter] = Seq('channelID -> channelID, 'name -> name)
 
     def toJSON: JsValue = Json.obj(
-        "channelID" -> channelID,
+        "channelId" -> channelID,
         "name" -> name
     )
 

@@ -45,11 +45,17 @@ object DBUtil {
         })
     }
 
-    def getChannelSeries(channelID: String)(implicit db: Database): List[ChannelSeries] = {
+    def getChannelSeries(channelId: String)(implicit db: Database): List[ChannelSeries] = {
         db.withConnection(implicit conn => {
-            DBReferences.getChannelSeries.on('channelID -> channelID).as(DBReferences.channelSeriesParser.*)
+            DBReferences.getChannelSeries.on('channelId -> channelId).as(DBReferences.channelSeriesParser.*)
         })
 
+    }
+
+    def getChannelContent(channelId: String)(implicit db: Database): List[ChannelContent] = {
+        db.withConnection(implicit conn => {
+            DBReferences.getChannelContent.on('channelId -> channelId).as(DBReferences.channelContentParser.*)
+        })
     }
 
     def insertChannelContent(channelContent: ChannelContent)(implicit db: Database): Unit = {

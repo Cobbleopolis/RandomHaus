@@ -1,19 +1,35 @@
-player = null
+channelId = 'UCboMX_UNgaPBsUOIgasn3-Q'
 
 window.onYouTubeIframeAPIReady = () ->
-    getRandomVideo((videoId) ->
-        player = new YT.Player 'player',
-            height: 390
-            width: 640
-            videoId: videoId
-        $('#vidID').text(videoId)
+    getRandomVideo((videoObj) ->
+        MediaController.initPlayer(Video.fromJSON(videoObj))
     )
 
 
 getRandomVideo = (callback) ->
-    $.ajax "/api/getRandomVideo/UCboMX_UNgaPBsUOIgasn3-Q",
-        type: "GET"
-        dataType: "text"
+    $.ajax '/api/getRandomVideo/' + channelId,
+        type: 'GET'
+        dataType: 'json'
+        error: (jqXHR, textStatus, errorThrown) ->
+            alert(errorThrown)
+            callback('')
+        success: (data, textStatus, jqXHR) ->
+            callback(data)
+
+getRandomPlaylist = (callback) ->
+    $.ajax '/api/getRandomPlaylist/' + channelId,
+        type: 'GET'
+        dataType: 'json'
+        error: (jqXHR, textStatus, errorThrown) ->
+            alert(errorThrown)
+            callback('')
+        success: (data, textStatus, jqXHR) ->
+            callback(data)
+
+getQueue = (callback) ->
+    $.ajax '/api/getQueue/' + channelId,
+        type: 'GET'
+        dataType: 'json'
         error: (jqXHR, textStatus, errorThrown) ->
             alert(errorThrown)
             callback('')
@@ -21,16 +37,16 @@ getRandomVideo = (callback) ->
             callback(data)
             
 window.loadRandomVideo = () ->
-    player.destroy()
-    getRandomVideo((videoId) ->
-        player = new YT.Player 'player',
-            height: 390
-            width: 640
-            videoId: videoId
-            events:
-                'onReady': onPlayerReady
-        $('#vidID').text(videoId)
+    getRandomVideo((videoObj) ->
+        MediaController.loadVideo(Video.fromJSON(videoObj))
     )
     
-onPlayerReady = (event) ->
-#    event.target.playVideo()
+window.loadRandomPlaylist = () ->
+    getRandomPlaylist((playlistObj) ->
+        MediaController.loadPlaylist(Playlist.fromJSON(playlistObj))
+    )
+    
+window.getQueue = () ->
+    getQueue((array) ->
+        MediaController.loadQueue(array.queue.map (videoObj) -> Video.fromJSON(videoObj))
+    )
