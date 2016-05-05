@@ -16,7 +16,7 @@ object DBReferences {
 
     val getAllChannels = SQL("SELECT * FROM channels;")
 
-    val getAllSeries = SQL("SELECT * FROM channelSeriess;")
+    val getAllSeries = SQL("SELECT * FROM channelSeries;")
     val getSeries = SQL("CALL getSeries({seriesId});")
     val getChannelSeries = SQL("CALL getChannelSeries({channelId});")
     val getChannelContent = SQL("CALL getChannelContent({channelId});")
