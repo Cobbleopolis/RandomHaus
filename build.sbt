@@ -23,9 +23,14 @@ libraryDependencies ++= Seq(
 	"mysql" % "mysql-connector-java" % "5.1.36",
 	"com.adrianhurt" %% "play-bootstrap" % "1.0-P25-B3" exclude("org.webjars", "jquery"),
 	"org.webjars" % "bootstrap-sass" % "3.3.1-1",
-	"org.webjars" % "jquery" % "2.2.2"
+	"org.webjars" % "jquery" % "2.2.2",
+	"org.webjars.bower" % "lodash" % "4.11.1"
 )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"  
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+
+resolveFromWebjarsNodeModulesDir := true
+
+typingsFile := Some(baseDirectory.value / "app" / "assets" / "javascripts" / "typings" / "tsd.d.ts")

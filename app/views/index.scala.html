@@ -1,17 +1,9 @@
 @(message: String)(series: List[ChannelSeries])
 
     @main("RandomHaus"){
-        <script>
-                var old = alert;
-
-                alert = function() {
-                    console.log(new Error().stack);
-                    old.apply(window, arguments);
-                };
-        </script>
         <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/mediacontroller.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.at("javascripts/media.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/models.js")" type="text/javascript"></script>
     } {
         <div id="player"></div>
         <div id="mediaControl">
@@ -33,7 +25,7 @@
                     }
                 </fieldset>
             </div>
-            <button type='button' onclick="getQueue()" class="btn btn-default">Submit</button>
+            <button type='button' onclick="loadQueue()" class="btn btn-default">Submit</button>
         </form>
         <script>
                 var tag = document.createElement('script');

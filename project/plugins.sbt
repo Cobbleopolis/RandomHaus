@@ -8,4 +8,5 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.2")
 
 addSbtPlugin("default" % "sbt-sass" % "0.1.9")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-coffeescript" % "1.0.0")
+
+addSbtPlugin("name.de-vries" % "sbt-typescript" % "0.2.6")
