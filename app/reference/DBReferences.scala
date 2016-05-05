@@ -6,6 +6,8 @@ import models.{Channel, ChannelContent, ChannelSeries}
 
 object DBReferences {
 
+    //TODO clean name out of ChannelContent and ChannelSeries
+
     val getChannel = SQL("CALL getChannel({channelId});")
     val getChannelParser = for {
         channelID <- str("channelId")
