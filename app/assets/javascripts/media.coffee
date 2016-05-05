@@ -1,7 +1,7 @@
 class @Video
-    constructor: (@id, @channelId, @seriesId, @name) ->
+    constructor: (@id, @channelId, @seriesId) ->
 
-    @fromJSON: (videoObj) -> new @ videoObj.id, videoObj.channelId, videoObj.seriesId, videoObj.name
+    @fromJSON: (videoObj) -> new @ videoObj.id, videoObj.channelId, videoObj.seriesId
         
 class @Playlist
     constructor: (@id, @channelId, @name) ->
