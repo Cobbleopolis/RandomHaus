@@ -5,7 +5,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 function getRandomVideo(callback: (content: Content) => void) {
-    $.ajax('/api/getRandomVideo/' +channelId,
+    $.ajax('/api/getRandomVideo/' + channelId,
         {
             type: 'GET',
             dataType: 'json',
@@ -20,7 +20,7 @@ function getRandomVideo(callback: (content: Content) => void) {
 }
 
 function getRandomPlaylist(callback: (playlist: Series) => void) {
-    $.ajax('/api/getRandomPlaylist/' +channelId,
+    $.ajax('/api/getRandomPlaylist/' + channelId,
         {
             type: 'GET',
             dataType: 'json',
@@ -35,7 +35,7 @@ function getRandomPlaylist(callback: (playlist: Series) => void) {
 }
 
 function getQueue(callback: (contents: Content[]) => void) {
-    $.ajax('/api/getQueue/' +channelId,
+    $.ajax('/api/getQueue/' + channelId,
         {
             type: 'GET',
             dataType: 'json',
