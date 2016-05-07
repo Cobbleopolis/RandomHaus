@@ -13,14 +13,14 @@
         <div id="vidID"></div>
         <form class="form" role="form">
             <div id="form-body">
-                <fieldset>
+                <fieldset id="filterSeries">
                     <h4>Series</h4>
                     <div class="checkbox">
-                        <label><input type="checkbox" checked> All</label>
+                        <label><input data-series-id="all" type="checkbox" checked> All</label>
                     </div>
                     @for(s <- series) {
                         <div class="checkbox">
-                            <label><input type="checkbox"> @s.name</label>
+                            <label><input data-series-id="@s.id" type="checkbox"> @s.name</label>
                         </div>
                     }
                 </fieldset>

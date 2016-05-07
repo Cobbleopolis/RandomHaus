@@ -1,4 +1,18 @@
-var channelId = 'UCboMX_UNgaPBsUOIgasn3-Q';
+var channelId: string = 'UCboMX_UNgaPBsUOIgasn3-Q';
+var seriesFilters: JQuery = null;
+
+$(function() {
+    seriesFilters = $('#filterSeries').find('input[data-series-id]');
+    seriesFilters.change(function(eventObject) {
+        var seriesId = $(eventObject.target).attr('data-series-id');
+        console.log(seriesId);
+        if (seriesId === 'all') {
+            $('#filterSeries').find('input[data-series-id!="all"]').prop('checked', false);
+        } else {
+            $('#filterSeries').find('input[data-series-id="all"]').prop('checked', false);
+        }
+    })
+});
 
 function onYouTubeIframeAPIReady() {
     getRandomVideo(MediaController.initPlayer)
@@ -16,7 +30,8 @@ function getRandomVideo(callback: (content: Content) => void) {
             success: function (data: any) {
                 callback(Content.fromJSON(data))
             }
-        })
+        }
+    )
 }
 
 function getRandomPlaylist(callback: (playlist: Series) => void) {
@@ -34,8 +49,8 @@ function getRandomPlaylist(callback: (playlist: Series) => void) {
         })
 }
 
-function getQueue(callback: (contents: Content[]) => void) {
-    $.ajax('/api/getQueue/' + channelId,
+function getQueue(filters: string[], callback: (contents: Content[]) => void) {
+    $.ajax('/api/getQueue/' + channelId + "?filters=" + filters.join(","),
         {
             type: 'GET',
             dataType: 'json',
@@ -48,7 +63,8 @@ function getQueue(callback: (contents: Content[]) => void) {
                     return Content.fromJSON(contentObj);
                 }))
             }
-        })
+        }
+    )
 }
 
 function loadRandomVideo() {
@@ -60,5 +76,5 @@ function loadRandomPlaylist() {
 }
 
 function loadQueue() {
-    getQueue(MediaController.loadQueue)
+    getQueue(MediaController.getSelectedFilters(), MediaController.loadQueue)
 }

@@ -46,4 +46,14 @@ module MediaController {
     function setIdDiv(text: string) {
         $('#vidID').text(text)
     }
+
+    export function getSelectedFilters(): string[] {
+        var filters: string[] = [];
+        _(seriesFilters).filter(function(input){
+            return input.checked;
+        }).forEach(function(input) {
+            filters[filters.length] = $(input).attr('data-series-id');
+        });
+        return filters;
+    }
 }
