@@ -3,9 +3,10 @@ module MediaController {
     var player: YT.Player = null;
 
     export function initPlayer(content: Content) {
+        var width = $('#main').width() - $('#main').css('padding-right').replace('px', '');
         player = new YT.Player('player', {
-            height: 390,
-            width: 640,
+            height: width * (9 / 16),
+            width: width,
             videoId: content.id,
             events: {
                 'onReady': onPlayerReady,

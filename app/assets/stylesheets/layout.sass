@@ -64,7 +64,36 @@
 @import "lib/bootstrap-sass/stylesheets/bootstrap"
 
 body
-    margin-top: 70px
+    margin-top: $navbar-height
 
 .checkbox
-    margin: 4px 0
+    margin: 4px 1px
+
+#main
+    background: #fff
+    display: inline-block
+    width: 50%
+    margin:
+        left: 25%
+        right: 25%
+    padding:
+        left: 10px
+        right: 10px
+        bottom: $navbar-height
+
+fieldset
+    padding:
+        left: $navbar-padding-horizontal
+
+#footer
+    background: $navbar-inverse-bg
+    height: $navbar-height
+    color: $navbar-inverse-link-color
+    width: 100%
+    text-align: right
+    span
+        display: inline-block
+        padding-right: $navbar-padding-horizontal
+        line-height: $navbar-height
+        text-align: left
+
