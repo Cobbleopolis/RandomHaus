@@ -2,7 +2,7 @@ name := "RandomHaus"
 
 version := "1.0"
 
-lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala)
+lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin)
 
 scalaVersion := "2.11.7"
 
@@ -34,3 +34,9 @@ resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 resolveFromWebjarsNodeModulesDir := true
 
 typingsFile := Some(baseDirectory.value / "app" / "assets" / "javascripts" / "typings" / "tsd.d.ts")
+
+maintainer in Linux := "Logan Thompson <cobbleopolis@gmail.com>"
+
+packageSummary in Linux := "RandomHaus server"
+
+packageDescription := "A play server to run a RandomHaus instance"
