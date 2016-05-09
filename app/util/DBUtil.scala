@@ -9,14 +9,14 @@ object DBUtil {
 
     def getChannel(channelID: String)(implicit db: Database): Option[Channel] = {
         db.withConnection(implicit conn => {
-            DBReferences.getChannel.on('channelID -> channelID).as(DBReferences.getChannelParser.singleOpt)
+            DBReferences.getChannel.on('channelID -> channelID).as(DBReferences.channelParser.singleOpt)
         })
 
     }
 
     def getAllChannels(implicit db: Database): List[Channel] = {
         db.withConnection(implicit conn => {
-            DBReferences.getAllChannels.as(DBReferences.getChannelParser.*)
+            DBReferences.getAllChannels.as(DBReferences.channelParser.*)
         })
 
     }
