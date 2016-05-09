@@ -1,8 +1,8 @@
 name := "RandomHaus"
 
-version := "1.0"
+version := "1.0.0"
 
-lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin)
+lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, BuildInfoPlugin)
 
 scalaVersion := "2.11.7"
 
