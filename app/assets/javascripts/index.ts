@@ -20,7 +20,7 @@ function onYouTubeIframeAPIReady() {
 
 function getRandomVideo(callback: (content: Content) => void) {
     $.ajax('/api/getRandomVideo/' + channelId,
-        {
+        <JQueryAjaxSettings>{
             type: 'GET',
             dataType: 'json',
             error: function (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
@@ -36,14 +36,14 @@ function getRandomVideo(callback: (content: Content) => void) {
 
 function getRandomPlaylist(callback: (playlist: Series) => void) {
     $.ajax('/api/getRandomPlaylist/' + channelId,
-        {
+        <JQueryAjaxSettings>{
             type: 'GET',
             dataType: 'json',
-            error: function (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
+            error: function (jqXHR:JQueryXHR, textStatus:string, errorThrown:string) {
                 alert(errorThrown);
                 callback(null);
             },
-            success: function (data: any) {
+            success: function (data:any) {
                 callback(Series.fromJSON(data))
             }
         })
@@ -51,7 +51,7 @@ function getRandomPlaylist(callback: (playlist: Series) => void) {
 
 function getQueue(filters: string[], callback: (contents: Content[]) => void) {
     $.ajax('/api/getQueue/' + channelId + "?filters=" + filters.join(","),
-        {
+        <JQueryAjaxSettings>{
             type: 'GET',
             dataType: 'json',
             error: function (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
