@@ -11,16 +11,16 @@ object DBReferences {
 	val getAllChannels = SQL("SELECT * FROM channels;")
 	val getChannelSeries = SQL("CALL getChannelSeries({channelId});")
 	val getChannelContent = SQL("CALL getChannelContent({channelId});")
-	val insertChannelSeries = SQL("CALL insertChannelSeries({id}, {channelId}, {name});")
-	val insertChannelContent = SQL("CALL insertChannelContent({id}, {channelId}, {seriesId});")
 
 	//Series SQL calls
 	val getSeries = SQL("CALL getSeries({seriesId});")
 	val getAllSeries = SQL("SELECT * FROM channelSeries;")
+	val insertChannelSeries = SQL("CALL insertChannelSeries({id}, {channelId}, {name});")
 
 	//Content SQL calls
 	val getContent = SQL("CALL getContent({contentId});")
 	val getAllContent = SQL("SELECT * FROM channelContent;")
+	val insertChannelContent = SQL("CALL insertChannelContent({id}, {channelId}, {seriesId});")
 
 	//Parsers
 
