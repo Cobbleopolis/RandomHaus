@@ -1,9 +1,11 @@
 module MediaController {
     import EventArgs = YT.EventArgs;
     var player: YT.Player = null;
+    var main: JQuery = null;
 
     export function initPlayer(content: Content) {
-        var width = $('#main').width() - $('#main').css('padding-right').replace('px', '');
+        main = $("#main");
+        var width = main.width() - parseInt(main.css('padding-right').replace('px', ''));
         player = new YT.Player('player', {
             height: width * (9 / 16),
             width: width,
@@ -45,7 +47,7 @@ module MediaController {
     }
 
     function setIdDiv(text: string) {
-        $('#vidID').text(text)
+        $("#vidID").text(text)
     }
 
     export function getSelectedFilters(): string[] {
