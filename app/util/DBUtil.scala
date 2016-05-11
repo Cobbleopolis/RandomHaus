@@ -35,7 +35,7 @@ object DBUtil {
 
     def getSeries(SeriesID: String)(implicit db: Database): Option[ChannelSeries] = {
         db.withConnection(implicit conn => {
-            DBReferences.getSeries.on('SeriesID -> SeriesID).as(DBReferences.channelSeriesParser.singleOpt)
+            DBReferences.getSeries.on('seriesID -> SeriesID).as(DBReferences.channelSeriesParser.singleOpt)
         })
     }
 
