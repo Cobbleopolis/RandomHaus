@@ -12,7 +12,8 @@ libraryDependencies ++= Seq(
 	jdbc,
 	cache,
 	ws,
-	specs2 % Test,
+	"org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test",
+	"org.pegdown" % "pegdown" % "1.4.2",
 	"com.google.api-client" % "google-api-client" % "1.20.0",
 	"com.google.api-client" % "google-api-client-java6" % "1.20.0",
 	"com.google.api-client" % "google-api-client-jackson2" % "1.20.0",
@@ -40,3 +41,7 @@ maintainer in Linux := "Logan Thompson <cobbleopolis@gmail.com>"
 packageSummary in Linux := "RandomHaus server"
 
 packageDescription := "A play server to run a RandomHaus instance"
+
+javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
+
+(testOptions in Test) += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/report")
