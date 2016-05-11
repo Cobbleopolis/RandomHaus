@@ -1,3 +1,6 @@
+/// <reference path="models.ts"/>
+/// <reference path="index.ts"/>
+
 module MediaController {
     import EventArgs = YT.EventArgs;
     var player: YT.Player = null;
@@ -15,7 +18,7 @@ module MediaController {
                 'onStateChange': onPlayerStateChange
             }
         });
-        setIdDiv(content.id);
+        // setIdDiv(content.id);
     }
 
     export function loadContent(content: Content) {
@@ -28,14 +31,14 @@ module MediaController {
             list: playlist.id,
             listType: 'playlist'
         });
-        setIdDiv(playlist.id)
+        // setIdDiv(playlist.id)
     }
 
     export function loadQueue(contents: Content[]) {
         player.loadPlaylist(_.map(contents, function(v: Content) {
             return v.id
         }));
-        setIdDiv('Custom Playlist');
+        // setIdDiv('Custom Playlist');
     }
 
     function onPlayerReady(event: EventArgs) {
@@ -52,7 +55,7 @@ module MediaController {
 
     export function getSelectedFilters(): string[] {
         var filters: string[] = [];
-        _(seriesFilters).filter(function(input){
+        _(seriesFilters).filter(function(input: any){
             return input.checked;
         }).forEach(function(input) {
             filters[filters.length] = $(input).attr('data-series-id');

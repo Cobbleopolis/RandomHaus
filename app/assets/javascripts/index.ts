@@ -1,3 +1,5 @@
+/// <reference path="mediacontroller.ts"/>
+
 var channelId: string = 'UCboMX_UNgaPBsUOIgasn3-Q';
 var seriesFilters: JQuery = null;
 
