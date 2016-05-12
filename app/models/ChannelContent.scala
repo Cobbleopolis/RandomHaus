@@ -6,19 +6,18 @@ import play.api.libs.json.{JsValue, Json}
 import scala.collection.mutable.ListBuffer
 
 case class ChannelContent(id: String, channelId: String, seriesId: String) extends Model {
-    def addTag(tag: ChannelContentTag) = {
-        tags += tag
-    }
+	val namedParameters: Seq[NamedParameter] = Seq('id -> id, 'channelID -> channelId, 'seriesID -> seriesId)
+	private var tags: ListBuffer[ChannelContentTag] = ListBuffer()
 
-    def getTags: List[ChannelContentTag] = tags.toList
+	def addTag(tag: ChannelContentTag) = {
+		tags += tag
+	}
 
-    val namedParameters: Seq[NamedParameter] = Seq('id -> id, 'channelID -> channelId, 'seriesID -> seriesId)
+	def getTags: List[ChannelContentTag] = tags.toList
 
-    private var tags: ListBuffer[ChannelContentTag] = ListBuffer()
-
-    def toJSON: JsValue = Json.obj(
-        "id" -> id,
-        "channelId" -> channelId,
-        "seriesId" -> seriesId
-    )
+	def toJSON: JsValue = Json.obj(
+		"id" -> id,
+		"channelId" -> channelId,
+		"seriesId" -> seriesId
+	)
 }

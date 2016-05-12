@@ -3,10 +3,10 @@
 
 module MediaController {
     import EventArgs = YT.EventArgs;
-    var player: YT.Player = null;
-    var main: JQuery = null;
+    var player:YT.Player = null;
+    var main:JQuery = null;
 
-    export function initPlayer(content: Content) {
+    export function initPlayer(content:Content) {
         main = $("#main");
         var width = main.width() - parseInt(main.css('padding-right').replace('px', ''));
         player = new YT.Player('player', {
@@ -21,12 +21,12 @@ module MediaController {
         // setIdDiv(content.id);
     }
 
-    export function loadContent(content: Content) {
+    export function loadContent(content:Content) {
         player.loadVideoById(content.id);
         setIdDiv(content.id)
     }
 
-    export function loadPlaylist(playlist: Series) {
+    export function loadPlaylist(playlist:Series) {
         player.loadPlaylist({
             list: playlist.id,
             listType: 'playlist'
@@ -34,30 +34,31 @@ module MediaController {
         // setIdDiv(playlist.id)
     }
 
-    export function loadQueue(contents: Content[]) {
-        player.loadPlaylist(_.map(contents, function(v: Content) {
+    export function loadQueue(contents:Content[]) {
+        player.loadPlaylist(_.map(contents, function (v:Content) {
             return v.id
         }));
         // setIdDiv('Custom Playlist');
     }
 
-    function onPlayerReady(event: EventArgs) {
+    function onPlayerReady(event:EventArgs) {
 
     }
 
-    function onPlayerStateChange(event: EventArgs) {
-        if (event.data == YT.PlayerState.ENDED) {}
+    function onPlayerStateChange(event:EventArgs) {
+        if (event.data == YT.PlayerState.ENDED) {
+        }
     }
 
-    function setIdDiv(text: string) {
+    function setIdDiv(text:string) {
         $("#vidID").text(text)
     }
 
-    export function getSelectedFilters(): string[] {
-        var filters: string[] = [];
-        _(seriesFilters).filter(function(input: any){
+    export function getSelectedFilters():string[] {
+        var filters:string[] = [];
+        _(seriesFilters).filter(function (input:any) {
             return input.checked;
-        }).forEach(function(input) {
+        }).forEach(function (input) {
             filters[filters.length] = $(input).attr('data-series-id');
         });
         return filters;

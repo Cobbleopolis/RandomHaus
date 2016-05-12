@@ -9,17 +9,17 @@ import util.DBUtil
 
 class DataContent @Inject()(implicit db: Database) extends Controller {
 
-    def allContent = Action {
-        Ok(Json.toJson(DBUtil.getAllContent.map(_.toJSON)))
-    }
+	def allContent = Action {
+		Ok(Json.toJson(DBUtil.getAllContent.map(_.toJSON)))
+	}
 
-    def content(contentID: String) = Action { request => {
-        val content: Option[ChannelContent] = DBUtil.getContent(contentID)
-        if (content.isDefined)
-            Ok(content.get.toJSON)
-        else
-            BadRequest(Json.toJson(Map("status" -> "KO", "details" -> "ID does not exist")))
-    }
-    }
+	def content(contentID: String) = Action { request => {
+		val content: Option[ChannelContent] = DBUtil.getContent(contentID)
+		if (content.isDefined)
+			Ok(content.get.toJSON)
+		else
+			BadRequest(Json.toJson(Map("status" -> "KO", "details" -> "ID does not exist")))
+	}
+	}
 
 }

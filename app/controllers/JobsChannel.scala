@@ -3,13 +3,13 @@ package controllers
 import com.google.inject.Inject
 import play.api.db.Database
 import play.api.mvc.{Action, Controller}
-import util.{ChannelUtil, ContentUtil, JobUtil, YTUtil}
+import util.{ChannelUtil, JobUtil}
 
-class JobsChannel @Inject() (implicit db: Database) extends Controller {
+class JobsChannel @Inject()(implicit db: Database) extends Controller {
 
-    def allPlaylistsAsSources(channelID: String) = Action {
-        Ok("TODO")
-    }
+	def allPlaylistsAsSources(channelID: String) = Action {
+		Ok("TODO")
+	}
 
 	def updateSourcesFromPlaylists(channelID: String) = Action {
 		try {
@@ -19,5 +19,5 @@ class JobsChannel @Inject() (implicit db: Database) extends Controller {
 			case e: Exception => Ok(JobUtil.getFailure(e.toString))
 		}
 	}
-    
+
 }

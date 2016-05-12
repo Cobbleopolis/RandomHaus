@@ -1,11 +1,11 @@
 /// <reference path="mediacontroller.ts"/>
 
-var channelId: string = 'UCboMX_UNgaPBsUOIgasn3-Q';
-var seriesFilters: JQuery = null;
+var channelId:string = 'UCboMX_UNgaPBsUOIgasn3-Q';
+var seriesFilters:JQuery = null;
 
-$(function() {
+$(function () {
     seriesFilters = $('#filterSeries').find('input[data-series-id]');
-    seriesFilters.change(function(eventObject) {
+    seriesFilters.change(function (eventObject) {
         var seriesId = $(eventObject.target).attr('data-series-id');
         console.log(seriesId);
         if (seriesId === 'all') {
@@ -20,23 +20,23 @@ function onYouTubeIframeAPIReady() {
     getRandomVideo(MediaController.initPlayer)
 }
 
-function getRandomVideo(callback: (content: Content) => void) {
+function getRandomVideo(callback:(content:Content) => void) {
     $.ajax('/api/getRandomVideo/' + channelId,
         <JQueryAjaxSettings>{
             type: 'GET',
             dataType: 'json',
-            error: function (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
+            error: function (jqXHR:JQueryXHR, textStatus:string, errorThrown:string) {
                 alert(errorThrown);
                 callback(null);
             },
-            success: function (data: any) {
+            success: function (data:any) {
                 callback(Content.fromJSON(data))
             }
         }
     )
 }
 
-function getRandomPlaylist(callback: (playlist: Series) => void) {
+function getRandomPlaylist(callback:(playlist:Series) => void) {
     $.ajax('/api/getRandomPlaylist/' + channelId,
         <JQueryAjaxSettings>{
             type: 'GET',
@@ -51,17 +51,17 @@ function getRandomPlaylist(callback: (playlist: Series) => void) {
         })
 }
 
-function getQueue(filters: string[], callback: (contents: Content[]) => void) {
+function getQueue(filters:string[], callback:(contents:Content[]) => void) {
     $.ajax('/api/getQueue/' + channelId + "?filters=" + filters.join(","),
         <JQueryAjaxSettings>{
             type: 'GET',
             dataType: 'json',
-            error: function (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
+            error: function (jqXHR:JQueryXHR, textStatus:string, errorThrown:string) {
                 alert(errorThrown);
                 callback(null);
             },
-            success: function (data: any) {
-                callback(_.map(data.queue, function(contentObj: any, i: number) {
+            success: function (data:any) {
+                callback(_.map(data.queue, function (contentObj:any, i:number) {
                     return Content.fromJSON(contentObj);
                 }))
             }
