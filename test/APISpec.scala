@@ -1,4 +1,5 @@
 import org.scalatestplus.play.{OneServerPerSuite, PlaySpec}
+import play.api.libs.json.Json
 import play.api.libs.ws._
 import play.mvc.Http.Status._
 
@@ -28,11 +29,11 @@ class APISpec extends PlaySpec with OneServerPerSuite {
 			}
 		}
 
-		"return a random queue on /api/getQueue/:channelID?filters=all" in {
-			Util.getResponse(baseURL + "getQueue/" + channelID + "?filters=all") { res =>
-				res.status mustBe OK
-				assert(!res.body.isEmpty)
-			}
+		"return a random queue on /api/getQueue/:channelID with no filters" in {
+            Util.postResponse(baseURL + "getQueue/" + channelID, Json.obj("filters" -> Seq("all"))) { res =>
+                res.status mustBe OK
+                assert(!res.body.isEmpty)
+            }
 		}
 
 	}

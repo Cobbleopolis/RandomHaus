@@ -2,7 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import play.api.db.Database
-import play.api.libs.json.Json
+import play.api.libs.json.{JsArray, Json}
 import play.api.mvc.{Action, Controller}
 import util.DBUtil
 
@@ -25,8 +25,8 @@ class Api @Inject()(implicit db: Database) extends Controller {
 		Ok(if (s != null) s.toJSON else Json.obj()).as("application/json")
 	}
 
-	def getPlaylistQueue(channelId: String, filtersRaw: String) = Action { request => {
-		val filters: Array[String] = filtersRaw.split(",")
+	def getPlaylistQueue(channelId: String) = Action(parse.json) { request => {
+		val filters: Array[String] = (request.body \ "filters").as[JsArray].value.map(f => f.as[String]).toArray
 		val channelContent = if (filters.length == 1 && filters(0) == "all")
 			DBUtil.getChannelContent(channelId)
 		else

@@ -52,9 +52,13 @@ function getRandomPlaylist(callback:(playlist:Series) => void) {
 }
 
 function getQueue(filters:string[], callback:(contents:Content[]) => void) {
-    $.ajax('/api/getQueue/' + channelId + "?filters=" + filters.join(","),
+    $.ajax('/api/getQueue/' + channelId,
         <JQueryAjaxSettings>{
-            type: 'GET',
+            type: 'POST',
+            data: JSON.stringify({
+                filters: filters
+            }),
+            contentType: 'application/json',
             dataType: 'json',
             error: function (jqXHR:JQueryXHR, textStatus:string, errorThrown:string) {
                 alert(errorThrown);

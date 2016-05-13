@@ -3,25 +3,25 @@
 # ~~~~
 
 # Home page
-GET        /                                                controllers.Application.index
+GET         /                                                controllers.Application.index
 
-GET        /data/channels                                   controllers.DataChannel.allChannels
-GET        /data/channels/:channelID                        controllers.DataChannel.channel(channelID)
+GET         /data/channels                                   controllers.DataChannel.allChannels
+GET         /data/channels/:channelID                        controllers.DataChannel.channel(channelID)
 
-GET        /data/content                                    controllers.DataContent.allContent
-GET        /data/content/:contentID                         controllers.DataContent.content(contentID)
+GET         /data/content                                    controllers.DataContent.allContent
+GET         /data/content/:contentID                         controllers.DataContent.content(contentID)
 
-GET        /data/series                                     controllers.DataSeries.allSources
-GET        /data/series/:sourceID                           controllers.DataSeries.sources(sourceID)
+GET         /data/series                                     controllers.DataSeries.allSources
+GET         /data/series/:sourceID                           controllers.DataSeries.sources(sourceID)
 
-GET        /jobs/content/updateAll                          controllers.JobsContent.updateAllChannelContent
-GET        /jobs/channel/:channelID/updateAllSources        controllers.JobsChannel.updateSourcesFromPlaylists(channelID)
+GET         /jobs/content/updateAll                          controllers.JobsContent.updateAllChannelContent
+GET         /jobs/channel/:channelID/updateAllSources        controllers.JobsChannel.updateSourcesFromPlaylists(channelID)
 
-GET        /api/getRandomVideo/:channelId                   controllers.Api.getRandomVideo(channelId)
-GET        /api/getRandomPlaylist/:channelId                controllers.Api.getRandomPlaylist(channelId)
-GET        /api/getQueue/:channelId                         controllers.Api.getPlaylistQueue(channelId, filters)
+GET         /api/getRandomVideo/:channelId                   controllers.Api.getRandomVideo(channelId)
+GET         /api/getRandomPlaylist/:channelId                controllers.Api.getRandomPlaylist(channelId)
+POST        /api/getQueue/:channelId                         controllers.Api.getPlaylistQueue(channelId)
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file                                    controllers.Assets.at(path="/public", file)
+GET         /assets/*file                                    controllers.Assets.at(path="/public", file)
 
     
