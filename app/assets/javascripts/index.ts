@@ -61,7 +61,7 @@ function getQueue(filters:string[], callback:(contents:Content[]) => void) {
                 callback(null);
             },
             success: function (data:any) {
-                callback(_.map(data.queue, function (contentObj:any, i:number) {
+                callback(_.map(data, function (contentObj:any, i:number) {
                     return Content.fromJSON(contentObj);
                 }))
             }

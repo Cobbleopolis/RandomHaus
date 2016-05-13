@@ -36,7 +36,7 @@ class Api @Inject()(implicit db: Database) extends Controller {
 			val i = rand.nextInt(channelContent.length)
 			if (!indexes.contains(i)) indexes += i
 		}
-		Ok(Json.obj("queue" -> indexes.map(i => channelContent(i).toJSON)))
+		Ok(Json.toJson(indexes.map(i => channelContent(i).toJSON)))
 	}
 	}
 
