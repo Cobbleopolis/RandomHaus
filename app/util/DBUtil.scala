@@ -9,7 +9,7 @@ object DBUtil {
 
 	def getChannel(channelID: String)(implicit db: Database): Option[Channel] = {
 		db.withConnection(implicit conn => {
-			DBReferences.getChannel.on('channelID -> channelID).as(DBReferences.channelParser.singleOpt)
+			DBReferences.getChannel.on('channelId -> channelID).as(DBReferences.channelParser.singleOpt)
 		})
 
 	}
@@ -23,7 +23,7 @@ object DBUtil {
 
 	def getContent(contentID: String)(implicit db: Database): Option[ChannelContent] = {
 		db.withConnection(implicit conn => {
-			DBReferences.getContent.on('contentID -> contentID).as(DBReferences.channelContentParser.singleOpt)
+			DBReferences.getContent.on('contentId -> contentID).as(DBReferences.channelContentParser.singleOpt)
 		})
 	}
 
@@ -35,7 +35,7 @@ object DBUtil {
 
 	def getSeries(SeriesID: String)(implicit db: Database): Option[ChannelSeries] = {
 		db.withConnection(implicit conn => {
-			DBReferences.getSeries.on('seriesID -> SeriesID).as(DBReferences.channelSeriesParser.singleOpt)
+			DBReferences.getSeries.on('seriesId -> SeriesID).as(DBReferences.channelSeriesParser.singleOpt)
 		})
 	}
 

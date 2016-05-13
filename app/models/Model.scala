@@ -1,7 +1,7 @@
 package models
 
 import anorm.NamedParameter
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsObject, JsValue}
 
 abstract class Model {
 

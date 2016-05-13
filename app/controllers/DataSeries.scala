@@ -13,12 +13,12 @@ class DataSeries @Inject()(implicit db: Database) extends Controller {
 		Ok(Json.toJson(DBUtil.getAllSeries.map(_.toJSON)))
 	}
 
-	def sources(sourceID: String) = Action { request => {
-		val source: Option[ChannelSeries] = DBUtil.getSeries(sourceID)
+	def sources(sourceId: String) = Action { request => {
+		val source: Option[ChannelSeries] = DBUtil.getSeries(sourceId)
 		if (source.isDefined)
 			Ok(source.get.toJSON)
 		else
-			BadRequest(Json.toJson(Map("status" -> "KO", "details" -> "ID does not exist")))
+			NotFound("Id not found")
 	}
 	}
 

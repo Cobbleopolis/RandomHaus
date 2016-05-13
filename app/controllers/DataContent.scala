@@ -13,12 +13,12 @@ class DataContent @Inject()(implicit db: Database) extends Controller {
 		Ok(Json.toJson(DBUtil.getAllContent.map(_.toJSON)))
 	}
 
-	def content(contentID: String) = Action { request => {
-		val content: Option[ChannelContent] = DBUtil.getContent(contentID)
+	def content(contentId: String) = Action { request => {
+		val content: Option[ChannelContent] = DBUtil.getContent(contentId)
 		if (content.isDefined)
 			Ok(content.get.toJSON)
 		else
-			BadRequest(Json.toJson(Map("status" -> "KO", "details" -> "ID does not exist")))
+			NotFound("Id not found")
 	}
 	}
 

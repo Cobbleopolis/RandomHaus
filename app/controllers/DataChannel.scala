@@ -13,12 +13,12 @@ class DataChannel @Inject()(implicit db: Database) extends Controller {
 		Ok(Json.toJson(DBUtil.getAllChannels.map(_.toJSON)))
 	}
 
-	def channel(channelID: String) = Action { request => {
-		val channel: Option[Channel] = DBUtil.getChannel(channelID)
+	def channel(channelId: String) = Action { request => {
+		val channel: Option[Channel] = DBUtil.getChannel(channelId)
 		if (channel.isDefined)
 			Ok(channel.get.toJSON)
 		else
-			BadRequest(Json.toJson(Map("status" -> "KO", "details" -> "ID does not exist")))
+			NotFound("Id not found")
 	}
 	}
 

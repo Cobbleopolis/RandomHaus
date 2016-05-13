@@ -10,7 +10,7 @@ object ContentUtil {
 
 	def updateAll(implicit db: Database): Future[Unit] = Future {
 		DBUtil.getAllChannels.foreach(channel => {
-			updateChannelContent(channel.channelID)
+			updateChannelContent(channel.channelId)
 		})
 	}
 
