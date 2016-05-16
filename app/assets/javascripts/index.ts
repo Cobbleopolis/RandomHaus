@@ -1,13 +1,12 @@
 /// <reference path="mediacontroller.ts"/>
 
-var channelId:string = 'UCboMX_UNgaPBsUOIgasn3-Q';
+var channelId:string = getCookie('channel');
 var seriesFilters:JQuery = null;
 
 $(function () {
     seriesFilters = $('#filterSeries').find('input[data-series-id]');
     seriesFilters.change(function (eventObject) {
         var seriesId = $(eventObject.target).attr('data-series-id');
-        console.log(seriesId);
         if (seriesId === 'all') {
             $('#filterSeries').find('input[data-series-id!="all"]').prop('checked', false);
         } else {
@@ -17,7 +16,7 @@ $(function () {
 });
 
 function onYouTubeIframeAPIReady() {
-    getRandomVideo(MediaController.initPlayer)
+    getRandomVideo(MediaController.initPlayer);
 }
 
 function getRandomVideo(callback:(content:Content) => void) {
@@ -83,4 +82,19 @@ function loadRandomPlaylist() {
 
 function loadQueue() {
     getQueue(MediaController.getSelectedFilters(), MediaController.loadQueue)
+}
+
+function getCookie(cname:string) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }

@@ -13,7 +13,7 @@ case class ChannelContent(id: String, channelId: String, seriesId: String) exten
 		(jsonObj \ "seriesId").as[String]
 	)
 
-	val namedParameters: Seq[NamedParameter] = Seq('id -> id, 'channelID -> channelId, 'seriesID -> seriesId)
+	val namedParameters: Seq[NamedParameter] = Seq('id -> id, 'channelId -> channelId, 'seriesId -> seriesId)
 
 	private var tags: ListBuffer[ChannelContentTag] = ListBuffer()
 

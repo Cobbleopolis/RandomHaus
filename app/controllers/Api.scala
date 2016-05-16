@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Inject
 import play.api.db.Database
 import play.api.libs.json.{JsArray, Json}
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{Action, Controller, Cookie, DiscardingCookie}
 import util.DBUtil
 
 import scala.collection.mutable.ArrayBuffer
@@ -14,7 +14,7 @@ class Api @Inject()(implicit db: Database) extends Controller {
 	val rand: Random = new Random(System.nanoTime())
 
 	def getRandomVideo(channelID: String) = Action {
-		val content = DBUtil.getAllContent
+		val content = DBUtil.getChannelContent(channelID)
 		val c = content(rand.nextInt(content.length))
 		Ok(if (c != null) c.toJSON else Json.obj()).as("application/json")
 	}
@@ -39,5 +39,9 @@ class Api @Inject()(implicit db: Database) extends Controller {
 		Ok(Json.toJson(indexes.map(i => channelContent(i).toJSON)))
 	}
 	}
+
+    def setChannelCookie(channelId: String) = Action {
+        Redirect(routes.Application.index()).discardingCookies(DiscardingCookie("channel")).withCookies(Cookie("channel", channelId, httpOnly = false))
+    }
 
 }

@@ -1,4 +1,4 @@
-@(title: String)(head: Html)(content: Html)
+@(title: String)(channels: List[Channel])(head: Html)(content: Html)
 
 <!DOCTYPE html>
 
@@ -14,7 +14,7 @@
         @head
     </head>
     <body>
-        @banner()
+        @banner(channels)
         @content
         @footer()
     </body>

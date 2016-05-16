@@ -11,7 +11,7 @@ case class ChannelSeries(id: String, channelID: String, name: String) extends Mo
 		(jsonObj \ "name").as[String]
 	)
 
-	val namedParameters: Seq[NamedParameter] = Seq('id -> id, 'channelID -> channelID, 'name -> name)
+	val namedParameters: Seq[NamedParameter] = Seq('id -> id, 'channelId -> channelID, 'name -> name)
 
 	def toJSON: JsValue = Json.obj(
 		"id" -> id,

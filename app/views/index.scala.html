@@ -1,6 +1,6 @@
-@(message: String)(series: List[ChannelSeries])
+@(message: String)(channels: List[Channel], series: List[ChannelSeries])
 
-    @main("RandomHaus") {
+    @main("RandomHaus")(channels) {
         <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/mediacontroller.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/models.js")" type="text/javascript"></script>
