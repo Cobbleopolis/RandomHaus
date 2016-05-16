@@ -1,6 +1,8 @@
 /// <reference path="mediacontroller.ts"/>
 
 var channelId:string = getCookie('channel');
+if (channelId == '')
+    channelId = 'UCboMX_UNgaPBsUOIgasn3-Q';
 var seriesFilters:JQuery = null;
 
 $(function () {
