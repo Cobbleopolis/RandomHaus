@@ -3,6 +3,7 @@ package reference
 import anorm.SqlParser._
 import anorm._
 import models.{Channel, ChannelContent, ChannelSeries}
+import play.data.format.Formats.DateTime
 
 object DBReferences {
 
@@ -15,7 +16,7 @@ object DBReferences {
 	//Series SQL calls
 	val getSeries = SQL("CALL getSeries({seriesId});")
 	val getAllSeries = SQL("SELECT * FROM channelSeries;")
-	val insertChannelSeries = SQL("CALL insertChannelSeries({id}, {channelId}, {name});")
+	val insertChannelSeries = SQL("CALL insertChannelSeries({id}, {channelId}, {name}, {publishedAt});")
 
 	//Content SQL calls
 	val getContent = SQL("CALL getContent({contentId});")
@@ -33,7 +34,8 @@ object DBReferences {
 		id <- str("id")
 		channelID <- str("channelId")
 		name <- str("name")
-	} yield new ChannelSeries(id, channelID, name)
+		publishedAt <- date("publishedAt")
+	} yield new ChannelSeries(id, channelID, name, publishedAt)
 
 	val channelContentParser = for {
 		id <- str("id")
