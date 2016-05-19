@@ -3,5 +3,13 @@ language: scala
 scala:
    - 2.11.7
 
+jdk:
+  - openjdk7
+
 script:
    - sbt test
+
+cache:
+ directories:
+   - $HOME/.ivy2/cache
+   - $HOME/.sbt/boot/
