@@ -14,7 +14,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 
 	val seriesId: String = "PLbIc1971kgPAiqGL25MGyYtZsUCPvX7Fo"
 
-	val contentId: String = "-aFWGMDzM6o"
+	val contentId: String = "08RSRbFT3aw"
 
 	val nonExistantId: String = "thisIdShouldNotExist"
 
