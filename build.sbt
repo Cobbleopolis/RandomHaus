@@ -4,7 +4,7 @@ version := "1.0.6"
 
 lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, BuildInfoPlugin)
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
@@ -42,6 +42,6 @@ packageSummary in Linux := "RandomHaus server"
 
 packageDescription := "A play server to run a RandomHaus instance"
 
-javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
+//javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
 
 (testOptions in Test) += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/report")
