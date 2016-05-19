@@ -1,4 +1,3 @@
-<img src="icon.png" align="right" />
 # RandomHaus
 > Random YouTube videos
 
