@@ -1,4 +1,4 @@
-# RandomHaus
+# RandomHaus [![Build Status](https://travis-ci.org/Cobbleopolis/RandomHaus.svg?branch=master)](https://travis-ci.org/Cobbleopolis/RandomHaus)
 > Random YouTube videos
 
 This is a site to play random YouTube videos from provided channels
