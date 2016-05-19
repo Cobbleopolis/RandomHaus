@@ -33,4 +33,4 @@ This is a site to play random YouTube videos from provided channels
 
 ## Copyright and license
 
-Code and documentation copyright 2016 Logan Thompson. Code released under [the MIT license](https://github.com/Cobbleopolis/RandomHaus/blob/master/LICENSE). <!--Docs released under [Creative Commons](https://github.com/twbs/bootstrap/blob/master/LICENSE).-->
+Code and documentation copyright 2016 Logan Thompson. Code released under [the MIT license](https://github.com/Cobbleopolis/RandomHaus/blob/master/LICENSE).
