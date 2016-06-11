@@ -3,6 +3,7 @@ import org.scalatestplus.play.{OneServerPerSuite, PlaySpec}
 import play.api.libs.json.{JsArray, JsObject, Json}
 import play.api.libs.ws._
 import play.mvc.Http.Status._
+import reference.JsonReference._
 
 class DataSpec extends PlaySpec with OneServerPerSuite {
 
@@ -31,7 +32,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 			Util.getResponse(baseURL + "channels") { res =>
 				res.status mustBe OK
 				val json: JsArray = Json.parse(res.body).as[JsArray]
-				json.value.foreach(jsVal => new Channel(jsVal.as[JsObject]))
+				json.value.foreach(jsVal => jsVal.as[Channel])
 			}
 		}
 
@@ -47,7 +48,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 			Util.getResponse(baseURL + "channels/" + channelId) { res =>
 				res.status mustBe OK
 				val json: JsObject = Json.parse(res.body).as[JsObject]
-				new Channel(json)
+				json.as[Channel]
 			}
 		}
 
@@ -71,7 +72,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 			Util.getResponse(baseURL + "series") { res =>
 				res.status mustBe OK
 				val json: JsArray = Json.parse(res.body).as[JsArray]
-				json.value.foreach(jsVal => new ChannelSeries(jsVal.as[JsObject]))
+				json.value.foreach(jsVal => jsVal.as[ChannelSeries])
 			}
 		}
 
@@ -87,7 +88,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 			Util.getResponse(baseURL + "series/" + seriesId) { res =>
 				res.status mustBe OK
 				val json: JsObject = Json.parse(res.body).as[JsObject]
-				new ChannelSeries(json)
+				json.as[ChannelSeries]
 			}
 		}
 
@@ -111,7 +112,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 			Util.getResponse(baseURL + "content") { res =>
 				res.status mustBe OK
 				val json: JsArray = Json.parse(res.body).as[JsArray]
-				json.value.foreach(jsVal => new ChannelContent(jsVal.as[JsObject]))
+				json.value.foreach(jsVal => jsVal.as[ChannelContent])
 			}
 		}
 
@@ -127,7 +128,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 			Util.getResponse(baseURL + "content/" + contentId) { res =>
 				res.status mustBe OK
 				val json: JsObject = Json.parse(res.body).as[JsObject]
-				new ChannelContent(json)
+				json.as[ChannelContent]
 			}
 		}
 
