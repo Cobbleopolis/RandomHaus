@@ -1,45 +1,33 @@
 package reference
 
-import anorm.SqlParser._
-import anorm._
-import models.{Channel, ChannelContent, ChannelSeries}
-import play.data.format.Formats.DateTime
+import anorm.{Macro, RowParser, SQL}
+import models.{Channel, ChannelContent, ChannelContentTag, ChannelSeries}
 
 object DBReferences {
 
-	//Channel SQL calls
-	val getChannel = SQL("CALL getChannel({channelId});")
-	val getAllChannels = SQL("SELECT * FROM channels;")
-	val getChannelSeries = SQL("CALL getChannelSeries({channelId});")
-	val getChannelContent = SQL("CALL getChannelContent({channelId});")
+    //Channel SQL calls
+    val getChannel = SQL("CALL getChannel({channelId});")
+    val getAllChannels = SQL("SELECT * FROM channels;")
+    val getChannelSeries = SQL("CALL getChannelSeries({channelId});")
+    val getChannelContent = SQL("CALL getChannelContent({channelId});")
 
-	//Series SQL calls
-	val getSeries = SQL("CALL getSeries({seriesId});")
-	val getAllSeries = SQL("SELECT * FROM channelSeries;")
-	val insertChannelSeries = SQL("CALL insertChannelSeries({id}, {channelId}, {name}, {publishedAt});")
+    //Series SQL calls
+    val getSeries = SQL("CALL getSeries({seriesId});")
+    val getAllSeries = SQL("SELECT * FROM channelSeries;")
+    val insertChannelSeries = SQL("CALL insertChannelSeries({id}, {channelId}, {name}, {publishedAt});")
 
-	//Content SQL calls
-	val getContent = SQL("CALL getContent({contentId});")
-	val getAllContent = SQL("SELECT * FROM channelContent;")
-	val insertChannelContent = SQL("CALL insertChannelContent({id}, {channelId}, {seriesId});")
+    //Content SQL calls
+    val getContent = SQL("CALL getContent({contentId});")
+    val getAllContent = SQL("SELECT * FROM channelContent;")
+    val insertChannelContent = SQL("CALL insertChannelContent({id}, {channelId}, {seriesId});")
 
-	//Parsers
+    //Parsers
 
-	val channelParser = for {
-		channelID <- str("channelId")
-		name <- str("name")
-	} yield new Channel(channelID, name)
+    implicit val channelParser = Macro.namedParser[Channel].asInstanceOf[RowParser[Channel]]
 
-	val channelSeriesParser = for {
-		id <- str("id")
-		channelID <- str("channelId")
-		name <- str("name")
-		publishedAt <- date("publishedAt")
-	} yield new ChannelSeries(id, channelID, name, publishedAt)
+    implicit val channelContentParser = Macro.namedParser[ChannelContent].asInstanceOf[RowParser[ChannelContent]]
 
-	val channelContentParser = for {
-		id <- str("id")
-		channelID <- str("channelId")
-		seriesID <- str("seriesId")
-	} yield new ChannelContent(id, channelID, seriesID)
+    implicit val channelContentTagParser = Macro.namedParser[ChannelContentTag].asInstanceOf[RowParser[ChannelContentTag]]
+
+    implicit val channelSeriesParser = Macro.namedParser[ChannelSeries].asInstanceOf[RowParser[ChannelSeries]]
 }

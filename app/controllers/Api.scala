@@ -5,6 +5,7 @@ import play.api.db.Database
 import play.api.libs.json.{JsArray, Json}
 import play.api.mvc.{Action, Controller, Cookie, DiscardingCookie}
 import util.DBUtil
+import reference.JsonReference._
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
@@ -16,13 +17,13 @@ class Api @Inject()(implicit db: Database) extends Controller {
 	def getRandomVideo(channelID: String) = Action {
 		val content = DBUtil.getChannelContent(channelID)
 		val c = content(rand.nextInt(content.length))
-		Ok(if (c != null) c.toJSON else Json.obj()).as("application/json")
+		Ok(if (c != null) Json.toJson(c) else Json.obj()).as("application/json")
 	}
 
 	def getRandomPlaylist(channelId: String) = Action {
 		val series = DBUtil.getChannelSeries(channelId)
 		val s = series(rand.nextInt(series.length))
-		Ok(if (s != null) s.toJSON else Json.obj()).as("application/json")
+		Ok(if (s != null) Json.toJson(s) else Json.obj()).as("application/json")
 	}
 
 	def getPlaylistQueue(channelId: String) = Action(parse.json) { request => {
@@ -36,7 +37,7 @@ class Api @Inject()(implicit db: Database) extends Controller {
 			val i = rand.nextInt(channelContent.length)
 			if (!indexes.contains(i)) indexes += i
 		}
-		Ok(Json.toJson(indexes.map(i => channelContent(i).toJSON)))
+		Ok(Json.toJson(indexes.map(i => Json.toJson(channelContent(i)))))
 	}
 	}
 
