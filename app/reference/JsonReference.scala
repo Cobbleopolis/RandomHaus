@@ -1,6 +1,6 @@
 package reference
 
-import models.{Channel, ChannelContent, ChannelContentTag, ChannelSeries}
+import models._
 import play.api.libs.json.Json
 
 object JsonReference {
@@ -12,5 +12,7 @@ object JsonReference {
     implicit val channelContentTagParser = Json.format[ChannelContentTag]
 
     implicit val channelSeriesParser = Json.format[ChannelSeries]
+
+    implicit val channelLinkParser = Json.format[ChannelLink]
     
 }

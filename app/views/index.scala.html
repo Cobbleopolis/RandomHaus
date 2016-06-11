@@ -1,4 +1,4 @@
-@(message: String)(series: List[ChannelSeries])(implicit channels: List[Channel])
+@(message: String)(series: List[ChannelSeries])(implicit channels: List[Channel], currentChannel: Channel, links: List[ChannelLink])
 
     @main("RandomHaus") {
         <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>

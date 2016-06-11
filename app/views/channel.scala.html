@@ -1,4 +1,4 @@
-@(channelName: String, playlists: Array[(String, Int)], totalCount: Int)(implicit channels: List[Channel])
+@(channelName: String, playlists: Array[(String, Int)], totalCount: Int)(implicit channels: List[Channel], currentChannel: Channel, links: List[ChannelLink])
 
 @main(channelName) {
 
