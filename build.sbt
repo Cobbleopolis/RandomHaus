@@ -45,3 +45,5 @@ packageDescription := "A play server to run a RandomHaus instance"
 //javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
 
 (testOptions in Test) += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/report")
+
+bashScriptExtraDefines += """addJava "-Dconfig.file=${app_home}/../conf/production.config""""
