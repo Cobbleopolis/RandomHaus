@@ -15,5 +15,5 @@ dist
 /.settings
 /.sass-cache
 application.test.conf
-
+conf/client.json
     
