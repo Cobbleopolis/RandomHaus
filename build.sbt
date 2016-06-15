@@ -1,6 +1,6 @@
 name := "RandomHaus"
 
-version := "1.2.1"
+version := "1.2.2"
 
 lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, BuildInfoPlugin)
 
@@ -48,6 +48,10 @@ packageDescription := "A play server to run a RandomHaus instance"
 
 bashScriptExtraDefines += """addJava "-Dconfig.file=${app_home}/../conf/production.conf""""
 
-mappings in (Compile, packageBin) ~= { _.filterNot { case (_, name) =>
-    Seq("client.json").contains(name)
+val ignoredFiles: Seq[String] = Seq(
+    "client.json"
+)
+
+mappings in (Compile, packageBin) ~= { _.filterNot { case (_, s) =>
+    ignoredFiles.contains(s)
 }}
