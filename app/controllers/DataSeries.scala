@@ -10,11 +10,11 @@ import reference.JsonReference._
 class DataSeries @Inject()(implicit db: Database) extends Controller {
 
 	def allSources = Action {
-		Ok(Json.toJson(ChannelSeries.getAllSeries))
+		Ok(Json.toJson(ChannelSeries.getAll))
 	}
 
 	def sources(sourceId: String) = Action { request => {
-		val source: Option[ChannelSeries] = ChannelSeries.getSeries(sourceId)
+		val source: Option[ChannelSeries] = ChannelSeries.get(sourceId)
 		if (source.isDefined)
 			Ok(Json.toJson(source.get))
 		else

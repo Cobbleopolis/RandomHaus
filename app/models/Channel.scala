@@ -2,7 +2,6 @@ package models
 
 import anorm._
 import play.api.db.Database
-import reference.DBReferences
 
 case class Channel(channelId: String, name: String) extends Model {
 
@@ -11,32 +10,27 @@ case class Channel(channelId: String, name: String) extends Model {
 //		(jsonObj \ "name").as[String]
 //	)
 
-    val namedParameters: Seq[NamedParameter] = Seq('channelID -> channelId, 'name -> name)
+    val namedParameters: Seq[NamedParameter] = Seq('channelId -> channelId, 'name -> name)
 
-	def getSeries(implicit db: Database): List[ChannelSeries] = ChannelSeries.getChannelSeries(this)
+	def getSeries(implicit db: Database): List[ChannelSeries] = ChannelSeries.getBy(classOf[Channel], 'channelId -> channelId)
 
-	def getContent(implicit db: Database): List[ChannelContent] = ChannelContent.getChannelContent(this)
+	def getContent(implicit db: Database): List[ChannelContent] = ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
 
-    def getLinks(implicit db: Database): List[ChannelLink] = ChannelLink.getChannelLinks(this)
+    def getLinks(implicit db: Database): List[ChannelLink] = ChannelLink.getBy(classOf[Channel], 'channelId -> channelId)
 
 }
 
 
-object Channel {
+object Channel extends ModelAccessor[Channel] {
 
-    private val getChannelQuery = SQL("CALL getChannel({channelId});")
-    private val getAllChannelsQuery = SQL("SELECT * FROM channels;")
+    val getQuery = SQL("CALL getChannel({channelId});")
+    val getAllQuery = SQL("SELECT * FROM channels;")
 
-    def getChannel(channelId: String)(implicit db: Database): Option[Channel] = {
-        db.withConnection(implicit conn => {
-            getChannelQuery.on('channelId -> channelId).as(DBReferences.channelParser.singleOpt)
-        })
-    }
+    val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map()
 
-    def getAllChannels(implicit db: Database): List[Channel] = {
-        db.withConnection(implicit conn => {
-            getAllChannelsQuery.as(DBReferences.channelParser.*)
-        })
+    val insertQuery = SQL("CALL insertChannel({channelId}, {name}")
 
-    }
+    val parser: RowParser[Channel] = Macro.namedParser[Channel].asInstanceOf[RowParser[Channel]]
+
+    val idSymbol: Symbol = 'channelId
 }

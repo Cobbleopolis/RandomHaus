@@ -10,11 +10,11 @@ import reference.JsonReference._
 class DataChannel @Inject()(implicit db: Database) extends Controller {
 
 	def allChannels = Action {
-		Ok(Json.toJson(Channel.getAllChannels))
+		Ok(Json.toJson(Channel.getAll))
 	}
 
 	def channel(channelId: String) = Action { request => {
-		val channel: Option[Channel] = Channel.getChannel(channelId)
+		val channel: Option[Channel] = Channel.get(channelId)
 		if (channel.isDefined)
 			Ok(Json.toJson(channel.get))
 		else

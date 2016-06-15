@@ -13,8 +13,8 @@ class Application @Inject()(implicit db: Database) extends Controller {
             cookie.get.value
         else
             "UCboMX_UNgaPBsUOIgasn3-Q"
-        implicit val channels: List[Channel] = Channel.getAllChannels
-        implicit val currentChannel: Channel = Channel.getChannel(channelId).get
+        implicit val channels: List[Channel] = Channel.getAll
+        implicit val currentChannel: Channel = Channel.get(channelId).get
         implicit val links: List[ChannelLink] = currentChannel.getLinks
         Ok(views.html.index("RandomHaus")(currentChannel.getSeries))
     }

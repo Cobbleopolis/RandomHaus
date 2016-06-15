@@ -14,7 +14,7 @@ object ChannelUtil {
 		YTUtil.getAllPlaylistsFromUser(channelID).map(playlist =>{
 			new ChannelSeries(playlist.getId, channelID, playlist.getSnippet.getTitle, new Date(playlist.getSnippet.getPublishedAt.getValue))
 		}
-		).foreach(series => ChannelSeries.insertChannelSeries(series))
+		).foreach(series => ChannelSeries.insert(series))
 	}
 
 	def getChannelSeries(channelID: String)(implicit db: Database): Future[Unit] = Future {

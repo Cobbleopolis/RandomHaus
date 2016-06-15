@@ -1,8 +1,6 @@
 package models
 
 import anorm._
-import play.api.db.Database
-import reference.DBReferences
 
 case class ChannelContent(id: String, channelId: String, seriesId: String) extends Model {
 
@@ -17,46 +15,18 @@ case class ChannelContent(id: String, channelId: String, seriesId: String) exten
 //    def getTags: List[ChannelContentTag] = tags.toList
 }
 
-object ChannelContent {
+object ChannelContent extends ModelAccessor[ChannelContent] {
 
-    private val getContentQuery = SQL("CALL getContent({contentId});")
-    private val getAllContentQuery = SQL("SELECT * FROM channelContent;")
-    private val getChannelContentQuery = SQL("CALL getChannelContent({channelId});")
+    val getQuery = SQL("CALL getContent({contentId});")
+    val getAllQuery = SQL("SELECT * FROM channelContent;")
+    val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
+        classOf[Channel] -> SQL("CALL getChannelContent({channelId});")
+    )
 
-    private val insertChannelContentQuery = SQL("CALL insertChannelContent({id}, {channelId}, {seriesId});")
+    val insertQuery = SQL("CALL insertChannelContent({id}, {channelId}, {seriesId});")
 
-    def getContent(contentID: String)(implicit db: Database): Option[ChannelContent] = {
-        db.withConnection(implicit conn => {
-            getContentQuery.on('contentId -> contentID).as(DBReferences.channelContentParser.singleOpt)
-        })
-    }
+    val parser: RowParser[ChannelContent] = Macro.namedParser[ChannelContent].asInstanceOf[RowParser[ChannelContent]]
 
-    def getAllContent(implicit db: Database): List[ChannelContent] = {
-        db.withConnection(implicit conn => {
-            getAllContentQuery.as(DBReferences.channelContentParser.*)
-        })
-    }
-
-    def getChannelContent(channelId: String)(implicit db: Database): List[ChannelContent] = {
-        db.withConnection(implicit conn => {
-            getChannelContentQuery.on('channelId -> channelId).as(DBReferences.channelContentParser.*)
-        })
-    }
-
-    def getChannelContent(channel: Channel)(implicit db: Database): List[ChannelContent] = getChannelContent(channel.channelId)
-
-    def insertChannelContent(channelContent: ChannelContent)(implicit db: Database): Unit = {
-        db.withConnection(implicit conn => {
-            insertChannelContentQuery.on(channelContent.namedParameters: _*).executeInsert()
-        })
-
-    }
-
-    def insertChannelContentBatch(channelContent: Seq[ChannelContent])(implicit db: Database): Unit = {
-        db.withConnection(implicit conn => {
-            BatchSql(insertChannelContentQuery.toString, channelContent.head.namedParameters, channelContent.tail.map(_.namedParameters): _*)
-        })
-
-    }
+    val idSymbol: Symbol = 'contentId
 
 }
