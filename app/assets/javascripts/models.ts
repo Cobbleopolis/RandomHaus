@@ -8,10 +8,10 @@ class Content {
 }
 
 class Series {
-    constructor(public id:string, public channelId:string, public name:string) {
+    constructor(public id:string, public channelId:string, public name:string, public publishedAt:Date) {
     }
 
     static fromJSON(playlistObj:any) {
-        return new Series(playlistObj.id, playlistObj.channelId, playlistObj.name)
+        return new Series(playlistObj.id, playlistObj.channelId, playlistObj.name, playlistObj.publishedAt)
     }
 }
