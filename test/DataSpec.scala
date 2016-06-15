@@ -1,6 +1,6 @@
 import models.{Channel, ChannelContent, ChannelSeries}
 import org.scalatestplus.play.{OneServerPerSuite, PlaySpec}
-import play.api.libs.json.{JsArray, JsObject, Json}
+import play.api.libs.json._
 import play.api.libs.ws._
 import play.mvc.Http.Status._
 import reference.JsonReference._
@@ -15,7 +15,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 
 	val seriesId: String = "PLbIc1971kgPAiqGL25MGyYtZsUCPvX7Fo"
 
-	val contentId: String = "08RSRbFT3aw"
+	val contentId: String = "-aFWGMDzM6o"
 
 	val nonExistantId: String = "thisIdShouldNotExist"
 
@@ -31,8 +31,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 		"all the channels returned by /data/channels must be constructable" in {
 			Util.getResponse(baseURL + "channels") { res =>
 				res.status mustBe OK
-				val json: JsArray = Json.parse(res.body).as[JsArray]
-				json.value.foreach(jsVal => jsVal.as[Channel])
+                assert(res.json.validate[Seq[Channel]].isInstanceOf[JsSuccess[Seq[Channel]]])
 			}
 		}
 
@@ -47,8 +46,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 		"return a JSON Channel object on /data/channels/:channelId and must be constructable" in {
 			Util.getResponse(baseURL + "channels/" + channelId) { res =>
 				res.status mustBe OK
-				val json: JsObject = Json.parse(res.body).as[JsObject]
-				json.as[Channel]
+				assert(res.json.validate[Channel].isInstanceOf[JsSuccess[Channel]])
 			}
 		}
 
@@ -71,8 +69,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 		"all the content items returned by /data/series must be constructable" in {
 			Util.getResponse(baseURL + "series") { res =>
 				res.status mustBe OK
-				val json: JsArray = Json.parse(res.body).as[JsArray]
-				json.value.foreach(jsVal => jsVal.as[ChannelSeries])
+                assert(res.json.validate[Seq[ChannelSeries]].isInstanceOf[JsSuccess[Seq[ChannelSeries]]])
 			}
 		}
 
@@ -87,8 +84,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 		"return a JSON ChannelSeries object on /data/series/:seriesId and must be constructable" in {
 			Util.getResponse(baseURL + "series/" + seriesId) { res =>
 				res.status mustBe OK
-				val json: JsObject = Json.parse(res.body).as[JsObject]
-				json.as[ChannelSeries]
+                assert(res.json.validate[ChannelSeries].isInstanceOf[JsSuccess[ChannelSeries]])
 			}
 		}
 
@@ -111,8 +107,7 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 		"all the content items returned by /data/content must be constructable" in {
 			Util.getResponse(baseURL + "content") { res =>
 				res.status mustBe OK
-				val json: JsArray = Json.parse(res.body).as[JsArray]
-				json.value.foreach(jsVal => jsVal.as[ChannelContent])
+                assert(res.json.validate[Seq[ChannelContent]].isInstanceOf[JsSuccess[Seq[ChannelContent]]])
 			}
 		}
 
@@ -124,11 +119,10 @@ class DataSpec extends PlaySpec with OneServerPerSuite {
 			}
 		}
 
-		"return a JSON ChannelContent object on /data/series/:seriesId and must be constructable" in {
+		"return a JSON ChannelContent object on /data/content/:contentId and must be constructable" in {
 			Util.getResponse(baseURL + "content/" + contentId) { res =>
 				res.status mustBe OK
-				val json: JsObject = Json.parse(res.body).as[JsObject]
-				json.as[ChannelContent]
+                assert(res.json.validate[ChannelContent].isInstanceOf[JsSuccess[ChannelContent]])
 			}
 		}
 

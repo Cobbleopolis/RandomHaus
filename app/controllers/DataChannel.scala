@@ -9,34 +9,36 @@ import reference.JsonReference._
 
 class DataChannel @Inject()(implicit db: Database) extends RestfulDataController {
 
-	override def get(channelId: String) = Action { request => {
-		Channel.get(channelId) match {
-			case Some(channel) => Ok(Json.toJson(channel))
-			case None => NotFound("Id not found")
-		}
-	}
-	}
+    override def get(channelId: String) = Action { request => {
+        Channel.get(channelId) match {
+            case Some(channel) => Ok(Json.toJson(channel))
+            case None => NotFound("Id not found")
+        }
+    }
+    }
 
-	override def getAll = Action {
-		Ok(Json.toJson(Channel.getAll))
-	}
+    override def getAll = Action {
+        Ok(Json.toJson(Channel.getAll))
+    }
 
-	override def insert() = Action(parse.json) { request => {
-		request.body.validate[Channel] match {
-			case s: JsSuccess[Channel] => Channel.insert(s.get); Ok()
-			case e: JsError => BadRequest(JsError.toJson(e))
-		}
-	}
-	}
+    override def insert = Action(parse.json) { request => {
+        request.body.validate[Channel] match {
+            case s: JsSuccess[Channel] =>
+                Channel.insert(s.get)
+                Ok("Insert successful")
+            case e: JsError => BadRequest(JsError.toJson(e))
+        }
+    }
+    }
 
-	override def update(channelId: String) = Action(parse.json) { request => {
-		NotImplemented
-	}
-	}
+    override def update(channelId: String) = Action(parse.json) { request => {
+        NotImplemented
+    }
+    }
 
-	override def delete(channelId: String) = Action(parse.json) { request => {
-		NotImplemented
-	}
-	}
+    override def delete(channelId: String) = Action(parse.json) { request => {
+        NotImplemented
+    }
+    }
 
 }
