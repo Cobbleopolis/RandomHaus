@@ -3,22 +3,39 @@ package controllers
 import com.google.inject.Inject
 import models.Channel
 import play.api.db.Database
-import play.api.libs.json.Json
-import play.api.mvc.{Action, Controller}
+import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.mvc.Action
 import reference.JsonReference._
 
-class DataChannel @Inject()(implicit db: Database) extends Controller {
+class DataChannel @Inject()(implicit db: Database) extends RestfulDataController {
 
-	def allChannels = Action {
+	override def get(channelId: String) = Action { request => {
+		Channel.get(channelId) match {
+			case Some(channel) => Ok(Json.toJson(channel))
+			case None => NotFound("Id not found")
+		}
+	}
+	}
+
+	override def getAll = Action {
 		Ok(Json.toJson(Channel.getAll))
 	}
 
-	def channel(channelId: String) = Action { request => {
-		val channel: Option[Channel] = Channel.get(channelId)
-		if (channel.isDefined)
-			Ok(Json.toJson(channel.get))
-		else
-			NotFound("Id not found")
+	override def insert() = Action(parse.json) { request => {
+		request.body.validate[Channel] match {
+			case s: JsSuccess[Channel] => Channel.insert(s.get); Ok()
+			case e: JsError => BadRequest(JsError.toJson(e))
+		}
+	}
+	}
+
+	override def update(channelId: String) = Action(parse.json) { request => {
+		NotImplemented
+	}
+	}
+
+	override def delete(channelId: String) = Action(parse.json) { request => {
+		NotImplemented
 	}
 	}
 

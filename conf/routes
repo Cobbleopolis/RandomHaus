@@ -5,17 +5,20 @@
 # Home page
 GET         /                                                controllers.Application.index
 
-GET         /data/channels                                   controllers.DataChannel.allChannels
-GET         /data/channels/:channelID                        controllers.DataChannel.channel(channelID)
+GET         /data/channels                                   controllers.DataChannel.getAll
+GET         /data/channels/:channelId                        controllers.DataChannel.get(channelId)
+PUT         /data/channels                                   controllers.DataChannel.insert()
+POST        /data/channels/:channelId                        controllers.DataChannel.update(channelId)
+DELETE /data/channels/:channelId controllers.DataChannel.delete(channelId)
 
 GET         /data/content                                    controllers.DataContent.allContent
-GET         /data/content/:contentID                         controllers.DataContent.content(contentID)
+GET         /data/content/:contentId                         controllers.DataContent.content(contentId)
 
 GET         /data/series                                     controllers.DataSeries.allSources
-GET         /data/series/:sourceID                           controllers.DataSeries.sources(sourceID)
+GET         /data/series/:sourceId                           controllers.DataSeries.sources(sourceId)
 
 GET         /jobs/content/updateAll                          controllers.JobsContent.updateAllChannelContent
-GET         /jobs/channel/:channelID/updateAllSources        controllers.JobsChannel.updateSourcesFromPlaylists(channelID)
+GET         /jobs/channel/:channelId/updateAllSources        controllers.JobsChannel.updateSourcesFromPlaylists(channelId)
 
 GET         /api/getRandomVideo/:channelId                   controllers.Api.getRandomVideo(channelId)
 GET         /api/getRandomPlaylist/:channelId                controllers.Api.getRandomPlaylist(channelId)
