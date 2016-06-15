@@ -1,18 +1,15 @@
 language: scala
-
 before_install:
- - gem install sass
-
+- openssl aes-256-cbc -K $encrypted_e4e35d0a3ab6_key -iv $encrypted_e4e35d0a3ab6_iv
+  -in client.json.enc -out conf/client.json -d
+- gem install sass
 scala:
-   - 2.11.7
-
+- 2.11.7
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 script:
-   - sbt test
-
+- sbt test
 cache:
- directories:
-   - $HOME/.ivy2/cache
-   - $HOME/.sbt/boot/
+  directories:
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt/boot/
