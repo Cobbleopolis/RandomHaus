@@ -23,7 +23,7 @@ module MediaController {
 
     export function loadContent(content:Content) {
         player.loadVideoById(content.id);
-        setIdDiv(content.id)
+        // setIdDiv(content.id)
     }
 
     export function loadPlaylist(playlist:Series) {
