@@ -13,7 +13,8 @@
         <script src="@routes.Assets.at("lib/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
         @head
     </head>
-    <body>
+
+    <body @if(currentChannel.backgroundCss.isDefined){style="background: @currentChannel.backgroundCss.get;"}>
         @banner(channels, currentChannel, links)
         @content
         @footer()
