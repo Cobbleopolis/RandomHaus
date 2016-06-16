@@ -49,7 +49,8 @@ packageDescription := "A play server to run a RandomHaus instance"
 bashScriptExtraDefines += """addJava "-Dconfig.file=${app_home}/../conf/production.conf""""
 
 val ignoredFiles: Seq[String] = Seq(
-    "client.json"
+    "client.json",
+    "client.json.enc"
 )
 
 mappings in (Compile, packageBin) ~= { _.filterNot { case (_, s) =>
