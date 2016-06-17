@@ -23,7 +23,7 @@ object ChannelContent extends ModelAccessor[ChannelContent] {
     val getQuery = SQL("CALL getContent({contentId});")
     val getAllQuery = SQL("SELECT * FROM channelContent;")
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
-        classOf[ChannelContent] -> SQL("CALL getContentTags({channelId});")
+        classOf[Channel] -> SQL("CALL getChannelContent({channelId});")
     )
 
     val insertQuery = "CALL insertChannelContent({id}, {channelId}, {seriesId});"
