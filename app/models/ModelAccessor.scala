@@ -53,15 +53,23 @@ trait ModelAccessor[T <: Model] {
 
     def insertBatch(models: Seq[T])(implicit db: Database): Unit = {
         if (models.nonEmpty)
-            db.withConnection(implicit conn => {
-                BatchSql(insertQuery, models.head.namedParameters, models.tail.map(_.namedParameters): _*).execute()
-            })
+            insertBatchParams(models.map(_.namedParameters))
     }
 
     def insertBatchParams(params: Seq[Seq[NamedParameter]])(implicit db: Database): Unit = {
-        if (params.nonEmpty)
-            db.withConnection(implicit conn => {
-                BatchSql(insertQuery, params.head, params.tail.flatten).execute()
-            })
+        val p: Seq[Seq[NamedParameter]] = params.filter(m => m.forall(p => p.value.show != ""))
+        try {
+            if (p.nonEmpty)
+                db.withConnection(implicit conn => {
+                    if (p.length == 1)
+                        BatchSql(insertQuery, p.head).execute()
+                    else
+                        BatchSql(insertQuery, p.head, p.tail.flatten).execute()
+                })
+        } catch {
+            case t: Throwable =>
+                println(p)
+                throw t
+        }
     }
 }

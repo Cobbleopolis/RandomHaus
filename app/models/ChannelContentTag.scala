@@ -1,6 +1,6 @@
 package models
 
-import anorm.{Macro, RowParser, SqlQuery, _}
+import anorm._
 
 case class ChannelContentTag(id: Int, contentId: String, tag: String) extends Model {
     val namedParameters: Seq[NamedParameter] = Seq('id -> id, 'contentId -> contentId, 'tag -> tag)
