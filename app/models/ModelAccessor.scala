@@ -1,6 +1,6 @@
 package models
 
-import anorm.{BatchSql, NamedParameter, RowParser, SqlQuery}
+import anorm._
 import play.api.db.Database
 import anorm._
 
@@ -46,6 +46,12 @@ trait ModelAccessor[T <: Model] {
         })
     }
 
+	def insert(params: NamedParameter*)(implicit db: Database): Unit = {
+		db.withConnection(implicit conn => {
+			SQL(insertQuery).on(params: _*).executeInsert()
+		})
+	}
+
     def insertBatch(models: Seq[T])(implicit db: Database): Unit = {
         if (models.nonEmpty)
             db.withConnection(implicit conn => {
@@ -59,4 +65,26 @@ trait ModelAccessor[T <: Model] {
                 BatchSql(insertQuery, params.head, params.tail.flatten).execute()
             })
     }
+
+	def insertBatchParams(params: Seq[Seq[NamedParameter]])(implicit db: Database): Unit = {
+		try {
+			if (params.nonEmpty)
+				db.withConnection(implicit conn => {
+					var i: String = insertQuery
+					params.foreach(modelParams => {
+						i += "("
+						modelParams.foreach(param => i += "\"" + param.value.show + "\",")
+						i = i.dropRight(1)
+						i += "),"
+					})
+					i = i.dropRight(1)
+					SQL(i + ";").execute()
+				})
+		} catch {
+			case e: Exception =>
+				println(params.toString)
+				throw e
+		}
+
+	}
 }
