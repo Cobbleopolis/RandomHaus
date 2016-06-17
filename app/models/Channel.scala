@@ -28,7 +28,7 @@ object Channel extends ModelAccessor[Channel] {
 
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map()
 
-    val insertQuery = SQL("CALL insertChannel({channelId}, {name}, {backgroundCss});")
+    val insertQuery = "CALL insertChannel({channelId}, {name}, {backgroundCss});"
 
     val parser: RowParser[Channel] = Macro.namedParser[Channel].asInstanceOf[RowParser[Channel]]
 

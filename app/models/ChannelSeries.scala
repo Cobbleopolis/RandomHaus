@@ -17,7 +17,7 @@ object ChannelSeries extends ModelAccessor[ChannelSeries] {
         classOf[Channel] -> SQL("CALL getChannelSeries({channelId});")
     )
 
-    val insertQuery = SQL("CALL insertChannelSeries({id}, {channelId}, {name}, {publishedAt});")
+    val insertQuery = "CALL insertChannelSeries({id}, {channelId}, {name}, {publishedAt});"
 
     val parser: RowParser[ChannelSeries] = Macro.namedParser[ChannelSeries].asInstanceOf[RowParser[ChannelSeries]]
 

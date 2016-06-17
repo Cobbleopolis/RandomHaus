@@ -2,6 +2,7 @@ package models
 
 import anorm.{BatchSql, NamedParameter, RowParser, SqlQuery}
 import play.api.db.Database
+import anorm._
 
 trait ModelAccessor[T <: Model] {
 
@@ -9,7 +10,7 @@ trait ModelAccessor[T <: Model] {
     val getAllQuery: SqlQuery
     val getByQueryList: Map[Class[_ <: Model], SqlQuery]
 
-    val insertQuery: SqlQuery
+    val insertQuery: String
 
     val parser: RowParser[T]
 
@@ -41,13 +42,21 @@ trait ModelAccessor[T <: Model] {
 
     def insert(model: T)(implicit db: Database): Unit = {
         db.withConnection(implicit conn => {
-            insertQuery.on(model.namedParameters: _*).executeInsert()
+            SQL(insertQuery).on(model.namedParameters: _*).executeInsert()
         })
     }
 
     def insertBatch(models: Seq[T])(implicit db: Database): Unit = {
-        db.withConnection(implicit conn => {
-            BatchSql(insertQuery.toString, models.head.namedParameters, models.tail.map(_.namedParameters): _*)
-        })
+        if (models.nonEmpty)
+            db.withConnection(implicit conn => {
+                BatchSql(insertQuery, models.head.namedParameters, models.tail.map(_.namedParameters): _*).execute()
+            })
+    }
+
+    def insertBatchParams(params: Seq[Seq[NamedParameter]])(implicit db: Database): Unit = {
+        if (params.nonEmpty)
+            db.withConnection(implicit conn => {
+                BatchSql(insertQuery, params.head, params.tail.flatten).execute()
+            })
     }
 }
