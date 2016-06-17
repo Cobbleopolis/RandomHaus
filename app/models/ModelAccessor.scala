@@ -65,26 +65,4 @@ trait ModelAccessor[T <: Model] {
                 BatchSql(insertQuery, params.head, params.tail.flatten).execute()
             })
     }
-
-	def insertBatchParams(params: Seq[Seq[NamedParameter]])(implicit db: Database): Unit = {
-		try {
-			if (params.nonEmpty)
-				db.withConnection(implicit conn => {
-					var i: String = insertQuery
-					params.foreach(modelParams => {
-						i += "("
-						modelParams.foreach(param => i += "\"" + param.value.show + "\",")
-						i = i.dropRight(1)
-						i += "),"
-					})
-					i = i.dropRight(1)
-					SQL(i + ";").execute()
-				})
-		} catch {
-			case e: Exception =>
-				println(params.toString)
-				throw e
-		}
-
-	}
 }
