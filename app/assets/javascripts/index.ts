@@ -1,6 +1,6 @@
 /// <reference path="mediacontroller.ts"/>
 
-var main: JQuery = null;
+var main:JQuery = null;
 var channelId:string = getCookie('channel');
 if (channelId == '')
     channelId = 'UCboMX_UNgaPBsUOIgasn3-Q';

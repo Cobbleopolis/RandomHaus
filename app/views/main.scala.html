@@ -14,7 +14,9 @@
         @head
     </head>
 
-    <body @if(currentChannel.backgroundCss.isDefined){style="background: @currentChannel.backgroundCss.get;"}>
+    <body @if(currentChannel.backgroundCss.isDefined) {
+        style="background:
+        @currentChannel.backgroundCss.get;"}>
         @banner(channels, currentChannel, links)
         @content
         @footer()

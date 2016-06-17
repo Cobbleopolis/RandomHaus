@@ -23,7 +23,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Channels <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                     @for(channel <- channels) {
-                        <li @if(channel.channelId == currentChannel.channelId) {class="disabled"}><a href='/api/setChannelCookie/@channel.channelId'> @channel.name</a></li>
+                        <li @if(channel.channelId == currentChannel.channelId) {
+                            class="disabled"}><a href='/api/setChannelCookie/@channel.channelId'> @channel.name</a></li>
                     }
                     </ul>
                 </li>

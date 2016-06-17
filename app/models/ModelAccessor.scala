@@ -2,7 +2,6 @@ package models
 
 import anorm._
 import play.api.db.Database
-import anorm._
 
 trait ModelAccessor[T <: Model] {
 
@@ -46,11 +45,11 @@ trait ModelAccessor[T <: Model] {
         })
     }
 
-	def insert(params: NamedParameter*)(implicit db: Database): Unit = {
-		db.withConnection(implicit conn => {
-			SQL(insertQuery).on(params: _*).executeInsert()
-		})
-	}
+    def insert(params: NamedParameter*)(implicit db: Database): Unit = {
+        db.withConnection(implicit conn => {
+            SQL(insertQuery).on(params: _*).executeInsert()
+        })
+    }
 
     def insertBatch(models: Seq[T])(implicit db: Database): Unit = {
         if (models.nonEmpty)

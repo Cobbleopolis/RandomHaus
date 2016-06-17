@@ -7,13 +7,13 @@ case class ChannelContent(id: String, channelId: String, seriesId: String) exten
 
     val namedParameters: Seq[NamedParameter] = Seq('id -> id, 'channelId -> channelId, 'seriesId -> seriesId)
 
-//    private var tags: ListBuffer[ChannelContentTag] = ListBuffer()
-//
-//    def addTag(tag: ChannelContentTag) = {
-//        tags += tag
-//    }
-//
-//    def getTags: List[ChannelContentTag] = tags.toList
+    //    private var tags: ListBuffer[ChannelContentTag] = ListBuffer()
+    //
+    //    def addTag(tag: ChannelContentTag) = {
+    //        tags += tag
+    //    }
+    //
+    //    def getTags: List[ChannelContentTag] = tags.toList
 
     def getTags(implicit db: Database): List[ChannelContentTag] = ChannelContentTag.getBy(classOf[ChannelContent], 'contentId -> id)
 }
