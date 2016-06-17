@@ -10,15 +10,15 @@ case class ChannelLink(id: Int, channelId: String, label: String, link: String) 
 
 object ChannelLink extends ModelAccessor[ChannelLink] {
 
-    val getQuery = SQL("CALL getLink({id});")
-    val getAllQuery = SQL("SELECT * FROM channelLinks;")
-    val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
+    override val getQuery = SQL("CALL getLink({id});")
+    override val getAllQuery = SQL("SELECT * FROM channelLinks;")
+    override val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
         classOf[Channel] -> SQL("CALL getChannelLinks({channelId});")
     )
 
-    val insertQuery = SQL("CALL insertChannelLink({id}, {channelId}, {label}, {link});")
+    override val insertQuery = "CALL insertChannelLink({id}, {channelId}, {label}, {link});"
 
-    val parser: RowParser[ChannelLink] = Macro.namedParser[ChannelLink].asInstanceOf[RowParser[ChannelLink]]
+    override val parser: RowParser[ChannelLink] = Macro.namedParser[ChannelLink].asInstanceOf[RowParser[ChannelLink]]
 
-    val idSymbol: Symbol = 'id
+    override val idSymbol: Symbol = 'id
 }

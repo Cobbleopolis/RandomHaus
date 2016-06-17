@@ -3,6 +3,8 @@ package models
 import anorm._
 import play.api.db.Database
 
+import scala.collection.mutable.ArrayBuffer
+
 case class Channel(channelId: String, name: String, backgroundCss: Option[String]) extends Model {
 
 //	def this(jsonObj: JsObject) = this(
@@ -23,14 +25,14 @@ case class Channel(channelId: String, name: String, backgroundCss: Option[String
 
 object Channel extends ModelAccessor[Channel] {
 
-    val getQuery = SQL("CALL getChannel({channelId});")
-    val getAllQuery = SQL("SELECT * FROM channels;")
+    override val getQuery = SQL("CALL getChannel({channelId});")
+    override val getAllQuery = SQL("SELECT * FROM channels;")
 
-    val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map()
+    override val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map()
 
-    val insertQuery = SQL("CALL insertChannel({channelId}, {name}, {backgroundCss});")
+    override val insertQuery = "CALL insertChannel({channelId}, {name}, {backgroundCss});"
 
-    val parser: RowParser[Channel] = Macro.namedParser[Channel].asInstanceOf[RowParser[Channel]]
+    override val parser: RowParser[Channel] = Macro.namedParser[Channel].asInstanceOf[RowParser[Channel]]
 
-    val idSymbol: Symbol = 'channelId
+    override val idSymbol: Symbol = 'channelId
 }

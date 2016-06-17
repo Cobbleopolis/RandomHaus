@@ -16,7 +16,9 @@ class JobsChannel @Inject()(implicit db: Database) extends Controller {
 			ChannelUtil.updateSeriesFromPlaylists(channelID)
 			Ok(JobUtil.getSuccessful("Channel " + channelID + ": sources updated"))
 		} catch {
-			case e: Exception => Ok(JobUtil.getFailure(e.toString))
+			case e: Exception =>
+				Ok(JobUtil.getFailure(e.toString))
+				throw e
 		}
 	}
 

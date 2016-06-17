@@ -1,6 +1,7 @@
 package models
 
 import anorm._
+import play.api.db.Database
 
 case class ChannelContent(id: String, channelId: String, seriesId: String) extends Model {
 
@@ -12,21 +13,21 @@ case class ChannelContent(id: String, channelId: String, seriesId: String) exten
 //        tags += tag
 //    }
 //
-//    def getTags: List[ChannelContentTag] = tags.toList
+    def getTags(implicit db: Database): List[ChannelContentTag] = ChannelContentTag.getBy(classOf[ChannelContent], 'contentId -> id)
 }
 
 object ChannelContent extends ModelAccessor[ChannelContent] {
 
-    val getQuery = SQL("CALL getContent({contentId});")
-    val getAllQuery = SQL("SELECT * FROM channelContent;")
-    val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
+    override val getQuery = SQL("CALL getContent({contentId});")
+    override val getAllQuery = SQL("SELECT * FROM channelContent;")
+    override val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
         classOf[Channel] -> SQL("CALL getChannelContent({channelId});")
     )
 
-    val insertQuery = SQL("CALL insertChannelContent({id}, {channelId}, {seriesId});")
+    override val insertQuery = "CALL insertChannelContent({id}, {channelId}, {seriesId});"
 
-    val parser: RowParser[ChannelContent] = Macro.namedParser[ChannelContent].asInstanceOf[RowParser[ChannelContent]]
+    override val parser: RowParser[ChannelContent] = Macro.namedParser[ChannelContent].asInstanceOf[RowParser[ChannelContent]]
 
-    val idSymbol: Symbol = 'contentId
+    override val idSymbol: Symbol = 'contentId
 
 }

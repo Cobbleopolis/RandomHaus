@@ -44,6 +44,14 @@ object YTUtil {
 		playlistItems
 	}
 
+	def getVideoTags(videoId: String): List[String] = {
+		val videos = youtube.videos().list("snippet").setId(videoId).execute().getItems.asScala
+			if (videos.nonEmpty)
+				videos.head.getSnippet.getTags.asScala.toList
+			else
+				List()
+	}
+
 	def getAllPlaylistsFromUser(channelId: String): List[Playlist] = {
 		var playlists: List[Playlist] = List[Playlist]()
 		val playlistRequest: YouTube#Playlists#List = youtube.playlists.list("id,snippet")

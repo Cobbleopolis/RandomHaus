@@ -12,7 +12,9 @@ class JobsContent @Inject()(implicit db: Database) extends Controller {
 			ContentUtil.updateAll
 			Ok(JobUtil.getSuccessful("Content updated"))
 		} catch {
-			case e: Exception => Ok(JobUtil.getFailure(e.toString))
+			case e: Exception =>
+				Ok(JobUtil.getFailure(e.toString))
+				throw e
 		}
 	}
 

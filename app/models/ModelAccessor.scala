@@ -1,6 +1,6 @@
 package models
 
-import anorm.{BatchSql, NamedParameter, RowParser, SqlQuery}
+import anorm._
 import play.api.db.Database
 
 trait ModelAccessor[T <: Model] {
@@ -9,7 +9,7 @@ trait ModelAccessor[T <: Model] {
     val getAllQuery: SqlQuery
     val getByQueryList: Map[Class[_ <: Model], SqlQuery]
 
-    val insertQuery: SqlQuery
+    val insertQuery: String
 
     val parser: RowParser[T]
 
@@ -41,13 +41,41 @@ trait ModelAccessor[T <: Model] {
 
     def insert(model: T)(implicit db: Database): Unit = {
         db.withConnection(implicit conn => {
-            insertQuery.on(model.namedParameters: _*).executeInsert()
+            SQL(insertQuery).on(model.namedParameters: _*).executeInsert()
         })
     }
+
+	def insert(params: NamedParameter*)(implicit db: Database): Unit = {
+		db.withConnection(implicit conn => {
+			SQL(insertQuery).on(params: _*).executeInsert()
+		})
+	}
 
     def insertBatch(models: Seq[T])(implicit db: Database): Unit = {
         db.withConnection(implicit conn => {
             BatchSql(insertQuery.toString, models.head.namedParameters, models.tail.map(_.namedParameters): _*)
         })
     }
+
+	def insertBatchParams(params: Seq[Seq[NamedParameter]])(implicit db: Database): Unit = {
+		try {
+			if (params.nonEmpty)
+				db.withConnection(implicit conn => {
+					var i: String = insertQuery
+					params.foreach(modelParams => {
+						i += "("
+						modelParams.foreach(param => i += "\"" + param.value.show + "\",")
+						i = i.dropRight(1)
+						i += "),"
+					})
+					i = i.dropRight(1)
+					SQL(i + ";").execute()
+				})
+		} catch {
+			case e: Exception =>
+				println(params.toString)
+				throw e
+		}
+
+	}
 }
