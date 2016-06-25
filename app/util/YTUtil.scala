@@ -27,9 +27,9 @@ object YTUtil {
 
     def getPlaylistItems(playlistID: String): List[PlaylistItem] = {
         var playlistItems: List[PlaylistItem] = List[PlaylistItem]()
-        val playlistItemRequest: YouTube#PlaylistItems#List = youtube.playlistItems().list("id,contentDetails,snippet")
+        val playlistItemRequest: YouTube#PlaylistItems#List = youtube.playlistItems().list("id,contentDetails,snippet,status")
             .setPlaylistId(playlistID)
-            .setFields("items(contentDetails/videoId,snippet/title,snippet/publishedAt),nextPageToken,pageInfo")
+            .setFields("items(contentDetails/videoId,snippet/title,snippet/publishedAt,status),nextPageToken,pageInfo")
 
         var nextToken: String = ""
 
@@ -37,7 +37,7 @@ object YTUtil {
             playlistItemRequest.setPageToken(nextToken)
             val playlistItemResponse: PlaylistItemListResponse = playlistItemRequest.execute()
 
-            playlistItems = playlistItems ++ playlistItemResponse.getItems.asScala
+            playlistItems = playlistItems ++ playlistItemResponse.getItems.asScala.filter(playlistItem => playlistItem.getStatus.getPrivacyStatus == "public")
 
             nextToken = playlistItemResponse.getNextPageToken
         } while (nextToken != null)
@@ -57,18 +57,18 @@ object YTUtil {
 
     def getAllPlaylistsFromUser(channelId: String): List[Playlist] = {
         var playlists: List[Playlist] = List[Playlist]()
-        val playlistRequest: YouTube#Playlists#List = youtube.playlists.list("id,snippet")
+        val playlistRequest: YouTube#Playlists#List = youtube.playlists.list("id,snippet,status")
             .setChannelId(channelId)
         var nextToken: String = ""
 
-        do {
+        while (nextToken != null) {
             playlistRequest.setPageToken(nextToken)
             val playlistResponse: PlaylistListResponse = playlistRequest.execute()
 
-            playlists = playlists ++ playlistResponse.getItems.asScala
+            playlists = playlists ++ playlistResponse.getItems.asScala.filter(playlist => playlist.getStatus.getPrivacyStatus == "public")
 
             nextToken = playlistResponse.getNextPageToken
-        } while (nextToken != null)
+        }
         playlists
     }
 
