@@ -3,9 +3,10 @@ package controllers
 import com.google.inject.Inject
 import models.{Channel, ChannelContent, ChannelSeries}
 import play.api.db.Database
-import play.api.libs.json.{JsArray, Json}
+import play.api.libs.json.{JsArray, JsObject, JsValue, Json}
 import play.api.mvc.{Action, Controller, Cookie, DiscardingCookie}
 import reference.JsonReference._
+import reference.MatchMethod
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
@@ -29,19 +30,20 @@ class Api @Inject()(implicit db: Database) extends Controller {
     def getPlaylistQueue(channelId: String) = Action(parse.json) { request => {
         val series: Array[String] = (request.body \ "series").as[JsArray].value.map(s => s.as[String]).toArray
         val filters: Array[String] = (request.body \ "filters").as[JsArray].value.map(f => f.as[String]).toArray
+        val filterOptions: JsValue = (request.body \ "options").get
         val channelContent = if (series.isEmpty)
             if (filters.isEmpty)
                 ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
             else
-                ChannelContent.getWithTags(channelId, filters)
+                ChannelContent.getWithTags(channelId, filters, MatchMethod.withName((filterOptions \ "matchMethod").as[String]))
         else {
             if (filters.isEmpty)
                 ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
             else
-                ChannelContent.getWithTags(channelId, filters)
+                ChannelContent.getWithTags(channelId, filters, MatchMethod.withName((filterOptions \ "matchMethod").as[String]))
         }.filter(content => series.contains(content.seriesId))
         val indexes: ArrayBuffer[Int] = new ArrayBuffer[Int]()
-        while (indexes.length < Math.min(channelContent.length, 50)) {
+        while (indexes.length < Math.min(channelContent.length, (filterOptions \ "videoCount").as[Int])) {
             val i = rand.nextInt(channelContent.length)
             if (!indexes.contains(i)) indexes += i
         }

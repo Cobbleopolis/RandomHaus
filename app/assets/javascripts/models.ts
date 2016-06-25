@@ -15,3 +15,19 @@ class Series {
         return new Series(playlistObj.id, playlistObj.channelId, playlistObj.name, playlistObj.publishedAt)
     }
 }
+
+class FilterOptions {
+    matchMethod:string;
+    videoCount:number;
+    constructor(matchMethod:string, videoCount:number) {
+        this.matchMethod = matchMethod;
+        this.videoCount = videoCount;
+    }
+
+    toJson():any {
+        return {
+            "matchMethod": this.matchMethod,
+            "videoCount": this.videoCount
+        }
+    }
+}

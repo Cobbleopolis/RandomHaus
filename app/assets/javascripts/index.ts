@@ -67,13 +67,14 @@ function getRandomPlaylist(callback:(playlist:Series) => void) {
         })
 }
 
-function getQueue(series:string[], filters:string[], callback:(contents:Content[]) => void) {
+function getQueue(series:string[], filters:string[], filterOptions:FilterOptions, callback:(contents:Content[]) => void) {
     $.ajax('/api/getQueue/' + channelId,
         <JQueryAjaxSettings>{
             type: 'POST',
             data: JSON.stringify({
                 series: series,
-                filters: filters
+                filters: filters,
+                options: filterOptions.toJson()
             }),
             contentType: 'application/json',
             dataType: 'json',
@@ -82,7 +83,6 @@ function getQueue(series:string[], filters:string[], callback:(contents:Content[
                 callback(null);
             },
             success: function (data:any) {
-                console.log(data);
                 callback(_.map(data, function(contentObj:any) {
                     return Content.fromJSON(contentObj);
                 }));
@@ -100,7 +100,11 @@ function loadRandomPlaylist() {
 }
 
 function loadQueue() {
-    getQueue(MediaController.getSelectedSeries(), MediaController.getSelectedFilters(), MediaController.loadQueue)
+    var filterOptions: FilterOptions = new FilterOptions(
+        $("input[name='matchMethod']:checked").attr("value"),
+        parseInt($("input#playlistSize").val())
+    );
+    getQueue(MediaController.getSelectedSeries(), MediaController.getSelectedFilters(), filterOptions, MediaController.loadQueue)
 }
 
 function getCookie(cname:string) {

@@ -2,6 +2,8 @@ package models
 
 import anorm._
 import play.api.db.Database
+import reference.MatchMethod
+import reference.MatchMethod.MatchMethod
 
 case class ChannelContent(id: String, channelId: String, seriesId: String) extends Model {
 
@@ -32,11 +34,12 @@ object ChannelContent extends ModelAccessor[ChannelContent] {
 
     val idSymbol: Symbol = 'contentId
 
-    val tagQuery: SqlQuery = SQL("SELECT channelContent.* FROM channelContent INNER JOIN contentTags ON channelContent.id = contentTags.contentId WHERE channelContent.channelId = {channelId} AND contentTags.tag IN ({tags}) GROUP BY contentId HAVING COUNT(DISTINCT tag) = {tagCount};")
+    val tagQuery: SqlQuery = SQL("SELECT channelContent.* FROM channelContent INNER JOIN contentTags ON channelContent.id = contentTags.contentId WHERE channelContent.channelId = {channelId} AND contentTags.tag IN ({tags}) GROUP BY contentId HAVING COUNT(DISTINCT tag) >= {tagCount};")
 
-    def getWithTags(channelId: String, tags: Array[String])(implicit db: Database): List[ChannelContent] = {
+    def getWithTags(channelId: String, tags: Array[String], matchMethod: MatchMethod)(implicit db: Database): List[ChannelContent] = {
+        val count = if(matchMethod == MatchMethod.MATCH_ALL) tags.length else 1
         db.withConnection(implicit conn => {
-            tagQuery.on('channelId -> channelId, 'tags -> tags.toSeq, 'tagCount -> tags.length).as(parser.*)
+            tagQuery.on('channelId -> channelId, 'tags -> tags.toSeq, 'tagCount -> count).as(parser.*)
         })
     }
 
