@@ -5,6 +5,7 @@ var channelId:string = getCookie('channel');
 if (channelId == '')
     channelId = 'UCboMX_UNgaPBsUOIgasn3-Q';
 var seriesFilters:JQuery = null;
+var filterGroups:JQuery = null;
 
 $(function () {
     seriesFilters = $('#filterSeries').find('input[data-series-id]');
@@ -14,6 +15,17 @@ $(function () {
             $('#filterSeries').find('input[data-series-id!="all"]').prop('checked', false);
         } else {
             $('#filterSeries').find('input[data-series-id="all"]').prop('checked', false);
+        }
+    });
+    filterGroups = $('.filter');
+    filterGroups.change(function(eventObject) {
+        var input:JQuery = $(eventObject.target);
+        var tag:string = input.attr('data-tag');
+        var fieldset: JQuery = input.parent().parents().eq(1);
+        if (tag === 'all') {
+            fieldset.find('input[data-tag!="all"]').prop('checked', false);
+        } else {
+            fieldset.find('input[data-tag="all"]').prop('checked', false);
         }
     });
     main = $('#main');
@@ -55,11 +67,12 @@ function getRandomPlaylist(callback:(playlist:Series) => void) {
         })
 }
 
-function getQueue(filters:string[], callback:(contents:Content[]) => void) {
+function getQueue(series:string[], filters:string[], callback:(contents:Content[]) => void) {
     $.ajax('/api/getQueue/' + channelId,
         <JQueryAjaxSettings>{
             type: 'POST',
             data: JSON.stringify({
+                series: series,
                 filters: filters
             }),
             contentType: 'application/json',
@@ -69,9 +82,10 @@ function getQueue(filters:string[], callback:(contents:Content[]) => void) {
                 callback(null);
             },
             success: function (data:any) {
-                callback(_.map(data, function (contentObj:any, i:number) {
+                console.log(data);
+                callback(_.map(data, function(contentObj:any) {
                     return Content.fromJSON(contentObj);
-                }))
+                }));
             }
         }
     )
@@ -86,7 +100,7 @@ function loadRandomPlaylist() {
 }
 
 function loadQueue() {
-    getQueue(MediaController.getSelectedFilters(), MediaController.loadQueue)
+    getQueue(MediaController.getSelectedSeries(), MediaController.getSelectedFilters(), MediaController.loadQueue)
 }
 
 function getCookie(cname:string) {

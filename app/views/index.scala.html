@@ -1,4 +1,21 @@
-@(message: String)(series: List[ChannelSeries])(implicit channels: List[Channel], currentChannel: Channel, links: List[ChannelLink])
+@(message: String)(series: List[ChannelSeries], filterGroups: List[FilterGroup], filterMap: Map[String, List[models.Filter]])(implicit channels: List[Channel], currentChannel: Channel, links: List[ChannelLink])
+
+@renderFilterGroup(name: String, filters: List[models.Filter]) = {
+    <fieldset id="filter@name" class="filter">
+        @defining(name.toLowerCase().replaceAll("\\s", "-")) { htmlName =>
+            <h4>@name</h4>
+            <div class="checkbox">
+                <label><input data-tag="all" type="checkbox" checked> All</label>
+            </div>
+            @for(filter <- filters) {
+                <div class="checkbox">
+                    <label><input data-tag="@filter.tagName" type="checkbox"> @filter.name</label>
+                </div>
+            }
+        }
+    </fieldset>
+
+}
 
 @main("RandomHaus") {
     <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>
@@ -27,6 +44,9 @@
                         </div>
                     }
                 </fieldset>
+                @for(filterGroup <- filterGroups) {
+                    @renderFilterGroup(filterGroup.name, filterMap.getOrElse(filterGroup.name, List()))
+                }
             </div>
             <button type='button' onclick="loadQueue()" class="btn btn-primary">Create Playlist</button>
         </form>

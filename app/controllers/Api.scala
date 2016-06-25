@@ -27,11 +27,19 @@ class Api @Inject()(implicit db: Database) extends Controller {
     }
 
     def getPlaylistQueue(channelId: String) = Action(parse.json) { request => {
+        val series: Array[String] = (request.body \ "series").as[JsArray].value.map(s => s.as[String]).toArray
         val filters: Array[String] = (request.body \ "filters").as[JsArray].value.map(f => f.as[String]).toArray
-        val channelContent = if (filters.length == 1 && filters(0) == "all")
-            ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
-        else
-            ChannelContent.getBy(classOf[Channel], 'channelId -> channelId).filter(content => filters.contains(content.seriesId))
+        val channelContent = if (series.isEmpty)
+            if (filters.isEmpty)
+                ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
+            else
+                ChannelContent.getWithTags(channelId, filters)
+        else {
+            if (filters.isEmpty)
+                ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
+            else
+                ChannelContent.getWithTags(channelId, filters)
+        }.filter(content => series.contains(content.seriesId))
         val indexes: ArrayBuffer[Int] = new ArrayBuffer[Int]()
         while (indexes.length < Math.min(channelContent.length, 50)) {
             val i = rand.nextInt(channelContent.length)

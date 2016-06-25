@@ -35,9 +35,12 @@ module MediaController {
     }
 
     export function loadQueue(contents:Content[]) {
-        player.loadPlaylist(_.map(contents, function (v:Content) {
-            return v.id
-        }));
+        if(contents.length > 0)
+            player.loadPlaylist(_.map(contents, function (v:Content) {
+                return v.id
+            }));
+        else
+            alert("No videos found with those parameters");
         // setIdDiv('Custom Playlist');
     }
 
@@ -54,12 +57,22 @@ module MediaController {
         $("#vidID").text(text)
     }
 
+    export function getSelectedSeries():string[] {
+        var series:string[] = [];
+        _(seriesFilters).filter(function (input:any) {
+            return input.checked && $(input).attr('data-series-id') !== 'all';
+        }).forEach(function (input) {
+            series[series.length] = $(input).attr('data-series-id');
+        });
+        return series;
+    }
+    
     export function getSelectedFilters():string[] {
         var filters:string[] = [];
-        _(seriesFilters).filter(function (input:any) {
-            return input.checked;
+        _(filterGroups.find('input')).filter(function (input:any) {
+            return input.checked && $(input).attr('data-tag') !== 'all';
         }).forEach(function (input) {
-            filters[filters.length] = $(input).attr('data-series-id');
+            filters[filters.length] = $(input).attr('data-tag');
         });
         return filters;
     }

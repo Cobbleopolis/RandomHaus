@@ -32,4 +32,12 @@ object ChannelContent extends ModelAccessor[ChannelContent] {
 
     val idSymbol: Symbol = 'contentId
 
+    val tagQuery: SqlQuery = SQL("SELECT channelContent.* FROM channelContent INNER JOIN contentTags ON channelContent.id = contentTags.contentId WHERE channelContent.channelId = {channelId} AND contentTags.tag IN ({tags}) GROUP BY contentId HAVING COUNT(DISTINCT tag) = {tagCount};")
+
+    def getWithTags(channelId: String, tags: Array[String])(implicit db: Database): List[ChannelContent] = {
+        db.withConnection(implicit conn => {
+            tagQuery.on('channelId -> channelId, 'tags -> tags.toSeq, 'tagCount -> tags.length).as(parser.*)
+        })
+    }
+
 }
