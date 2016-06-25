@@ -1,7 +1,7 @@
 package util
 
 import anorm.NamedParameter
-import models.{Channel, ChannelContent, ChannelContentTag, ChannelSeries}
+import models._
 import play.api.db.Database
 
 object ContentUtil {
@@ -13,24 +13,29 @@ object ContentUtil {
     }
 
     def updateChannelContent(channelId: String)(implicit db: Database): Unit = {
+        val watchedTags: List[String] = FilterGroup.getBy(classOf[Channel], 'channelId -> channelId).flatMap(filterGroup =>
+            Filter.getBy(classOf[FilterGroup], 'filterGroupId -> filterGroup.id).map(_.tagName.toLowerCase))
         ChannelSeries.getBy(classOf[Channel], 'channelId -> channelId).foreach(series => {
             val playlistItems = YTUtil.getPlaylistItems(series.id)
             playlistItems.foreach(playlistItem => {
                 val id: String = playlistItem.getContentDetails.getVideoId
-                print(id + " | ")
+//                print(id + " | ")
                 val contentOpt: Option[ChannelContent] = ChannelContent.get(id)
                 if (contentOpt.isDefined) {
-                    println("Exists")
+//                    println("Exists")
                     val tags = contentOpt.get.getTags.map(_.tag)
-                    ChannelContentTag.insertBatchParams(
-                        YTUtil.getVideoTags(id).filterNot(t => tags.contains(t)).map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
-                    )
+                    YTUtil.getVideoTags(id)
+                        .filter(t => watchedTags.contains(t.toLowerCase()))
+                        .filterNot(t => tags.contains(t))
+                        .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
+                        .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
                 } else {
-                    println("New")
+//                    println("New")
                     ChannelContent.insert(new ChannelContent(id, channelId, series.id))
-                    ChannelContentTag.insertBatchParams(
-                        YTUtil.getVideoTags(id).map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
-                    )
+                    YTUtil.getVideoTags(id)
+                        .filter(t => watchedTags.contains(t.toLowerCase()))
+                        .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
+                        .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
                 }
             })
 
