@@ -8,7 +8,7 @@ module MediaController {
 
     export function initPlayer(content:Content) {
         main = $("#main");
-        var width = main.width() - parseInt(main.css('padding-right').replace('px', ''));
+        var width = main.width();
         player = new YT.Player('player', {
             height: width * (9 / 16),
             width: width,
@@ -45,7 +45,7 @@ module MediaController {
     }
 
     function onPlayerReady(event:EventArgs) {
-
+        player.setSize(main.width(), main.width() * (9 / 16))
     }
 
     function onPlayerStateChange(event:EventArgs) {
