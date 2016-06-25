@@ -30,7 +30,7 @@ class APISpec extends PlaySpec with OneServerPerSuite {
 		}
 
 		"return a random queue on /api/getQueue/:channelID with no filters" in {
-            Util.postResponse(baseURL + "getQueue/" + channelID, Json.obj("filters" -> Seq("all"))) { res =>
+            Util.postResponse(baseURL + "getQueue/" + channelID, Json.obj("series" -> Seq[String](), "filters" -> Seq[String]())) { res =>
                 res.status mustBe OK
                 assert(!res.body.isEmpty)
             }
