@@ -26,4 +26,16 @@ class Application @Inject()(implicit db: Database) extends Controller {
     }
     }
 
+    def about = Action { res => {
+        val cookie = res.cookies.get("channel")
+        val channelId = if (cookie.isDefined)
+            cookie.get.value
+        else
+            "UCboMX_UNgaPBsUOIgasn3-Q"
+        implicit val channels: List[Channel] = Channel.getAll
+        implicit val currentChannel: Channel = Channel.get(channelId).get
+        implicit val links: List[ChannelLink] = currentChannel.getLinks
+        Ok(views.html.about())
+    }}
+
 }

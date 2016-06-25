@@ -1,4 +1,4 @@
-@(title: String)(head: Html)(content: Html)(implicit channels: List[Channel], currentChannel: Channel, links: List[ChannelLink])
+@(title: String, currentPage: String)(head: Html)(content: Html)(implicit channels: List[Channel], currentChannel: Channel, links: List[ChannelLink])
 
 <!DOCTYPE html>
 
@@ -17,7 +17,7 @@
     <body @if(currentChannel.backgroundCss.isDefined) {
         style="background:
         @currentChannel.backgroundCss.get;"}>
-        @banner(channels, currentChannel, links)
+        @banner(channels, currentChannel, links, currentPage)
         @content
         @footer()
     </body>

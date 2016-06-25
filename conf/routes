@@ -4,6 +4,7 @@
 
 # Home page
 GET           /                                                controllers.Application.index
+GET           /about                                           controllers.Application.about
 
 GET           /data/channels                                   controllers.DataChannel.getAll
 GET           /data/channels/:id                               controllers.DataChannel.get(id)
