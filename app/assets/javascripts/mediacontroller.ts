@@ -3,7 +3,7 @@
 
 module MediaController {
     import EventArgs = YT.EventArgs;
-    var player:YT.Player = null;
+    export var player:YT.Player = null;
     var main:JQuery = null;
 
     export function initPlayer(content:Content) {

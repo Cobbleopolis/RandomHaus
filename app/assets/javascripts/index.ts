@@ -30,6 +30,10 @@ $(function () {
     });
     main = $('#main');
     main.css('min-height', ($(window).outerHeight() - 100) + 'px');
+    $(window).resize(function(evt) {
+        if (MediaController.player)
+            MediaController.player.setSize(main.width(), main.width() * (9 / 16))
+    })
 });
 
 function onYouTubeIframeAPIReady() {
