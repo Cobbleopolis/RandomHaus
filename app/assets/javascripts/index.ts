@@ -83,6 +83,7 @@ function getQueue(series:string[], filters:string[], filterOptions:FilterOptions
                 callback(null);
             },
             success: function (data:any) {
+                // console.log(data);
                 callback(_.map(data, function(contentObj:any) {
                     return Content.fromJSON(contentObj);
                 }));
