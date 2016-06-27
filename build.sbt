@@ -1,7 +1,7 @@
 name := "RandomHaus"
 
 
-version := "2.2.4"
+version := "2.2.5"
 
 
 lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, BuildInfoPlugin)
@@ -27,7 +27,8 @@ libraryDependencies ++= Seq(
 	"com.adrianhurt" %% "play-bootstrap" % "1.0-P25-B3" exclude("org.webjars", "jquery"),
 	"org.webjars" % "bootstrap-sass" % "3.3.1-1",
 	"org.webjars" % "jquery" % "2.2.2",
-	"org.webjars.bower" % "lodash" % "4.11.1"
+	"org.webjars.bower" % "lodash" % "4.11.1",
+	"org.webjars.bower" % "font-awesome-sass" % "4.6.2"
 )
 
 unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")

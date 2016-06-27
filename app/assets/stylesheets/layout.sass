@@ -62,6 +62,7 @@
 //
 @import "variables"
 @import "lib/bootstrap-sass/stylesheets/bootstrap"
+@import "lib/font-awesome-sass/assets/stylesheets/font-awesome"
 
 body
     margin-top: $navbar-height
@@ -90,12 +91,15 @@ fieldset
     height: $navbar-height
     color: $navbar-inverse-link-color
     width: 100%
-    text-align: right
-    span
+    overflow: hidden
+    div
         display: inline-block
-        padding-right: $navbar-padding-horizontal
-        line-height: $navbar-height
-        text-align: left
+        span
+            display: inline-block
+            padding: 0 $navbar-padding-horizontal / 2
+            line-height: $navbar-height
+    div.right
+        float: right
 
 ul.dropdown-menu
     li.disabled
@@ -105,3 +109,12 @@ ul.dropdown-menu
 a[data-toggle="tooltip"]
     color: inherit /* blue colors for links too */
     text-decoration: inherit /* no underline */
+
+#gitHubLink
+    text-align: left !important
+    a
+        display: inline-block
+        color: inherit
+        text-decoration: inherit
+        font-size: 1.75em
+        line-height: $navbar-height
