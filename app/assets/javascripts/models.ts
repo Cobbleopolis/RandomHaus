@@ -5,6 +5,14 @@ class Content {
     static fromJSON(videoObj:any) {
         return new Content(videoObj.id, videoObj.channelId, videoObj.seriesId)
     }
+    
+    toJson(): any {
+        return {
+            "id": this.id,
+            "channelId": this.channelId,
+            "seriesIs": this.seriesId
+        }
+    }
 }
 
 class Series {

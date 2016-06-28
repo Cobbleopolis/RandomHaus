@@ -5,6 +5,7 @@ module MediaController {
     import EventArgs = YT.EventArgs;
     export var player:YT.Player = null;
     var main:JQuery = null;
+    export var currentPlaylist: Content[] = [];
 
     export function initPlayer(content:Content) {
         main = $("#main");
@@ -35,6 +36,7 @@ module MediaController {
     }
 
     export function loadQueue(contents:Content[]) {
+        currentPlaylist = contents;
         if(contents.length > 0)
             player.loadPlaylist(_.map(contents, function (v:Content) {
                 return v.id
@@ -75,5 +77,29 @@ module MediaController {
             filters[filters.length] = $(input).attr('data-tag');
         });
         return filters;
+    }
+
+    export function saveGeneratedPlaylist():void {
+        if(localStorage)
+            if (currentPlaylist.length > 0) {
+                localStorage.setItem('savedPlaylist' + channelId, JSON.stringify(_.map(currentPlaylist, function (c:Content) {
+                    return c.toJson();
+                })));
+                alert("Playlist Saved");
+            } else
+                alert("Please generate a playlist before trying to save one.");
+        else
+            alert("It looks like your browser doesn't support local storage. Sorry.")
+    }
+
+    export function loadGeneratedPlaylist():void {
+        if(localStorage){
+            var playlistString =localStorage.getItem('savedPlaylist' + channelId);
+            if (playlistString)
+                loadQueue(_.map(JSON.parse(playlistString), Content.fromJSON));
+            else
+                alert("You do not have a playlist saved for the current channel.");
+        } else
+            alert("It looks like your browser doesn't support local storage. Sorry.")
     }
 }
