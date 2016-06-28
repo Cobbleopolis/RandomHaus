@@ -61,14 +61,14 @@ object YTUtil {
             .setChannelId(channelId)
         var nextToken: String = ""
 
-        while (nextToken != null) {
+        do {
             playlistRequest.setPageToken(nextToken)
             val playlistResponse: PlaylistListResponse = playlistRequest.execute()
 
             playlists = playlists ++ playlistResponse.getItems.asScala.filter(playlist => playlist.getStatus.getPrivacyStatus == "public")
 
             nextToken = playlistResponse.getNextPageToken
-        }
+        } while (nextToken != null)
         playlists
     }
 
