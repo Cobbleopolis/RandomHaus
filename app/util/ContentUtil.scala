@@ -1,22 +1,21 @@
 package util
 
-import java.text.SimpleDateFormat
-import java.util.Date
-
 import anorm.NamedParameter
 import models._
+import play.api.Logger
 import play.api.db.Database
 import reference.InsideGaming
 
 object ContentUtil {
 
-    def updateAll(implicit db: Database): Unit = {
+    def updateAll()(implicit db: Database): Unit = {
         Channel.getAll.foreach(channel => {
             updateChannelContent(channel.channelId)
         })
     }
 
     def updateChannelContent(channelId: String)(implicit db: Database): Unit = {
+        Logger.info("Updating Content For " + channelId + "...")
         val watchedTags: List[String] = FilterGroup.getBy(classOf[Channel], 'channelId -> channelId).flatMap(filterGroup =>
             Filter.getBy(classOf[FilterGroup], 'filterGroupId -> filterGroup.id).map(_.tagName.toLowerCase))
         ChannelSeries.getBy(classOf[Channel], 'channelId -> channelId).foreach(series => {
@@ -46,8 +45,9 @@ object ContentUtil {
             }
 
         })
-        if(channelId == InsideGaming.funhausChannelId)
+        if (channelId == InsideGaming.funhausChannelId)
             getInsideGamingVids(watchedTags)
+        Logger.info("Finished Updating Content For " + channelId)
     }
 
     def getInsideGamingVids(watchedTags: List[String])(implicit db: Database): Unit = {
@@ -56,7 +56,7 @@ object ContentUtil {
                 if (playlistItem.getSnippet.getPublishedAt.getValue < InsideGaming.insideGamingCutoffDateTime.getValue) {
                     val id = playlistItem.getContentDetails.getVideoId
                     val contentOpt: Option[ChannelContent] = ChannelContent.get(id)
-                    if(contentOpt.isDefined) {
+                    if (contentOpt.isDefined) {
                         val tags = contentOpt.get.getTags.map(_.tag)
                         YTUtil.getVideoTags(id)
                             .filter(t => watchedTags.contains(t.toLowerCase()))

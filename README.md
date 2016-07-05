@@ -4,14 +4,16 @@
 This is a site to play random YouTube videos from provided channels
 
 ## TODO
+This list is in no particular order of priority
 - ~~Resize YouTube player when window resizes~~
 - ~~Save/Load generated playlists~~
 - ~~GitHub link~~
-- Auto update database content w/o hitting an endpoint (Using Akka scheduler)
+- ~~Auto update database content w/o hitting an endpoint (Using Akka scheduler)~~
 - Autoplay functionality (Unsure how useful this will be)
 - Autoscroll to top of page when you generate a playlist
 - Add FilterGroups and Filters to the data API
 - Update tests
+- Add channel updating flag
 
 
 ## Contribute
