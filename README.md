@@ -13,7 +13,7 @@ This list is in no particular order of priority
 - Autoscroll to top of page when you generate a playlist
 - Add FilterGroups and Filters to the data API
 - Update tests
-- Add channel updating flag
+- ~~Add channel updating flag~~
 
 
 ## Contribute
