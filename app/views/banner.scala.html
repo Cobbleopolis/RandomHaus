@@ -5,6 +5,15 @@
     <li @if(title == currentPage || link == currentPage) {
         class="active"}><a href="@link">@title</a></li>
 }
+
+@renderChannelSelect(channel: Channel) = {
+    <li @if(channel.channelId == currentChannel.channelId) {
+        class="disabled"}><a href='/api/setChannelCookie/@channel.channelId' @if(channel.currentlyUpdating.isDefined) {
+        data-toggle="tooltip" data-placement="left" title="This channel's @channel.currentlyUpdating is updating. Please excuse any weirdness that might arise as result of this."}> @channel.name @if(channel.currentlyUpdating.isDefined) {
+        <i class="fa fa-exclamation-triangle" aria-hidden="true" ></i>
+    }</a></li>
+}
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -18,9 +27,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                @for(link <- Pages.pages) {
-                    @renderPageLink(link._1, link._2)
-                }
+            @for(link <- Pages.pages) {
+                @renderPageLink(link._1, link._2)
+            }
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <p class="navbar-text">@currentChannel.name</p>
@@ -32,8 +41,7 @@
                         Channels <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                     @for(channel <- channels) {
-                        <li @if(channel.channelId == currentChannel.channelId) {
-                            class="disabled"}><a href='/api/setChannelCookie/@channel.channelId'> @channel.name</a></li>
+                        @renderChannelSelect(channel)
                     }
                     </ul>
                 </li>
