@@ -23,12 +23,12 @@ case class Channel(channelId: String, name: String, backgroundCss: Option[String
 
 object Channel extends ModelAccessor[Channel] {
 
-    val getQuery = SQL("CALL getChannel({channelId});")
-    val getAllQuery = SQL("SELECT * FROM channels;")
+    val getQuery = SQL("CALL getChannel({channelId})")
+    val getAllQuery = SQL("SELECT * FROM channels")
 
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map()
 
-    val insertQuery = "CALL insertChannel({channelId}, {name}, {backgroundCss});"
+    val insertQuery = "CALL insertChannel({channelId}, {name}, {backgroundCss})"
 
     val parser: RowParser[Channel] = Macro.namedParser[Channel].asInstanceOf[RowParser[Channel]]
 

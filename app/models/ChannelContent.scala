@@ -22,19 +22,19 @@ case class ChannelContent(id: String, channelId: String, seriesId: String) exten
 
 object ChannelContent extends ModelAccessor[ChannelContent] {
 
-    val getQuery = SQL("CALL getContent({contentId});")
-    val getAllQuery = SQL("SELECT * FROM channelContent;")
+    val getQuery = SQL("CALL getContent({contentId})")
+    val getAllQuery = SQL("SELECT * FROM channelContent")
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
-        classOf[Channel] -> SQL("CALL getChannelContent({channelId});")
+        classOf[Channel] -> SQL("CALL getChannelContent({channelId})")
     )
 
-    val insertQuery = "CALL insertChannelContent({id}, {channelId}, {seriesId});"
+    val insertQuery = "CALL insertChannelContent({id}, {channelId}, {seriesId})"
 
     val parser: RowParser[ChannelContent] = Macro.namedParser[ChannelContent].asInstanceOf[RowParser[ChannelContent]]
 
     val idSymbol: Symbol = 'contentId
 
-    val tagQuery: SqlQuery = SQL("SELECT channelContent.* FROM channelContent INNER JOIN contentTags ON channelContent.id = contentTags.contentId WHERE channelContent.channelId = {channelId} AND contentTags.tag IN ({tags}) GROUP BY contentId HAVING COUNT(DISTINCT tag) >= {tagCount};")
+    val tagQuery: SqlQuery = SQL("SELECT channelContent.* FROM channelContent INNER JOIN contentTags ON channelContent.id = contentTags.contentId WHERE channelContent.channelId = {channelId} AND contentTags.tag IN ({tags}) GROUP BY contentId HAVING COUNT(DISTINCT tag) >= {tagCount}")
 
     def getWithTags(channelId: String, tags: Array[String], matchMethod: MatchMethod)(implicit db: Database): List[ChannelContent] = {
         val count = if(matchMethod == MatchMethod.MATCH_ALL) tags.length else 1

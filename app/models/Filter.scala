@@ -7,14 +7,14 @@ case class Filter(id: Int, filterGroupId: Int, name: String, tagName: String) ex
 }
 
 object Filter extends ModelAccessor[Filter] {
-    val getQuery = SQL("SELECT SELECT * from filters WHERE id = {id};")
+    val getQuery = SQL("SELECT SELECT * from filters WHERE id = {id}")
     val getAllQuery = SQL("SELECT SELECT * from filters")
 
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
-        classOf[FilterGroup] -> SQL("SELECT * from filters WHERE filterGroupId = {filterGroupId};")
+        classOf[FilterGroup] -> SQL("SELECT * from filters WHERE filterGroupId = {filterGroupId}")
     )
 
-    val insertQuery = "insert into filters (channelId, name, tagName) VALUES ({channelId}, {name}, {tagName});"
+    val insertQuery = "insert into filters (channelId, name, tagName) VALUES ({channelId}, {name}, {tagName})"
 
     val parser: RowParser[Filter] = Macro.namedParser[Filter].asInstanceOf[RowParser[Filter]]
 
