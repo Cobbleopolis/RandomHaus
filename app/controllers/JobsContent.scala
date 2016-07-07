@@ -18,4 +18,15 @@ class JobsContent @Inject()(implicit db: Database) extends Controller {
         }
     }
 
+    def updateChannelContent(channelId: String) = Action {
+        try{
+            ContentUtil.updateChannelContent(channelId)
+            Ok(JobUtil.getSuccessful("Content for " + channelId + " updated"))
+        } catch {
+            case t: Throwable =>
+                InternalServerError(JobUtil.getFailure(t.toString))
+                throw t
+        }
+    }
+
 }

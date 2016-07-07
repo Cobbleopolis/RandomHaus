@@ -31,6 +31,8 @@ POST          /data/link/:id                                   controllers.DataL
 DELETE        /data/link/:id                                   controllers.DataLink.delete(id)
 
 GET           /jobs/content/updateAll                          controllers.JobsContent.updateAllChannelContent
+GET           /jobs/content/:channelId/update                  controllers.JobsContent.updateChannelContent(channelId)
+
 GET           /jobs/channel/:channelId/updateAllSources        controllers.JobsChannel.updateSourcesFromPlaylists(channelId)
 
 GET           /api/getRandomVideo/:channelId                   controllers.Api.getRandomVideo(channelId)
