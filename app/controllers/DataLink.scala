@@ -22,11 +22,13 @@ class DataLink @Inject()(implicit db: Database) extends RestfulDataController {
     }
 
     override def insert = Action(parse.json) { request => {
-        request.body.validate[ChannelLink] match {
-            case s: JsSuccess[ChannelLink] =>
-                ChannelLink.insert(s.get)
-                Ok("Insert successful")
-            case e: JsError => BadRequest(JsError.toJson(e))
+        try {
+            ChannelLink.insert('channelId -> (request.body \ "channelId").as[String],
+                'label -> (request.body \ "label").as[String],
+                'link -> (request.body \ "link").as[String])
+            Ok("Insert successful")
+        } catch {
+            case t: Throwable => BadRequest(t.toString)
         }
     }
     }

@@ -16,7 +16,7 @@ object ChannelLink extends ModelAccessor[ChannelLink] {
         classOf[Channel] -> SQL("CALL getChannelLinks({channelId})")
     )
 
-    val insertQuery = "CALL insertChannelLink({id}, {channelId}, {label}, {link})"
+    val insertQuery = "CALL insertChannelLink({channelId}, {label}, {link})"
 
     val parser: RowParser[ChannelLink] = Macro.namedParser[ChannelLink].asInstanceOf[RowParser[ChannelLink]]
 
