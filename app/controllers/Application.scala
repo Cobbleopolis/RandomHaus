@@ -13,7 +13,7 @@ class Application @Inject()(implicit db: Database) extends Controller {
             cookie.get.value
         else
             "UCboMX_UNgaPBsUOIgasn3-Q"
-        implicit val channels: List[Channel] = Channel.getAll
+        implicit val channels: List[Channel] = Channel.getAll.sortWith(_.name < _.name)
         implicit val currentChannel: Channel = Channel.get(channelId).get
         implicit val links: List[ChannelLink] = currentChannel.getLinks
         val filterGroups: List[FilterGroup] = FilterGroup.getBy(classOf[Channel], 'channelId -> currentChannel.channelId)
