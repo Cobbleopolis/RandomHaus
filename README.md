@@ -15,6 +15,9 @@ This list is in no particular order of priority
 - Update tests
 - ~~Add channel updating flag~~
 - Clean up /jobs/* endpoints
+- Add database evolutions
+- Fix issue with The Slow Mo Guys playlist being empty
+  - Check if contentId and seriesId are the same
 
 
 ## Contribute
