@@ -10,14 +10,14 @@ case class ChannelSeries(id: String, channelID: String, name: String, publishedA
 
 object ChannelSeries extends ModelAccessor[ChannelSeries] {
 
-    val getQuery = SQL("CALL getSeries({seriesId})")
+    val getQuery = SQL("SELECT * FROM channelSeries WHERE id = {seriesId}")
     val getAllQuery = SQL("SELECT * FROM channelSeries")
 
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
-        classOf[Channel] -> SQL("CALL getChannelSeries({channelId})")
+        classOf[Channel] -> SQL("SELECT * FROM channelSeries WHERE channelId = {channelId} ORDER BY publishedAt ASC")
     )
 
-    val insertQuery = "CALL insertChannelSeries({id}, {channelId}, {name}, {publishedAt})"
+    val insertQuery = "INSERT IGNORE INTO channelSeries VALUES ({id}, {channelId}, {name}, {publishedAt})"
 
     val parser: RowParser[ChannelSeries] = Macro.namedParser[ChannelSeries].asInstanceOf[RowParser[ChannelSeries]]
 

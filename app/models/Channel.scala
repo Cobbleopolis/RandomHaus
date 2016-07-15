@@ -23,18 +23,18 @@ case class Channel(channelId: String, name: String, backgroundCss: Option[String
 
 object Channel extends ModelAccessor[Channel] {
 
-    val getQuery = SQL("CALL getChannel({channelId})")
+    val getQuery = SQL("SELECT * FROM channels WHERE channelId = {channelId}")
     val getAllQuery = SQL("SELECT * FROM channels")
 
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map()
 
-    val insertQuery = "CALL insertChannel({channelId}, {name}, {backgroundCss})"
+    val insertQuery = "INSERT INTO channels (channelId, name, backgroundCss) VALUES ({channelId}, {name}, {backgroundCss})"
 
     val parser: RowParser[Channel] = Macro.namedParser[Channel].asInstanceOf[RowParser[Channel]]
 
     val idSymbol: Symbol = 'channelId
 
-    val updateCurrentlyUpdatingQuery = SQL("CALL updateChannelCurrentlyUpdating({channelId}, {currentlyUpdating})")
+    val updateCurrentlyUpdatingQuery = SQL("UPDATE channels SET channels.currentlyUpdating = {currentlyUpdating} WHERE channelId = {channelId}")
 
     def updateChannelCurrentlyUpdating(channelId: String, currentlyUpdating: String)(implicit db: Database): Unit = {
         db.withConnection(implicit conn => {

@@ -22,13 +22,13 @@ case class ChannelContent(id: String, channelId: String, seriesId: String) exten
 
 object ChannelContent extends ModelAccessor[ChannelContent] {
 
-    val getQuery = SQL("CALL getContent({contentId})")
+    val getQuery = SQL("SELECT * FROM channelContent WHERE id = {contentId}")
     val getAllQuery = SQL("SELECT * FROM channelContent")
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
-        classOf[Channel] -> SQL("CALL getChannelContent({channelId})")
+        classOf[Channel] -> SQL("SELECT * FROM channelContent WHERE channelId = {channelId}")
     )
 
-    val insertQuery = "CALL insertChannelContent({id}, {channelId}, {seriesId})"
+    val insertQuery = "INSERT IGNORE INTO channelContent VALUES ({id}, {channelId}, {seriesId})"
 
     val parser: RowParser[ChannelContent] = Macro.namedParser[ChannelContent].asInstanceOf[RowParser[ChannelContent]]
 

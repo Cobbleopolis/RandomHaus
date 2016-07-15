@@ -7,13 +7,13 @@ case class ChannelContentTag(id: Int, contentId: String, tag: String) extends Mo
 }
 
 object ChannelContentTag extends ModelAccessor[ChannelContentTag] {
-    val getQuery = SQL("CALL getTag({tagId})")
+    val getQuery = SQL("SELECT * FROM contentTags WHERE tagId = {tagId}")
     val getAllQuery = SQL("SELECT * FROM contentTag")
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
-        classOf[ChannelContent] -> SQL("CALL getContentTags({contentId})")
+        classOf[ChannelContent] -> SQL("SELECT * FROM contentTags WHERE contentId = {contentId}")
     )
 
-    val insertQuery = "CALL insertContentTag({contentId}, {tag})"
+    val insertQuery = "INSERT INTO contentTags (contentId, tag) values ({contentId}, {tag})"
 
     val parser: RowParser[ChannelContentTag] = Macro.namedParser[ChannelContentTag].asInstanceOf[RowParser[ChannelContentTag]]
 
