@@ -33,6 +33,15 @@ object ChannelContent extends ModelAccessor[ChannelContent] {
     val parser: RowParser[ChannelContent] = Macro.namedParser[ChannelContent].asInstanceOf[RowParser[ChannelContent]]
 
     val idSymbol: Symbol = 'contentId
+    
+    val getQuery2 = SQL("SELECT * FROM channelContent WHERE id = {contentId} AND seriesId = {seriesId}")
+    
+    def get(id: String, seriesId: String)(implicit db: Database): Option[ChannelContent] = {
+        db.withConnection(implicit conn => {
+            getQuery2.on('contentId -> id, 'seriesId -> seriesId).as(parser.singleOpt)
+        })
+    }
+    
 
     val tagQuery: SqlQuery = SQL("SELECT channelContent.* FROM channelContent INNER JOIN contentTags ON channelContent.id = contentTags.contentId WHERE channelContent.channelId = {channelId} AND contentTags.tag IN ({tags}) GROUP BY contentId HAVING COUNT(DISTINCT tag) >= {tagCount}")
 

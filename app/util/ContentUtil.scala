@@ -26,7 +26,7 @@ object ContentUtil {
                     playlistItems.foreach(playlistItem => {
                         val id: String = playlistItem.getContentDetails.getVideoId
                         //                print(id + " | ")
-                        val contentOpt: Option[ChannelContent] = ChannelContent.get(id)
+                        val contentOpt: Option[ChannelContent] = ChannelContent.get(id, series.id)
                         if (contentOpt.isDefined) {
                             //                    println("Exists")
                             val tags = contentOpt.get.getTags.map(_.tag)
@@ -64,7 +64,7 @@ object ContentUtil {
             YTUtil.getPlaylistItems(playlist.getId).foreach(playlistItem => {
                 if (playlistItem.getSnippet.getPublishedAt.getValue < InsideGaming.insideGamingCutoffDateTime.getValue) {
                     val id = playlistItem.getContentDetails.getVideoId
-                    val contentOpt: Option[ChannelContent] = ChannelContent.get(id)
+                    val contentOpt: Option[ChannelContent] = ChannelContent.get(id, InsideGaming.insideGamingSeries.id)
                     if (contentOpt.isDefined) {
                         val tags = contentOpt.get.getTags.map(_.tag)
                         YTUtil.getVideoTags(id)

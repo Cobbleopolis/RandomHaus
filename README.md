@@ -16,8 +16,8 @@ This list is in no particular order of priority
 - ~~Add channel updating flag~~
 - Clean up /jobs/* endpoints
 - Add database evolutions
-- Fix issue with The Slow Mo Guys playlist being empty
-  - Check if contentId and seriesId are the same
+- ~~The same video can be used across multiple series~~
+- The same video can be used across multiple channels
 
 
 ## Contribute
