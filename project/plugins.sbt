@@ -6,7 +6,7 @@ resolvers += Resolver.url("GitHub repository", url("http://shaggyyeti.github.io/
 
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.2")
 
-addSbtPlugin("default" % "sbt-sass" % "0.1.9")
+addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.6")
 
 addSbtPlugin("name.de-vries" % "sbt-typescript" % "0.2.6")
 
