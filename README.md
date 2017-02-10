@@ -15,9 +15,10 @@ This list is in no particular order of priority
 - Update tests
 - ~~Add channel updating flag~~
 - Clean up /jobs/* endpoints
-- Add database evolutions
+- ~~Add database evolutions~~
 - ~~The same video can be used across multiple series~~
 - The same video can be used across multiple channels
+- Add the ability for videos collect videos outside of playlists
 
 
 ## Contribute
