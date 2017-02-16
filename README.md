@@ -10,7 +10,7 @@ This list is in no particular order of priority
 - ~~GitHub link~~
 - ~~Auto update database content w/o hitting an endpoint (Using Akka scheduler)~~
 - Autoplay functionality (Unsure how useful this will be)
-- Autoscroll to top of page when you generate a playlist
+- ~~Autoscroll to top of page when you generate a playlist~~
 - Add FilterGroups and Filters to the data API
 - Update tests
 - ~~Add channel updating flag~~

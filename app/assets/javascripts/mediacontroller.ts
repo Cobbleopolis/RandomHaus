@@ -25,6 +25,7 @@ module MediaController {
     export function loadContent(content:Content) {
         player.loadVideoById(content.id);
         // setIdDiv(content.id)
+        MediaController.onMediaLoad();
     }
 
     export function loadPlaylist(playlist:Series) {
@@ -33,6 +34,7 @@ module MediaController {
             listType: 'playlist'
         });
         // setIdDiv(playlist.id)
+        MediaController.onMediaLoad();
     }
 
     export function loadQueue(contents:Content[]) {
@@ -44,19 +46,20 @@ module MediaController {
         else
             alert("No videos found with those parameters");
         // setIdDiv('Custom Playlist');
+        MediaController.onMediaLoad();
+    }
+
+    export function onMediaLoad() {
+        window.scrollTo(0, 0);
     }
 
     function onPlayerReady(event:EventArgs) {
-        player.setSize(main.width(), main.width() * (9 / 16))
+        player.setSize(main.width(), main.width() * (9 / 16));
     }
 
     function onPlayerStateChange(event:EventArgs) {
         if (event.data == YT.PlayerState.ENDED) {
         }
-    }
-
-    function setIdDiv(text:string) {
-        $("#vidID").text(text)
     }
 
     export function getSelectedSeries():string[] {
