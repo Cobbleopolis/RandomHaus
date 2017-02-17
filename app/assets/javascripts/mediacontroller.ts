@@ -3,13 +3,13 @@
 
 module MediaController {
     import EventArgs = YT.EventArgs;
-    export var player:YT.Player = null;
-    var main:JQuery = null;
-    export var currentPlaylist: Content[] = [];
+    export let player:YT.Player = null;
+    let main:JQuery = null;
+    export let currentPlaylist: Content[] = [];
 
     export function initPlayer(content:Content) {
         main = $("#main");
-        var width = main.width();
+        let width = main.width();
         player = new YT.Player('player', {
             height: width * (9 / 16),
             width: width,
@@ -63,7 +63,7 @@ module MediaController {
     }
 
     export function getSelectedSeries():string[] {
-        var series:string[] = [];
+        let series:string[] = [];
         _(seriesFilters).filter(function (input:any) {
             return input.checked && $(input).attr('data-series-id') !== 'all';
         }).forEach(function (input) {
@@ -73,7 +73,7 @@ module MediaController {
     }
     
     export function getSelectedFilters():string[] {
-        var filters:string[] = [];
+        let filters:string[] = [];
         _(filterGroups.find('input')).filter(function (input:any) {
             return input.checked && $(input).attr('data-tag') !== 'all';
         }).forEach(function (input) {
@@ -97,7 +97,7 @@ module MediaController {
 
     export function loadGeneratedPlaylist():void {
         if(localStorage){
-            var playlistString =localStorage.getItem('savedPlaylist' + channelId);
+            let playlistString =localStorage.getItem('savedPlaylist' + channelId);
             if (playlistString)
                 loadQueue(_.map(JSON.parse(playlistString), Content.fromJSON));
             else

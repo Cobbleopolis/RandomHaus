@@ -7,14 +7,32 @@ import util.{ChannelUtil, JobUtil}
 
 class JobsChannel @Inject()(implicit db: Database) extends Controller {
 
-    def allPlaylistsAsSources(channelID: String) = Action {
-        Ok("TODO")
+    def updateChannel(channelId: String) = Action {
+        try {
+            ChannelUtil.updateChannel(channelId)
+            Ok(JobUtil.getSuccessful(s"Channel $channelId: updated"))
+        } catch {
+            case t: Throwable =>
+                InternalServerError(JobUtil.getFailure(t.toString))
+                throw t
+        }
     }
 
-    def updateSourcesFromPlaylists(channelID: String) = Action {
+    def updateSeries(channelId: String) = Action {
         try {
-            ChannelUtil.updateSeriesFromPlaylists(channelID)
-            Ok(JobUtil.getSuccessful("Channel " + channelID + ": sources updated"))
+            ChannelUtil.updateSeries(channelId)
+            Ok(JobUtil.getSuccessful(s"Channel $channelId: sources updated"))
+        } catch {
+            case t: Throwable =>
+                InternalServerError(JobUtil.getFailure(t.toString))
+                throw t
+        }
+    }
+
+    def updateContent(channelId: String) = Action {
+        try {
+            ChannelUtil.updateContent(channelId)
+            Ok(JobUtil.getSuccessful(s"Channel $channelId: content updated"))
         } catch {
             case t: Throwable =>
                 InternalServerError(JobUtil.getFailure(t.toString))

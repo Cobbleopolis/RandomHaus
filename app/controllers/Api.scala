@@ -8,6 +8,7 @@ import play.api.mvc.{Action, Controller, Cookie, DiscardingCookie}
 import reference.JsonReference._
 import reference.MatchMethod
 
+import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
@@ -27,27 +28,32 @@ class Api @Inject()(implicit db: Database) extends Controller {
         Ok(if (s != null) Json.toJson(s) else Json.obj()).as("application/json")
     }
 
-    def getPlaylistQueue(channelId: String) = Action(parse.json) { request => {
+    def getPlaylistQueue(channelId: String): Action[JsValue] = Action(parse.json) { request => {
         val series: Array[String] = (request.body \ "series").as[JsArray].value.map(s => s.as[String]).toArray
         val filters: Array[String] = (request.body \ "filters").as[JsArray].value.map(f => f.as[String]).toArray
         val filterOptions: JsValue = (request.body \ "options").get
-        val channelContent = if (series.isEmpty)
-            if (filters.isEmpty)
-                ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
-            else
-                ChannelContent.getWithTags(channelId, filters, MatchMethod.withName((filterOptions \ "matchMethod").as[String]))
-        else {
-            if (filters.isEmpty)
-                ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
-            else
-                ChannelContent.getWithTags(channelId, filters, MatchMethod.withName((filterOptions \ "matchMethod").as[String]))
-        }.filter(content => series.contains(content.seriesId))
+        var contentPool: List[ChannelContent] = List()
+        if (series.isEmpty)
+            contentPool ++= Channel.get(channelId).get.getContent
+        else
+            series.foreach(seriesId => contentPool ++= ChannelContent.getBy(classOf[ChannelSeries], 'seriesId -> seriesId))
+//        val channelContent = if (series.isEmpty)
+//            if (filters.isEmpty)
+//                ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
+//            else
+//                ChannelContent.getWithTags(channelId, filters, MatchMethod.withName((filterOptions \ "matchMethod").as[String]))
+//        else {
+//            if (filters.isEmpty)
+//                ChannelContent.getBy(classOf[Channel], 'channelId -> channelId)
+//            else
+//                ChannelContent.getWithTags(channelId, filters, MatchMethod.withName((filterOptions \ "matchMethod").as[String]))
+//        }.filter(content => series.exists(content.getSeries.contains))
         val indexes: ArrayBuffer[Int] = new ArrayBuffer[Int]()
-        while (indexes.length < Math.min(channelContent.length, (filterOptions \ "videoCount").as[Int])) {
-            val i = rand.nextInt(channelContent.length)
+        while (indexes.length < Math.min(contentPool.length, (filterOptions \ "videoCount").as[Int])) {
+            val i = rand.nextInt(contentPool.length)
             if (!indexes.contains(i)) indexes += i
         }
-        Ok(Json.toJson(indexes.map(i => Json.toJson(channelContent(i)))))
+        Ok(Json.toJson(indexes.map(i => Json.toJson(contentPool(i)))))
     }
     }
 

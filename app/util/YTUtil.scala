@@ -6,8 +6,8 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.youtube.YouTube
-import com.google.api.services.youtube.model.{Playlist, PlaylistItem, PlaylistItemListResponse, PlaylistListResponse}
-import reference.Reference
+import com.google.api.services.youtube.model._
+import reference.{InsideGaming, Reference}
 
 import scala.collection.JavaConverters._
 
@@ -29,7 +29,7 @@ object YTUtil {
         var playlistItems: List[PlaylistItem] = List[PlaylistItem]()
         val playlistItemRequest: YouTube#PlaylistItems#List = youtube.playlistItems().list("id,contentDetails,snippet,status")
             .setPlaylistId(playlistID)
-            .setFields("items(contentDetails/videoId,snippet/title,snippet/publishedAt,status),nextPageToken,pageInfo")
+            .setFields("items(contentDetails/videoId,snippet/publishedAt,snippet/title,snippet/publishedAt,status),nextPageToken,pageInfo")
 
         var nextToken: String = ""
 
@@ -46,18 +46,15 @@ object YTUtil {
 
     def getVideoTags(videoId: String): List[String] = {
         val videos = youtube.videos().list("snippet").setId(videoId).execute().getItems.asScala
-        if (videos.nonEmpty)
-            if (videos.head.getSnippet.getTags != null)
-                videos.head.getSnippet.getTags.asScala.toList
-            else
-                List()
+        if (videos.nonEmpty && videos.head.getSnippet.getTags != null)
+            videos.head.getSnippet.getTags.asScala.toList
         else
             List()
     }
 
-    def getAllPlaylistsFromUser(channelId: String): List[Playlist] = {
+    def getUserPlaylists(channelId: String): List[Playlist] = {
         var playlists: List[Playlist] = List[Playlist]()
-        val playlistRequest: YouTube#Playlists#List = youtube.playlists.list("id,snippet,status")
+        val playlistRequest: YouTube#Playlists#List = youtube.playlists.list("id,snippet,status,contentDetails")
             .setChannelId(channelId)
         var nextToken: String = ""
 
@@ -65,11 +62,24 @@ object YTUtil {
             playlistRequest.setPageToken(nextToken)
             val playlistResponse: PlaylistListResponse = playlistRequest.execute()
 
-            playlists = playlists ++ playlistResponse.getItems.asScala.filter(playlist => playlist.getStatus.getPrivacyStatus == "public")
+            playlists = playlists ++ playlistResponse.getItems.asScala.filter(playlist => playlist.getStatus.getPrivacyStatus == "public" && playlist.getContentDetails.getItemCount != 0)
 
             nextToken = playlistResponse.getNextPageToken
         } while (nextToken != null)
         playlists
+    }
+
+    def getUserContent(channelId: String): List[PlaylistItem] = {
+        val channelList: List[Channel] = youtube.channels().list("contentDetails").setId(channelId).setFields("items/contentDetails").execute().getItems.asScala.toList
+        if (channelList != null && channelList.nonEmpty)
+            getPlaylistItems(channelList.head.getContentDetails.getRelatedPlaylists.getUploads)
+        else
+            List()
+    }
+
+    def getInsideGamingVideos: List[PlaylistItem] = {
+        getUserContent(InsideGaming.insideGamingChannelId)
+            .filter(playlistItem => playlistItem.getSnippet.getPublishedAt.getValue <= InsideGaming.insideGamingCutoffDateTime.getValue)
     }
 
 }

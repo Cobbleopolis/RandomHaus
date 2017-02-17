@@ -3,7 +3,7 @@ package models
 import anorm._
 import play.api.db.Database
 
-case class Channel(channelId: String, name: String, backgroundCss: Option[String], currentlyUpdating: Option[String]) extends Model {
+case class Channel(channelId: String, name: String, backgroundCss: Option[String], currentlyUpdating: Boolean = false) extends Model {
 
     //	def this(jsonObj: JsObject) = this(
     //		(jsonObj \ "channelId").as[String],
@@ -36,7 +36,7 @@ object Channel extends ModelAccessor[Channel] {
 
     val updateCurrentlyUpdatingQuery = SQL("UPDATE channels SET channels.currentlyUpdating = {currentlyUpdating} WHERE channelId = {channelId}")
 
-    def updateChannelCurrentlyUpdating(channelId: String, currentlyUpdating: String)(implicit db: Database): Unit = {
+    def updateChannelCurrentlyUpdating(channelId: String, currentlyUpdating: Boolean)(implicit db: Database): Unit = {
         db.withConnection(implicit conn => {
             updateCurrentlyUpdatingQuery.on('channelId -> channelId, 'currentlyUpdating -> currentlyUpdating).executeUpdate()
         })

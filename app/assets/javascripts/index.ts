@@ -1,16 +1,16 @@
 /// <reference path="mediacontroller.ts"/>
 
-var main:JQuery = null;
-var channelId:string = getCookie('channel');
+let main:JQuery = null;
+let channelId:string = getCookie('channel');
 if (channelId == '')
     channelId = 'UCboMX_UNgaPBsUOIgasn3-Q';
-var seriesFilters:JQuery = null;
-var filterGroups:JQuery = null;
+let seriesFilters:JQuery = null;
+let filterGroups:JQuery = null;
 
 $(function () {
     seriesFilters = $('#filterSeries').find('input[data-series-id]');
     seriesFilters.change(function (eventObject) {
-        var seriesId = $(eventObject.target).attr('data-series-id');
+        let seriesId = $(eventObject.target).attr('data-series-id');
         if (seriesId === 'all') {
             $('#filterSeries').find('input[data-series-id!="all"]').prop('checked', false);
         } else {
@@ -19,9 +19,9 @@ $(function () {
     });
     filterGroups = $('.filter');
     filterGroups.change(function(eventObject) {
-        var input:JQuery = $(eventObject.target);
-        var tag:string = input.attr('data-tag');
-        var fieldset: JQuery = input.parent().parents().eq(1);
+        let input:JQuery = $(eventObject.target);
+        let tag:string = input.attr('data-tag');
+        let fieldset: JQuery = input.parent().parents().eq(1);
         if (tag === 'all') {
             fieldset.find('input[data-tag!="all"]').prop('checked', false);
         } else {
@@ -105,7 +105,7 @@ function loadRandomPlaylist() {
 }
 
 function loadQueue() {
-    var filterOptions: FilterOptions = new FilterOptions(
+    let filterOptions: FilterOptions = new FilterOptions(
         $("input[name='matchMethod']:checked").attr("value"),
         parseInt($("input#playlistSize").val())
     );
@@ -113,10 +113,10 @@ function loadQueue() {
 }
 
 function getCookie(cname:string) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }

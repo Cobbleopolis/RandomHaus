@@ -3,44 +3,48 @@
 # ~~~~
 
 # Home page
-GET           /                                                controllers.Application.index
-GET           /about                                           controllers.Application.about
+GET           /                                             controllers.Application.index
+GET           /about                                        controllers.Application.about
 
-GET           /data/channels                                   controllers.DataChannel.getAll
-GET           /data/channels/:id                               controllers.DataChannel.get(id)
-PUT           /data/channels                                   controllers.DataChannel.insert()
-POST          /data/channels/:id                               controllers.DataChannel.update(id)
-DELETE        /data/channels/:id                               controllers.DataChannel.delete(id)
+GET           /data/channels                                controllers.DataChannel.getAll
+GET           /data/channels/:id                            controllers.DataChannel.get(id)
+PUT           /data/channels                                controllers.DataChannel.insert()
+POST          /data/channels/:id                            controllers.DataChannel.update(id)
+DELETE        /data/channels/:id                            controllers.DataChannel.delete(id)
 
-GET           /data/content                                    controllers.DataContent.getAll
-GET           /data/content/:id                                controllers.DataContent.get(id)
-PUT           /data/content                                    controllers.DataContent.insert()
-POST          /data/content/:id                                controllers.DataContent.update(id)
-DELETE        /data/content/:id                                controllers.DataContent.delete(id)
+GET           /data/content                                 controllers.DataContent.getAll
+GET           /data/content/:id                             controllers.DataContent.get(id)
+PUT           /data/content                                 controllers.DataContent.insert()
+POST          /data/content/:id                             controllers.DataContent.update(id)
+DELETE        /data/content/:id                             controllers.DataContent.delete(id)
 
-GET           /data/series                                     controllers.DataSeries.getAll
-GET           /data/series/:id                                 controllers.DataSeries.get(id)
-PUT           /data/series                                     controllers.DataSeries.insert()
-POST          /data/series/:id                                 controllers.DataSeries.update(id)
-DELETE        /data/series/:id                                 controllers.DataSeries.delete(id)
+GET           /data/series                                  controllers.DataSeries.getAll
+GET           /data/series/:id                              controllers.DataSeries.get(id)
+PUT           /data/series                                  controllers.DataSeries.insert()
+POST          /data/series/:id                              controllers.DataSeries.update(id)
+DELETE        /data/series/:id                              controllers.DataSeries.delete(id)
 
-GET           /data/link                                       controllers.DataLink.getAll
-GET           /data/link/:id                                   controllers.DataLink.get(id)
-PUT           /data/link                                       controllers.DataLink.insert()
-POST          /data/link/:id                                   controllers.DataLink.update(id)
-DELETE        /data/link/:id                                   controllers.DataLink.delete(id)
+GET           /data/link                                    controllers.DataLink.getAll
+GET           /data/link/:id                                controllers.DataLink.get(id)
+PUT           /data/link                                    controllers.DataLink.insert()
+POST          /data/link/:id                                controllers.DataLink.update(id)
+DELETE        /data/link/:id                                controllers.DataLink.delete(id)
 
-GET           /jobs/content/updateAll                          controllers.JobsContent.updateAllChannelContent
-GET           /jobs/content/:channelId/update                  controllers.JobsContent.updateChannelContent(channelId)
+GET           /jobs/channel/update/:channelId               controllers.JobsChannel.updateChannel(channelId)
+GET           /jobs/channel/updateSources/:channelId        controllers.JobsChannel.updateSeries(channelId)
+GET           /jobs/channel/updateContent/:channelId        controllers.JobsChannel.updateContent(channelId)
 
-GET           /jobs/channel/:channelId/updateAllSources        controllers.JobsChannel.updateSourcesFromPlaylists(channelId)
+GET           /jobs/content/updateAll                       controllers.JobsContent.updateAllChannelContent
+GET           /jobs/content/:channelId/update               controllers.JobsContent.updateChannelContent(channelId)
 
-GET           /api/getRandomVideo/:channelId                   controllers.Api.getRandomVideo(channelId)
-GET           /api/getRandomPlaylist/:channelId                controllers.Api.getRandomPlaylist(channelId)
-POST          /api/getQueue/:channelId                         controllers.Api.getPlaylistQueue(channelId)
-GET           /api/setChannelCookie/:channelId                 controllers.Api.setChannelCookie(channelId)
+GET           /jobs/series/updateLinks/:seriesId            controllers.JobsSeries.updateLinks(seriesId)
+
+GET           /api/getRandomVideo/:channelId                controllers.Api.getRandomVideo(channelId)
+GET           /api/getRandomPlaylist/:channelId             controllers.Api.getRandomPlaylist(channelId)
+POST          /api/getQueue/:channelId                      controllers.Api.getPlaylistQueue(channelId)
+GET           /api/setChannelCookie/:channelId              controllers.Api.setChannelCookie(channelId)
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file                                    controllers.Assets.at(path="/public", file)
+GET           /assets/*file                                 controllers.Assets.at(path="/public", file)
 
     

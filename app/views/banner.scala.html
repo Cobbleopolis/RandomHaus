@@ -8,8 +8,8 @@
 
 @renderChannelSelect(channel: Channel) = {
     <li @if(channel.channelId == currentChannel.channelId) {
-        class="disabled"}><a href='/api/setChannelCookie/@channel.channelId' @if(channel.currentlyUpdating.isDefined) {
-        data-toggle="tooltip" data-placement="left" title="This channel's @channel.currentlyUpdating is updating. Please excuse any weirdness that might arise as result of this."}> @channel.name @if(channel.currentlyUpdating.isDefined) {
+        class="disabled"}><a href='/api/setChannelCookie/@channel.channelId' @if(channel.currentlyUpdating) {
+        data-toggle="tooltip" data-placement="left" title="This channel's data is updating. Please excuse any weirdness that might arise as result of this."}> @channel.name @if(channel.currentlyUpdating) {
         <i class="fa fa-exclamation-triangle" aria-hidden="true" ></i>
     }</a></li>
 }
