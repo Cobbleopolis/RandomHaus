@@ -59,6 +59,31 @@ object ContentUtil {
         }
     }
 
+    def updateInsideGamingVids(watchedTags: List[String])(implicit db: Database): Unit = {
+        YTUtil.getUserPlaylists(InsideGaming.insideGamingChannelId).foreach(playlist => {
+            YTUtil.getPlaylistItems(playlist.getId).foreach(playlistItem => {
+                if (playlistItem.getSnippet.getPublishedAt.getValue < InsideGaming.insideGamingCutoffDateTime.getValue) {
+                    val id = playlistItem.getContentDetails.getVideoId
+                    val contentOpt: Option[ChannelContent] = ChannelContent.get(id)
+                    if (contentOpt.isDefined) {
+                        val tags = contentOpt.get.getTags.map(_.tag)
+                        YTUtil.getVideoTags(id)
+                            .filter(t => watchedTags.exists(watchedTag => t.matches("(?i)" + watchedTag)))
+                            .filterNot(t => tags.contains(t))
+                            .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
+                            .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
+                    } else {
+                        ChannelContent.insert(new ChannelContent(id, InsideGaming.funhausChannelId))
+                        YTUtil.getVideoTags(id)
+                            .filter(t => watchedTags.exists(watchedTag => t.matches("(?i)" + watchedTag)))
+                            .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
+                            .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
+                    }
+                }
+            })
+        })
+    }
+
     def updateContentTags(channelContent: ChannelContent)(implicit db: Database): Unit = updateContentTags(channelContent.id, channelContent.channelId)
 
     def updateContentTags(contentId: String, channelId: String)(implicit db: Database): Unit = {
@@ -70,15 +95,21 @@ object ContentUtil {
             if (contentOpt.isDefined) {
                 val tags: List[String] = contentOpt.get.getTags.map(_.tag)
                 YTUtil.getVideoTags(contentId)
-                    .filter(t => watchedTags.contains(t.toLowerCase()))
+                    .filter(t => watchedTags.exists(watchedTag => t.matches("(?i)" + watchedTag)))
                     .filterNot(t => tags.contains(t))
                     .map(t => Seq[NamedParameter]('contentId -> contentId, 'tag -> t))
-                    .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
+                    .foreach(tagParams => {
+                        //                        Logger.debug(s"Tag Content Id: $contentId \n Tag Value: ${tagParams.get(1).value}")
+                        ChannelContentTag.insert(tagParams: _*)
+                    })
             } else {
                 YTUtil.getVideoTags(contentId)
-                    .filter(t => watchedTags.contains(t.toLowerCase()))
+                    .filter(t => watchedTags.exists(watchedTag => t.matches("(?i)" + watchedTag)))
                     .map(t => Seq[NamedParameter]('contentId -> contentId, 'tag -> t))
-                    .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
+                    .foreach(tagParams => {
+                        //                        Logger.debug(s"Tag Content Id: $contentId \n Tag Value: ${tagParams.get(1).value}")
+                        ChannelContentTag.insert(tagParams: _*)
+                    })
             }
         } catch {
             case e: Throwable =>
@@ -87,31 +118,6 @@ object ContentUtil {
         } finally {
             Channel.updateChannelCurrentlyUpdating(channelId, currentlyUpdating = false)
         }
-    }
-
-    def updateInsideGamingVids(watchedTags: List[String])(implicit db: Database): Unit = {
-        YTUtil.getUserPlaylists(InsideGaming.insideGamingChannelId).foreach(playlist => {
-            YTUtil.getPlaylistItems(playlist.getId).foreach(playlistItem => {
-                if (playlistItem.getSnippet.getPublishedAt.getValue < InsideGaming.insideGamingCutoffDateTime.getValue) {
-                    val id = playlistItem.getContentDetails.getVideoId
-                    val contentOpt: Option[ChannelContent] = ChannelContent.get(id)
-                    if (contentOpt.isDefined) {
-                        val tags = contentOpt.get.getTags.map(_.tag)
-                        YTUtil.getVideoTags(id)
-                            .filter(t => watchedTags.contains(t.toLowerCase()))
-                            .filterNot(t => tags.contains(t))
-                            .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
-                            .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
-                    } else {
-                        ChannelContent.insert(new ChannelContent(id, InsideGaming.funhausChannelId))
-                        YTUtil.getVideoTags(id)
-                            .filter(t => watchedTags.contains(t.toLowerCase()))
-                            .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
-                            .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
-                    }
-                }
-            })
-        })
     }
 
 }

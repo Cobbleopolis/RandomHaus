@@ -23,14 +23,13 @@ class JobActor @Inject() (implicit db: Database) extends Actor {
 
     def updateContent(): Unit ={
         Logger.info("Updating Content...")
-        ContentUtil.updateAll()
+        ChannelUtil.updateAllContent()
         Logger.info("Finished Updating Content")
     }
 
     def updateEverything(): Unit = {
         Logger.info("Updating Everything...")
-        updateSources()
-        updateContent()
+        ChannelUtil.updateAll()
         Logger.info("Finished Updating Everything")
     }
 }

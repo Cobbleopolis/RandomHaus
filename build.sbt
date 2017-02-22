@@ -3,7 +3,7 @@ name := "RandomHaus"
 
 version := "5.0.0-SNAPSHOT"
 
-isSnapshot := true
+isSnapshot := version.value.toLowerCase.contains("snapshot")
 
 
 lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, BuildInfoPlugin)

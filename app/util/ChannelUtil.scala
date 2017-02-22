@@ -10,6 +10,10 @@ import reference.InsideGaming
 
 object ChannelUtil {
 
+    def updateAll()(implicit db: Database): Unit = {
+        Channel.getAll.foreach(channel => updateChannel(channel.channelId))
+    }
+
     def updateAllSeries()(implicit db: Database): Unit = {
         Channel.getAll.foreach(channel => updateSeries(channel.channelId))
     }

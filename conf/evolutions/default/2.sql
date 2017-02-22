@@ -8,10 +8,10 @@ CREATE TABLE channelSeries
   channelId VARCHAR(256) NOT NULL,
   name VARCHAR(256) NOT NULL,
   publishedAt DATETIME,
-  CONSTRAINT channelSeries_fk FOREIGN KEY (channelId) REFERENCES channels (channelId) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT channelSources_fk FOREIGN KEY (channelId) REFERENCES channels (channelId) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE INDEX channelSeries_fk ON channelSeries (channelId);
-CREATE UNIQUE INDEX channelSeries_id_uindex ON channelSeries (id);
+CREATE INDEX channelSources_fk ON channelSeries (channelId);
+CREATE UNIQUE INDEX channelSources_id_uindex ON channelSeries (id);
 
 # --- !Downs
 

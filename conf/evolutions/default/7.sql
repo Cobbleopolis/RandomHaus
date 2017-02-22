@@ -1,18 +1,17 @@
-# Filters schema
+# Filter groups schema
 
 # --- !Ups
 
-CREATE TABLE filters
+CREATE TABLE filterGroups
 (
   id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  filterGroupId INT(11) NOT NULL,
-  name TEXT NOT NULL,
-  tagName TEXT NOT NULL,
-  CONSTRAINT filters_filterGroups_id_fk FOREIGN KEY (filterGroupId) REFERENCES filterGroups (id) ON DELETE CASCADE ON UPDATE CASCADE
+  channelId VARCHAR(256) NOT NULL,
+  name VARCHAR(256) NOT NULL,
+  CONSTRAINT filterGroup_channels_channelId_fk FOREIGN KEY (channelId) REFERENCES channels (channelId) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE INDEX filters_filterGroups_id_fk ON filters (filterGroupId);
-CREATE UNIQUE INDEX filters_id_uindex ON filters (id);
+CREATE INDEX filterGroup_channels_channelId_fk ON filterGroups (channelId);
+CREATE UNIQUE INDEX filterGroup_id_uindex ON filterGroups (id);
 
 # --- !Downs
 
-DROP TABLE filters;
+DROP TABLE filterGroups;

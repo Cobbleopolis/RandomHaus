@@ -1,18 +1,15 @@
-# Channel links schema
+# Content tags schema
 
 # --- !Ups
 
-CREATE TABLE channelLinks
+CREATE TABLE contentTags
 (
-  id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  channelId VARCHAR(256) NOT NULL,
-  label VARCHAR(256) NOT NULL,
-  link TEXT NOT NULL,
-  CONSTRAINT channelLinks_channels_channelID_fk FOREIGN KEY (channelId) REFERENCES channels (channelId) ON DELETE CASCADE ON UPDATE CASCADE
+  contentId VARCHAR(256) NOT NULL,
+  tag TEXT NOT NULL,
+  CONSTRAINT contentTags_channelContent_id_fk FOREIGN KEY (contentId) REFERENCES channelContent (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE INDEX channelLinks_channels_channelID_fk ON channelLinks (channelId);
-CREATE UNIQUE INDEX channelLinks_id_uindex ON channelLinks (id);
+CREATE INDEX contentTags_fk ON contentTags (contentId);
 
 # --- !Downs
 
-DROP TABLE channelLinks;
+DROP TABLE contentTags;

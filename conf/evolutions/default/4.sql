@@ -1,17 +1,17 @@
-# Content tags schema
+# Content series link schema
 
 # --- !Ups
 
-CREATE TABLE contentTags
+CREATE TABLE content_series
 (
-  id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   contentId VARCHAR(256) NOT NULL,
-  tag TEXT NOT NULL,
-  CONSTRAINT contentTags_channelContent_id_fk FOREIGN KEY (contentId) REFERENCES channelContent (id) ON DELETE CASCADE ON UPDATE CASCADE
+  seriesId VARCHAR(256) NOT NULL,
+  CONSTRAINT `PRIMARY` PRIMARY KEY (contentId, seriesId),
+  CONSTRAINT content_series_channelContent_id_fk FOREIGN KEY (contentId) REFERENCES channelContent (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT content_series_channelSeries_id_fk FOREIGN KEY (seriesId) REFERENCES channelSeries (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE INDEX contentTags_fk ON contentTags (contentId);
-CREATE UNIQUE INDEX contentTags_id_uindex ON contentTags (id);
+CREATE INDEX content_series_channelSeries_id_fk ON content_series (seriesId);
 
 # --- !Downs
 
-DROP TABLE contentTags;
+DROP TABLE content_series;
