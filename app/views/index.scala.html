@@ -2,16 +2,14 @@
 
 @renderFilterGroup(name: String, filters: List[models.Filter]) = {
     <fieldset id="filter@name" class="filter">
-        @defining(name.toLowerCase().replaceAll("\\s", "-")) { htmlName =>
-            <h4>@name</h4>
+        <h4>@name</h4>
+        <div class="checkbox">
+            <label><input data-tag="all" type="checkbox" checked> All</label>
+        </div>
+        @for(filter <- filters.sortBy(_.name)) {
             <div class="checkbox">
-                <label><input data-tag="all" type="checkbox" checked> All</label>
+                <label><input data-tag="@filter.tagName" type="checkbox"> @filter.name</label>
             </div>
-            @for(filter <- filters) {
-                <div class="checkbox">
-                    <label><input data-tag="@filter.tagName" type="checkbox"> @filter.name</label>
-                </div>
-            }
         }
     </fieldset>
 
