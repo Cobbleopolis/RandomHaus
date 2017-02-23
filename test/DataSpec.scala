@@ -7,7 +7,7 @@ import reference.JsonReference._
 
 class DataSpec extends PlaySpec with OneServerPerSuite {
 
-	implicit val ws = app.injector.instanceOf[WSClient]
+	implicit val ws: WSClient = app.injector.instanceOf[WSClient]
 
 	val baseURL: String = s"http://localhost:$port/data/"
 

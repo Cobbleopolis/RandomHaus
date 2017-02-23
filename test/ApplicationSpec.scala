@@ -4,7 +4,7 @@ import play.mvc.Http.Status._
 
 class ApplicationSpec extends PlaySpec with OneServerPerSuite {
 
-	implicit val ws = app.injector.instanceOf[WSClient]
+	implicit val ws: WSClient = app.injector.instanceOf[WSClient]
 
 	val baseURL: String = s"http://localhost:$port/"
 
