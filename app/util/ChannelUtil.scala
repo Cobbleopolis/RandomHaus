@@ -3,7 +3,7 @@ package util
 import java.util.Date
 
 import com.google.api.services.youtube.model.PlaylistItem
-import models.{Channel, ChannelContent, ChannelSeries}
+import models.{Channel, ChannelContent, ChannelSeries, FilterGroup}
 import play.api.Logger
 import play.api.db.Database
 import reference.InsideGaming
@@ -27,7 +27,8 @@ object ChannelUtil {
         if (channel.isDefined) {
             updateSeries(channelId)
             updateContent(channelId)
-            channel.get.getContent.foreach(ContentUtil.updateContentTags)
+            if(FilterGroup.getBy(classOf[Channel], 'channelId -> channel.get.channelId).nonEmpty)
+                channel.get.getContent.foreach(ContentUtil.updateContentTags)
             channel.get.getSeries.foreach(series => SeriesUtil.updateLinks(series.id))
         } else {
             throw new Exception(s"Channel id $channelId is not found...")
