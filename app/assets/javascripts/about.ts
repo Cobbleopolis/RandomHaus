@@ -1,8 +1,8 @@
 /// <reference path="mediacontroller.ts"/>
 
-var main:JQuery = null;
+let mainAbout:JQuery = null;
 
 $(function () {
-    main = $('#main');
-    main.css('min-height', ($(window).outerHeight() - 100) + 'px');
+    mainAbout = $('#main');
+    mainAbout.css('min-height', ($(window).outerHeight() - 100) + 'px');
 });
