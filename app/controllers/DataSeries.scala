@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Inject
 import models.ChannelSeries
 import play.api.db.Database
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.Action
 import reference.JsonReference._
 
@@ -21,7 +21,7 @@ class DataSeries @Inject()(implicit db: Database) extends RestfulDataController 
         Ok(Json.toJson(ChannelSeries.getAll))
     }
 
-    override def insert = Action(parse.json) { request => {
+    override def insert: Action[JsValue] = Action(parse.json) { request => {
         request.body.validate[ChannelSeries] match {
             case s: JsSuccess[ChannelSeries] =>
                 ChannelSeries.insert(s.get)
@@ -31,12 +31,12 @@ class DataSeries @Inject()(implicit db: Database) extends RestfulDataController 
     }
     }
 
-    override def update(channelId: String) = Action(parse.json) { request => {
+    override def update(channelId: String): Action[JsValue] = Action(parse.json) { request => {
         NotImplemented
     }
     }
 
-    override def delete(channelId: String) = Action(parse.json) { request => {
+    override def delete(channelId: String): Action[JsValue] = Action(parse.json) { request => {
         NotImplemented
     }
     }

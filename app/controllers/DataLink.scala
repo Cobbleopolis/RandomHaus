@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Inject
 import models.ChannelLink
 import play.api.db.Database
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Action
 import reference.JsonReference._
 
@@ -21,7 +21,7 @@ class DataLink @Inject()(implicit db: Database) extends RestfulDataController {
         Ok(Json.toJson(ChannelLink.getAll))
     }
 
-    override def insert = Action(parse.json) { request => {
+    override def insert: Action[JsValue] = Action(parse.json) { request => {
         try {
             ChannelLink.insert('channelId -> (request.body \ "channelId").as[String],
                 'label -> (request.body \ "label").as[String],
@@ -33,12 +33,12 @@ class DataLink @Inject()(implicit db: Database) extends RestfulDataController {
     }
     }
 
-    override def update(channelId: String) = Action(parse.json) { request => {
+    override def update(channelId: String): Action[JsValue] = Action(parse.json) { request => {
         NotImplemented
     }
     }
 
-    override def delete(channelId: String) = Action(parse.json) { request => {
+    override def delete(channelId: String): Action[JsValue] = Action(parse.json) { request => {
         NotImplemented
     }
     }

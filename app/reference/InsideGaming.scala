@@ -17,5 +17,5 @@ object InsideGaming {
     val funhausChannelId: String = "UCboMX_UNgaPBsUOIgasn3-Q"
 
     val insideGamingSeries: ChannelSeries = new ChannelSeries("InsideGaming", funhausChannelId, "Inside Gaming", insideGamingCutoffDate)
-    
+
 }

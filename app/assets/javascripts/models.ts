@@ -1,11 +1,11 @@
 class Content {
-    constructor(public id:string, public channelId:string, public seriesId:string) {
+    constructor(public id: string, public channelId: string, public seriesId: string) {
     }
 
-    static fromJSON(videoObj:any) {
+    static fromJSON(videoObj: any) {
         return new Content(videoObj.id, videoObj.channelId, videoObj.seriesId)
     }
-    
+
     toJson(): any {
         return {
             "id": this.id,
@@ -16,23 +16,24 @@ class Content {
 }
 
 class Series {
-    constructor(public id:string, public channelId:string, public name:string, public publishedAt:Date) {
+    constructor(public id: string, public channelId: string, public name: string, public publishedAt: Date) {
     }
 
-    static fromJSON(playlistObj:any) {
+    static fromJSON(playlistObj: any) {
         return new Series(playlistObj.id, playlistObj.channelId, playlistObj.name, playlistObj.publishedAt)
     }
 }
 
 class FilterOptions {
-    matchMethod:string;
-    videoCount:number;
-    constructor(matchMethod:string, videoCount:number) {
+    matchMethod: string;
+    videoCount: number;
+
+    constructor(matchMethod: string, videoCount: number) {
         this.matchMethod = matchMethod;
         this.videoCount = videoCount;
     }
 
-    toJson():any {
+    toJson(): any {
         return {
             "matchMethod": this.matchMethod,
             "videoCount": this.videoCount

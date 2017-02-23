@@ -40,7 +40,7 @@ object ChannelContent extends ModelAccessor[ChannelContent] {
     val tagQuery: SqlQuery = SQL("SELECT DISTINCT channelContent.* FROM channelContent LEFT JOIN content_series ON channelContent.id = content_series.contentId JOIN contentTags ON channelContent.id = contentTags.contentId WHERE channelId = {channelId} AND content_series.seriesId LIKE {seriesId} AND contentTags.tag RLIKE {tags} GROUP BY channelContent.id HAVING COUNT(DISTINCT tag) >= {tagCount}")
 
     def getWithTags(channelId: String, seriesId: String, tags: Array[String], matchMethod: MatchMethod)(implicit db: Database): List[ChannelContent] = {
-        val count: Int = if(matchMethod == MatchMethod.MATCH_ALL) tags.length else 1
+        val count: Int = if (matchMethod == MatchMethod.MATCH_ALL) tags.length else 1
         val tagRegex: String = tags.mkString("^((", ")|(", "))$")
         db.withConnection(implicit conn => {
             tagQuery.on('channelId -> channelId, 'seriesId -> seriesId, 'tags -> tagRegex, 'tagCount -> count).as(parser.*)

@@ -14,20 +14,12 @@ object ChannelUtil {
         Channel.getAll.foreach(channel => updateChannel(channel.channelId))
     }
 
-    def updateAllSeries()(implicit db: Database): Unit = {
-        Channel.getAll.foreach(channel => updateSeries(channel.channelId))
-    }
-
-    def updateAllContent()(implicit db: Database): Unit = {
-        Channel.getAll.foreach(channel => updateContent(channel.channelId))
-    }
-
     def updateChannel(channelId: String)(implicit db: Database): Unit = {
         val channel: Option[Channel] = Channel.get(channelId)
         if (channel.isDefined) {
             updateSeries(channelId)
             updateContent(channelId)
-            if(FilterGroup.getBy(classOf[Channel], 'channelId -> channel.get.channelId).nonEmpty)
+            if (FilterGroup.getBy(classOf[Channel], 'channelId -> channel.get.channelId).nonEmpty)
                 channel.get.getContent.foreach(ContentUtil.updateContentTags)
             channel.get.getSeries.foreach(series => SeriesUtil.updateLinks(series.id))
         } else {
@@ -78,6 +70,13 @@ object ChannelUtil {
         }
     }
 
+    def updateAllSeries()(implicit db: Database): Unit = {
+        Channel.getAll.foreach(channel => updateSeries(channel.channelId))
+    }
+
+    def updateAllContent()(implicit db: Database): Unit = {
+        Channel.getAll.foreach(channel => updateContent(channel.channelId))
+    }
 
 
 }

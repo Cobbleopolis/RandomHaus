@@ -3,8 +3,8 @@ package reference
 object Pages {
 
     val pages: Array[(String, String)] = Array[(String, String)](
-        ("Home",  "/"),
+        ("Home", "/"),
         ("About", "/about")
     )
-    
+
 }

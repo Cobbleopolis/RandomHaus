@@ -3,11 +3,11 @@
 
 module MediaController {
     import EventArgs = YT.EventArgs;
-    export let player:YT.Player = null;
-    let main:JQuery = null;
+    export let player: YT.Player = null;
+    let main: JQuery = null;
     export let currentPlaylist: Content[] = [];
 
-    export function initPlayer(content:Content) {
+    export function initPlayer(content: Content) {
         main = $("#main");
         let width = main.width();
         player = new YT.Player('player', {
@@ -22,13 +22,13 @@ module MediaController {
         // setIdDiv(content.id);
     }
 
-    export function loadContent(content:Content) {
+    export function loadContent(content: Content) {
         player.loadVideoById(content.id);
         // setIdDiv(content.id)
         MediaController.onMediaLoad();
     }
 
-    export function loadPlaylist(playlist:Series) {
+    export function loadPlaylist(playlist: Series) {
         player.loadPlaylist({
             list: playlist.id,
             listType: 'playlist'
@@ -37,10 +37,10 @@ module MediaController {
         MediaController.onMediaLoad();
     }
 
-    export function loadQueue(contents:Content[]) {
+    export function loadQueue(contents: Content[]) {
         currentPlaylist = contents;
-        if(contents.length > 0)
-            player.loadPlaylist(_.map(contents, function (v:Content) {
+        if (contents.length > 0)
+            player.loadPlaylist(_.map(contents, function (v: Content) {
                 return v.id
             }));
         else
@@ -53,28 +53,28 @@ module MediaController {
         window.scrollTo(0, 0);
     }
 
-    function onPlayerReady(event:EventArgs) {
+    function onPlayerReady(event: EventArgs) {
         player.setSize(main.width(), main.width() * (9 / 16));
     }
 
-    function onPlayerStateChange(event:EventArgs) {
+    function onPlayerStateChange(event: EventArgs) {
         if (event.data == YT.PlayerState.ENDED) {
         }
     }
 
-    export function getSelectedSeries():string[] {
-        let series:string[] = [];
-        _(seriesFilters).filter(function (input:any) {
+    export function getSelectedSeries(): string[] {
+        let series: string[] = [];
+        _(seriesFilters).filter(function (input: any) {
             return input.checked && $(input).attr('data-series-id') !== 'all';
         }).forEach(function (input) {
             series[series.length] = $(input).attr('data-series-id');
         });
         return series;
     }
-    
-    export function getSelectedFilters():string[] {
-        let filters:string[] = [];
-        _(filterGroups.find('input')).filter(function (input:any) {
+
+    export function getSelectedFilters(): string[] {
+        let filters: string[] = [];
+        _(filterGroups.find('input')).filter(function (input: any) {
             return input.checked && $(input).attr('data-tag') !== 'all';
         }).forEach(function (input) {
             filters[filters.length] = $(input).attr('data-tag');
@@ -82,10 +82,10 @@ module MediaController {
         return filters;
     }
 
-    export function saveGeneratedPlaylist():void {
-        if(localStorage)
+    export function saveGeneratedPlaylist(): void {
+        if (localStorage)
             if (currentPlaylist.length > 0) {
-                localStorage.setItem('savedPlaylist' + channelId, JSON.stringify(_.map(currentPlaylist, function (c:Content) {
+                localStorage.setItem('savedPlaylist' + channelId, JSON.stringify(_.map(currentPlaylist, function (c: Content) {
                     return c.toJson();
                 })));
                 alert("Playlist Saved");
@@ -95,9 +95,9 @@ module MediaController {
             alert("It looks like your browser doesn't support local storage. Sorry.")
     }
 
-    export function loadGeneratedPlaylist():void {
-        if(localStorage){
-            let playlistString =localStorage.getItem('savedPlaylist' + channelId);
+    export function loadGeneratedPlaylist(): void {
+        if (localStorage) {
+            let playlistString = localStorage.getItem('savedPlaylist' + channelId);
             if (playlistString)
                 loadQueue(_.map(JSON.parse(playlistString), Content.fromJSON));
             else

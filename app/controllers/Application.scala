@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{Channel, ChannelLink, FilterGroup, Filter}
+import models.{Channel, ChannelLink, Filter, FilterGroup}
 import play.api.db.Database
 import play.api.mvc._
 
@@ -36,6 +36,7 @@ class Application @Inject()(implicit db: Database) extends Controller {
         implicit val currentChannel: Channel = Channel.get(channelId).get
         implicit val links: List[ChannelLink] = currentChannel.getLinks
         Ok(views.html.about())
-    }}
+    }
+    }
 
 }

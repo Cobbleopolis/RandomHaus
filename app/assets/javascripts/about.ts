@@ -1,6 +1,6 @@
 /// <reference path="mediacontroller.ts"/>
 
-let mainAbout:JQuery = null;
+let mainAbout: JQuery = null;
 
 $(function () {
     mainAbout = $('#main');
