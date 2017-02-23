@@ -21,7 +21,7 @@ This list is in no particular order of priority
 - ~~Add the ability for videos collect videos outside of playlists~~
 - Save multiple playlists per channel
 - Use cache on database queries
-- Allow for duration format in config file
+- ~~Allow for duration format in config file~~
 
 ## Contribute
 

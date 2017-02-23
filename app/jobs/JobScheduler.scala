@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 
 class JobScheduler @Inject()(val system: ActorSystem, @Named("job-actor") val jobActor: ActorRef)(implicit ec: ExecutionContext, db: Database) {
 
-    val refreshInterval: FiniteDuration = ConfigFactory.load().getInt("rh.contentUpdateInterval").minutes
+    val refreshInterval: FiniteDuration = ConfigFactory.load().getDuration("rh.contentUpdateInterval", MILLISECONDS).milliseconds
 
     val updateOnStart: Boolean = ConfigFactory.load().getBoolean("rh.updateOnStart")
 
