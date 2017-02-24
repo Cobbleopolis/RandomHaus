@@ -16,7 +16,7 @@ let loadPlaylistSelect: JQuery = null;
 let deletePlaylistModal: any = null;
 let deletePlaylistSelect: JQuery = null;
 
-$(function () {
+$(() => {
     seriesFilters = $('#filterSeries').find('input[data-series-id]');
     seriesFilters.change(function (eventObject) {
         let seriesId = $(eventObject.target).attr('data-series-id');
@@ -27,7 +27,7 @@ $(function () {
         }
     });
     filterGroups = $('.filter');
-    filterGroups.change(function (eventObject) {
+    filterGroups.change((eventObject) => {
         let input: JQuery = $(eventObject.target);
         let tag: string = input.attr('data-tag');
         let fieldset: JQuery = input.parent().parents().eq(1);
@@ -39,7 +39,7 @@ $(function () {
     });
     main = $('#main');
     main.css('min-height', ($(window).outerHeight() - 100) + 'px');
-    $(window).resize(function (evt) {
+    $(window).resize((evt) => {
         if (MediaController.player)
             MediaController.player.setSize(main.width(), main.width() * (9 / 16))
     });
@@ -76,11 +76,11 @@ function getRandomVideo(callback: (content: Content) => void) {
         <JQueryAjaxSettings>{
             type: 'GET',
             dataType: 'json',
-            error: function (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
+            error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
                 alert(errorThrown);
                 callback(null);
             },
-            success: function (data: any) {
+            success: (data: any) => {
                 callback(Content.fromJSON(data))
             }
         }
@@ -92,11 +92,11 @@ function getRandomPlaylist(callback: (playlist: Series) => void) {
         <JQueryAjaxSettings>{
             type: 'GET',
             dataType: 'json',
-            error: function (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
+            error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
                 alert(errorThrown);
                 callback(null);
             },
-            success: function (data: any) {
+            success: (data: any) => {
                 callback(Series.fromJSON(data))
             }
         })
@@ -113,13 +113,13 @@ function getQueue(series: string[], filters: string[], filterOptions: FilterOpti
             }),
             contentType: 'application/json',
             dataType: 'json',
-            error: function (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
+            error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => {
                 alert(errorThrown);
                 callback(null);
             },
-            success: function (data: any) {
+            success: (data: any) => {
                 // console.log(data);
-                callback(_.map(data, function (contentObj: any) {
+                callback(_.map(data, (contentObj: any) => {
                     return Content.fromJSON(contentObj);
                 }));
             }
@@ -164,7 +164,7 @@ function bootAlert(mountNode: JQuery, alertType: String, message: String) {
     alertString += message;
     alertString += '</div>';
     let alertNode: JQuery = $(alertString);
-    alertNode.on('close.bs.alert', function() {
+    alertNode.on('close.bs.alert', () => {
         console.log(this);
         $(this).prev().remove();
     });

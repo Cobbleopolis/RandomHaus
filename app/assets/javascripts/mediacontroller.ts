@@ -41,7 +41,7 @@ module MediaController {
     export function loadQueue(contents: Content[]) {
         currentPlaylist = contents;
         if (contents.length > 0)
-            player.loadPlaylist(_.map(contents, function (v: Content) {
+            player.loadPlaylist(_.map(contents, (v: Content) => {
                 return v.id
             }));
         else
@@ -150,7 +150,7 @@ module MediaController {
             if (!channelPlaylists)
                 channelPlaylists = {};
             let optionStrings = '';
-            Object.keys(channelPlaylists).forEach(function (playlistName) {
+            Object.keys(channelPlaylists).forEach((playlistName: string) => {
                 optionStrings += '<option>' + playlistName + '</option>';
             });
             loadPlaylistSelect.html(optionStrings);
