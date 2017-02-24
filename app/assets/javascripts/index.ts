@@ -7,6 +7,15 @@ if (channelId == '')
 let seriesFilters: JQuery = null;
 let filterGroups: JQuery = null;
 
+let savePlaylistModal: any = null;
+let savePlaylistName: JQuery = null;
+
+let loadPlaylistModal: any = null;
+let loadPlaylistSelect: JQuery = null;
+
+let deletePlaylistModal: any = null;
+let deletePlaylistSelect: JQuery = null;
+
 $(function () {
     seriesFilters = $('#filterSeries').find('input[data-series-id]');
     seriesFilters.change(function (eventObject) {
@@ -33,7 +42,29 @@ $(function () {
     $(window).resize(function (evt) {
         if (MediaController.player)
             MediaController.player.setSize(main.width(), main.width() * (9 / 16))
-    })
+    });
+
+    savePlaylistModal = $('#savePlaylistModal');
+    savePlaylistName = $('#savePlaylistName');
+    savePlaylistModal.on('hidden.bs.modal', () => {
+        savePlaylistName.nextAll().remove();
+        savePlaylistModal.val("");
+    });
+
+    loadPlaylistModal = $('#loadPlaylistModal');
+    loadPlaylistSelect = $('#loadPlaylistName');
+    loadPlaylistModal.on('hidden.bs.modal', () => {
+        loadPlaylistSelect.nextAll().remove();
+        loadPlaylistSelect.val(null);
+    });
+
+
+    deletePlaylistModal = $('#deletePlaylistModal');
+    deletePlaylistSelect = $('#deletePlaylistNames');
+    deletePlaylistModal.on('hidden.bs.modal', () => {
+        deletePlaylistSelect.next().nextAll().remove();
+        deletePlaylistSelect.val(null);
+    });
 });
 
 function onYouTubeIframeAPIReady() {
@@ -125,4 +156,17 @@ function getCookie(cname: string) {
         }
     }
     return "";
+}
+
+function bootAlert(mountNode: JQuery, alertType: String, message: String) {
+    let alertString: string = '<br><div class="alert alert-' + alertType + ' alert-dismissable" role="alert">';
+    alertString += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+    alertString += message;
+    alertString += '</div>';
+    let alertNode: JQuery = $(alertString);
+    alertNode.on('close.bs.alert', function() {
+        console.log(this);
+        $(this).prev().remove();
+    });
+    alertNode.insertAfter(mountNode);
 }

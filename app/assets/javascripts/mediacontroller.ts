@@ -8,7 +8,7 @@ module MediaController {
     export let currentPlaylist: Content[] = [];
 
     export function initPlayer(content: Content) {
-        main = $("#main");
+        main = $('#main');
         let width = main.width();
         player = new YT.Player('player', {
             height: width * (9 / 16),
@@ -19,6 +19,7 @@ module MediaController {
                 'onStateChange': onPlayerStateChange
             }
         });
+        loadSavedPlaylistOptions();
         // setIdDiv(content.id);
     }
 
@@ -82,27 +83,78 @@ module MediaController {
         return filters;
     }
 
-    export function saveGeneratedPlaylist(): void {
-        if (localStorage)
-            if (currentPlaylist.length > 0) {
-                localStorage.setItem('savedPlaylist' + channelId, JSON.stringify(_.map(currentPlaylist, function (c: Content) {
-                    return c.toJson();
-                })));
-                alert("Playlist Saved");
-            } else
-                alert("Please generate a playlist before trying to save one.");
-        else
-            alert("It looks like your browser doesn't support local storage. Sorry.")
+    export function saveGeneratedPlaylist(playlistName: string): void {
+        if (localStorage) {
+            try {
+                let channelPlaylists = JSON.parse(localStorage.getItem('savedPlaylists.' + channelId));
+                if (!channelPlaylists)
+                    channelPlaylists = {};
+                if (currentPlaylist.length > 0) {
+                    channelPlaylists[playlistName] = currentPlaylist;
+                    localStorage.setItem('savedPlaylists.' + channelId, JSON.stringify(channelPlaylists));
+                    bootAlert(savePlaylistName, 'success', 'Playlist Saved');
+                    loadSavedPlaylistOptions()
+                } else
+                    bootAlert(savePlaylistName, 'danger', 'Please generate a playlist before trying to save one.');
+            } catch (e) {
+                bootAlert(savePlaylistName, 'danger', 'There was an error loading the playlist "' + playlistName + '".');
+                console.error(e);
+            }
+        } else
+            bootAlert(savePlaylistName, 'danger', 'It looks like your browser doesn\'t support local storage. Sorry.');
     }
 
-    export function loadGeneratedPlaylist(): void {
+    export function loadGeneratedPlaylist(playlistName: string): void {
         if (localStorage) {
-            let playlistString = localStorage.getItem('savedPlaylist' + channelId);
-            if (playlistString)
-                loadQueue(_.map(JSON.parse(playlistString), Content.fromJSON));
-            else
-                alert("You do not have a playlist saved for the current channel.");
+            try {
+                let channelPlaylists = JSON.parse(localStorage.getItem('savedPlaylists.' + channelId));
+                if (!channelPlaylists)
+                    bootAlert(loadPlaylistSelect, 'danger', 'You have no saved playlists for this channel.');
+                else {
+                    loadQueue(channelPlaylists[playlistName]);
+                    loadPlaylistModal.modal('hide')
+                }
+            } catch(e) {
+                bootAlert(loadPlaylistSelect, 'danger', 'There was an error loading the playlist "' + playlistName + '".');
+                console.error(e);
+            }
         } else
-            alert("It looks like your browser doesn't support local storage. Sorry.")
+            bootAlert(loadPlaylistSelect, 'danger', 'It looks like your browser doesn\'t support local storage. Sorry.');
+    }
+
+    export function deleteGeneratedPlaylists(): void {
+        if (localStorage) {
+            try {
+                let channelPlaylists = JSON.parse(localStorage.getItem('savedPlaylists.' + channelId));
+                if (!channelPlaylists)
+                    bootAlert(loadPlaylistSelect.next(), 'danger', 'You have no saved playlists for this channel.');
+                else {
+                    deletePlaylistSelect.val().forEach((playlistName: string) => {
+                        delete channelPlaylists[playlistName]
+                    });
+                    localStorage.setItem('savedPlaylists.' + channelId, JSON.stringify(channelPlaylists));
+                    loadSavedPlaylistOptions();
+                    bootAlert(deletePlaylistSelect.next(), 'success', 'Playlists Deleted')
+                }
+            } catch (e) {
+                bootAlert(deletePlaylistSelect.next(), 'danger', 'There was an error deleting the playlist(s).');
+                console.error(e);
+            }
+        } else
+            bootAlert(deletePlaylistSelect.next(), 'danger', 'It looks like your browser doesn\'t support local storage. Sorry.');
+    }
+
+    export function loadSavedPlaylistOptions() {
+        if (localStorage) {
+            let channelPlaylists = JSON.parse(localStorage.getItem('savedPlaylists.' + channelId));
+            if (!channelPlaylists)
+                channelPlaylists = {};
+            let optionStrings = '';
+            Object.keys(channelPlaylists).forEach(function (playlistName) {
+                optionStrings += '<option>' + playlistName + '</option>';
+            });
+            loadPlaylistSelect.html(optionStrings);
+            deletePlaylistSelect.html(optionStrings)
+        }
     }
 }
