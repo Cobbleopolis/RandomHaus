@@ -19,7 +19,7 @@ This list is in no particular order of priority
 - ~~The same video can be used across multiple series~~
 - ~~The same video can be used across multiple channels~~
 - ~~Add the ability for videos collect videos outside of playlists~~
-- Save multiple playlists per channel
+- ~~Save multiple playlists per channel~~
 - Use cache on database queries
 - ~~Allow for duration format in config file~~
 
