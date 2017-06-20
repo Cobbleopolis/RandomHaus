@@ -10,7 +10,6 @@ CREATE TABLE filters
   tagName TEXT NOT NULL,
   CONSTRAINT filters_filterGroups_id_fk FOREIGN KEY (filterGroupId) REFERENCES filterGroups (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE INDEX filters_filterGroups_id_fk ON filters (filterGroupId);
 CREATE UNIQUE INDEX filters_id_uindex ON filters (id);
 
 # --- !Downs

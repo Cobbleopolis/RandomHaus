@@ -10,7 +10,6 @@ CREATE TABLE content_series
   CONSTRAINT content_series_channelContent_id_fk FOREIGN KEY (contentId) REFERENCES channelContent (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT content_series_channelSeries_id_fk FOREIGN KEY (seriesId) REFERENCES channelSeries (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE INDEX content_series_channelSeries_id_fk ON content_series (seriesId);
 
 # --- !Downs
 

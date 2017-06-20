@@ -4,12 +4,11 @@
 
 CREATE TABLE channelContent
 (
-  id VARCHAR(256) PRIMARY KEY NOT NULL,
+  id        VARCHAR(256) NOT NULL PRIMARY KEY,
   channelId VARCHAR(256) NOT NULL,
-  CONSTRAINT channelID_fk FOREIGN KEY (channelId) REFERENCES channels (channelId) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT channelContent_id_uindex UNIQUE (id),
+  CONSTRAINT channelID_fk FOREIGN KEY (channelId) REFERENCES randomHaus.channels (channelId) ON UPDATE CASCADE ON DELETE CASCADE
 );
-CREATE INDEX channelID_fk ON channelContent (channelId);
-CREATE UNIQUE INDEX channelContent_id_uindex ON channelContent (id);
 
 # --- !Downs
 

@@ -13,7 +13,7 @@ object ChannelLink extends ModelAccessor[ChannelLink] {
     val getQuery = SQL("SELECT * FROM channelLinks WHERE linkId = {id}")
     val getAllQuery = SQL("SELECT * FROM channelLinks")
     val getByQueryList: Map[Class[_ <: Model], SqlQuery] = Map(
-        classOf[Channel] -> SQL("SELECT * FROM channelLinks WHERE channelId = {channelId} ORDER BY label ASC;")
+        classOf[Channel] -> SQL("SELECT * FROM channelLinks WHERE channelId = {channelId} ORDER BY label ASC")
     )
 
     val insertQuery = "INSERT IGNORE INTO channelLinks (channelId, label, link) VALUES ({channelId}, {label}, {link})"
