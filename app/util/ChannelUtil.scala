@@ -11,20 +11,22 @@ import reference.InsideGaming
 object ChannelUtil {
 
     def updateAll()(implicit db: Database): Unit = {
-        Channel.getAll.foreach(channel => updateChannel(channel.channelId))
+        Channel.getAll.foreach(channel => updateChannel(channel.channelId, channel.lastUpdated))
     }
 
-    def updateChannel(channelId: String)(implicit db: Database): Unit = {
+    def updateChannel(channelId: String, lastUpdated: Date = new Date(0))(implicit db: Database): Unit = {
+        val updateTime: Date = new Date()
         val channel: Option[Channel] = Channel.get(channelId)
         if (channel.isDefined) {
             updateSeries(channelId)
-            updateContent(channelId)
+            updateContent(channelId, lastUpdated)
             if (FilterGroup.getBy(classOf[Channel], 'channelId -> channel.get.channelId).nonEmpty)
                 channel.get.getContent.foreach(ContentUtil.updateContentTags)
             channel.get.getSeries.foreach(series => SeriesUtil.updateLinks(series.id))
         } else {
             throw new Exception(s"Channel id $channelId is not found...")
         }
+        Channel.updateChannelLastUpdated(channelId, updateTime)
     }
 
     def updateSeries(channelId: String)(implicit db: Database): Unit = {
@@ -51,7 +53,7 @@ object ChannelUtil {
         }
     }
 
-    def updateContent(channelId: String)(implicit db: Database): Unit = {
+    def updateContent(channelId: String, lastUpdated: Date = new Date(0))(implicit db: Database): Unit = {
         Channel.updateChannelCurrentlyUpdating(channelId, currentlyUpdating = true)
         try {
             Logger.info(s"Updating content for $channelId...")
@@ -59,7 +61,8 @@ object ChannelUtil {
             if (channelId == InsideGaming.funhausChannelId)
                 contentList ++= YTUtil.getInsideGamingVideos
             contentList.foreach(playlistItem =>
-                ChannelContent.insert(new ChannelContent(playlistItem.getContentDetails.getVideoId, channelId)))
+                if (playlistItem.getSnippet.getPublishedAt.getValue > lastUpdated.getTime)
+                    ChannelContent.insert(new ChannelContent(playlistItem.getContentDetails.getVideoId, channelId)))
             Logger.info("Finished updating content for " + channelId)
         } catch {
             case e: Throwable =>

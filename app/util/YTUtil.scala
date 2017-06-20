@@ -67,7 +67,7 @@ object YTUtil {
         var playlistItems: List[PlaylistItem] = List[PlaylistItem]()
         val playlistItemRequest: YouTube#PlaylistItems#List = youtube.playlistItems().list("id,contentDetails,snippet,status")
             .setPlaylistId(playlistID)
-            .setFields("items(contentDetails/videoId,snippet/publishedAt,snippet/title,snippet/publishedAt,status),nextPageToken,pageInfo")
+            .setFields("items(contentDetails/videoId,snippet/publishedAt,snippet/title,status),nextPageToken,pageInfo")
 
         var nextToken: String = ""
 

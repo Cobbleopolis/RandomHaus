@@ -1,5 +1,7 @@
 package util
 
+import java.util.Date
+
 import anorm.NamedParameter
 import models._
 import play.api.Logger
@@ -14,7 +16,7 @@ object ContentUtil {
         })
     }
 
-    def updateChannelContent(channelId: String)(implicit db: Database): Unit = {
+    def updateChannelContent(channelId: String, lastUpdated: Date = new Date(0))(implicit db: Database): Unit = {
         Channel.updateChannelCurrentlyUpdating(channelId, currentlyUpdating = true)
         try {
             Logger.info("Updating Content For " + channelId + "...")
@@ -24,24 +26,26 @@ object ContentUtil {
                 if (series.id != InsideGaming.insideGamingSeries.id) {
                     val playlistItems = YTUtil.getPlaylistItems(series.id)
                     playlistItems.foreach(playlistItem => {
-                        val id: String = playlistItem.getContentDetails.getVideoId
-                        //                print(id + " | ")
-                        val contentOpt: Option[ChannelContent] = ChannelContent.get(id)
-                        if (contentOpt.isDefined) {
-                            //                    println("Exists")
-                            val tags = contentOpt.get.getTags.map(_.tag)
-                            YTUtil.getVideoTags(id)
-                                .filter(t => watchedTags.contains(t.toLowerCase()))
-                                .filterNot(t => tags.contains(t))
-                                .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
-                                .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
-                        } else {
-                            //                    println("New")
-                            ChannelContent.insert(new ChannelContent(id, channelId))
-                            YTUtil.getVideoTags(id)
-                                .filter(t => watchedTags.contains(t.toLowerCase()))
-                                .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
-                                .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
+                        if (playlistItem.getSnippet.getPublishedAt.getValue > lastUpdated.getTime) {
+                            val id: String = playlistItem.getContentDetails.getVideoId
+                            //                print(id + " | ")
+                            val contentOpt: Option[ChannelContent] = ChannelContent.get(id)
+                            if (contentOpt.isDefined) {
+                                //                    println("Exists")
+                                val tags = contentOpt.get.getTags.map(_.tag)
+                                YTUtil.getVideoTags(id)
+                                    .filter(t => watchedTags.contains(t.toLowerCase()))
+                                    .filterNot(t => tags.contains(t))
+                                    .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
+                                    .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
+                            } else {
+                                //                    println("New")
+                                ChannelContent.insert(new ChannelContent(id, channelId))
+                                YTUtil.getVideoTags(id)
+                                    .filter(t => watchedTags.contains(t.toLowerCase()))
+                                    .map(tag => Seq[NamedParameter]('contentId -> id, 'tag -> tag))
+                                    .foreach(tagParams => ChannelContentTag.insert(tagParams: _*))
+                            }
                         }
                     })
                 }
