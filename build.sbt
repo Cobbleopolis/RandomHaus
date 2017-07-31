@@ -1,7 +1,7 @@
 name := "RandomHaus"
 
 
-version := "5.2.3"
+version := "5.2.4"
 
 isSnapshot := version.value.toLowerCase.contains("snapshot")
 
