@@ -1,12 +1,11 @@
 name := "RandomHaus"
 
-
-version := "5.2.4"
+version := "5.2.5"
 
 isSnapshot := version.value.toLowerCase.contains("snapshot")
 
 
-lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, BuildInfoPlugin)
+lazy val `randomhaus` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, SystemdPlugin, BuildInfoPlugin)
 
 scalaVersion := "2.11.8"
 
@@ -52,7 +51,28 @@ packageDescription := "A play server to run a RandomHaus instance"
 
 (testOptions in Test) += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/report")
 
-bashScriptExtraDefines += """addJava "-Dconfig.file=${app_home}/../conf/production.conf""""
+//bashScriptExtraDefines += """addJava "-Dconfig.file=${app_home}/../conf/production.conf""""
+
+javaOptions in Universal ++= Seq(
+    // JVM memory tuning
+    "-J-Xmx1024m",
+    "-J-Xms512m",
+    // Since play uses separate pidfile we have to provide it with a proper path
+    // name of the pid file must be play.pid
+    s"-Dpidfile.path=/var/run/${packageName.value}/${packageName.value}.pid",
+    // alternative, you can remove the PID file
+    // s"-Dpidfile.path=/dev/null",
+    // Use separate configuration file for production environment
+    s"-Dconfig.file=/usr/share/${packageName.value}/conf/production.conf",
+    // Use separate logger configuration file for production environment
+    s"-Dlogger.file=/usr/share/${packageName.value}/conf/production-logback.xml",
+    // You may also want to include this setting if you use play evolutions
+    "-DapplyEvolutions.default=true"
+)
+
+daemonUser := "randomhaus"
+
+daemonGroup := "randomhaus"
 
 val ignoredFiles: Seq[String] = Seq(
     "client.json",
