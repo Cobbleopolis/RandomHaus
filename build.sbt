@@ -1,6 +1,6 @@
 name := "RandomHaus"
 
-version := "5.2.5"
+version := "5.2.6"
 
 isSnapshot := version.value.toLowerCase.contains("snapshot")
 
@@ -25,7 +25,7 @@ libraryDependencies ++= Seq(
     "com.google.apis" % "google-api-services-youtube" % "v3-rev166-1.21.0",
     "com.typesafe.play" %% "anorm" % "3.0.0-M1",
     "org.webjars" %% "webjars-play" % "2.5.0",
-    "mysql" % "mysql-connector-java" % "5.1.36",
+    "mysql" % "mysql-connector-java" % "5.1.46",
     "com.adrianhurt" %% "play-bootstrap" % "1.0-P25-B3" exclude("org.webjars", "jquery"),
     "org.webjars" % "bootstrap-sass" % "3.3.1-1",
     "org.webjars" % "jquery" % "2.2.2",
